@@ -25,7 +25,7 @@ function LoginForm() {
       email: fd.get('email') as string,
       password: fd.get('password') as string,
       redirect: false,
-      callbackUrl: '/orders',
+      callbackUrl: '/dashboard',
     })
     if (res?.error || res?.ok === false) {
       setError('Feil e-post eller passord.')
@@ -33,7 +33,7 @@ function LoginForm() {
       return
     }
     // Hard navigation so middleware reads the fresh cookie
-    window.location.href = '/orders'
+    window.location.href = '/dashboard'
   }
 
   return (

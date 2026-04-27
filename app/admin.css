@@ -841,3 +841,113 @@ table.admin-table {
   cursor: pointer;
   accent-color: var(--admin-accent);
 }
+
+/* ── Dashboard ── */
+.admin-dashboard-grid {
+  display: grid;
+  grid-template-columns: 1.2fr 1fr;
+  gap: 24px;
+  margin-bottom: 28px;
+}
+
+@media (max-width: 1024px) {
+  .admin-dashboard-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+.admin-dashboard-bars {
+  display: flex;
+  align-items: flex-end;
+  justify-content: stretch;
+  gap: 6px;
+  height: 140px;
+  padding-top: 8px;
+}
+
+.admin-dashboard-bar-col {
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  height: 100%;
+}
+
+.admin-dashboard-bar-track {
+  flex: 1;
+  width: 100%;
+  max-width: 36px;
+  margin: 0 auto;
+  display: flex;
+  align-items: flex-end;
+  background: var(--admin-bg);
+  border-radius: 6px 6px 2px 2px;
+  overflow: hidden;
+  min-height: 80px;
+}
+
+.admin-dashboard-bar-fill {
+  width: 100%;
+  background: linear-gradient(180deg, #E8C47A 0%, #C9A35B 100%);
+  border-radius: 4px 4px 0 0;
+  transition: height 0.4s ease;
+}
+
+.admin-dashboard-bar-label {
+  font-size: 10px;
+  font-weight: 600;
+  color: var(--admin-text-dim);
+  margin-top: 8px;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  white-space: nowrap;
+}
+
+.admin-quick-actions {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+  gap: 14px;
+}
+
+.admin-quick-action {
+  display: flex;
+  align-items: flex-start;
+  gap: 14px;
+  padding: 18px 18px;
+  background: var(--admin-surface);
+  border: 1px solid var(--admin-border);
+  border-radius: 10px;
+  text-decoration: none;
+  color: var(--admin-text);
+  transition: border-color 0.15s ease, box-shadow 0.15s ease;
+}
+
+.admin-quick-action:hover {
+  border-color: var(--admin-accent);
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.06);
+}
+
+.admin-quick-action-icon {
+  width: 40px;
+  height: 40px;
+  border-radius: 8px;
+  background: var(--admin-accent-soft);
+  color: var(--admin-accent);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.admin-quick-action-title {
+  font-size: 14px;
+  font-weight: 700;
+  margin-bottom: 4px;
+}
+
+.admin-quick-action-desc {
+  font-size: 12px;
+  color: var(--admin-text-dim);
+  line-height: 1.45;
+}

@@ -8,6 +8,7 @@ const NAV = [
   {
     label: 'Butikk',
     items: [
+      { href: '/dashboard', label: 'Dashboard', shortcut: 'g d', icon: <IconDashboard />, badgeKey: null },
       { href: '/orders', label: 'Bestillinger', shortcut: 'g o', icon: <IconOrders />, badgeKey: null },
       { href: '/products', label: 'Produkter', shortcut: 'g p', icon: <IconProducts />, badgeKey: null },
       { href: '/customers', label: 'Kunder', shortcut: 'g c', icon: <IconCustomers />, badgeKey: null },
@@ -23,6 +24,7 @@ const NAV = [
 ]
 
 const SHORTCUT_MAP: Record<string, string> = {
+  'g d': '/dashboard',
   'g o': '/orders',
   'g p': '/products',
   'g c': '/customers',
@@ -97,7 +99,10 @@ export default function AdminSidebar() {
           <div key={section.label} className="admin-nav-section">
             <div className="admin-nav-section-label">{section.label}</div>
             {section.items.map((item) => {
-              const active = pathname === item.href || pathname.startsWith(item.href + '/')
+              const active =
+                item.href === '/dashboard'
+                  ? pathname === '/dashboard'
+                  : pathname === item.href || pathname.startsWith(item.href + '/')
               const badge = item.badgeKey ? stats[item.badgeKey] ?? 0 : 0
               return (
                 <Link
@@ -123,10 +128,12 @@ export default function AdminSidebar() {
           Hurtigtaster
         </div>
         <div style={{ fontSize: 11, color: 'rgba(255,255,255,0.4)', padding: '0 8px 12px', lineHeight: 1.7 }}>
+          <kbd className="admin-kbd">g</kbd> <kbd className="admin-kbd">d</kbd> · Dashboard<br />
           <kbd className="admin-kbd">g</kbd> <kbd className="admin-kbd">o</kbd> · Bestillinger<br />
-          <kbd className="admin-kbd">g</kbd> <kbd className="admin-kbd">p</kbd> · Produkter
+          <kbd className="admin-kbd">g</kbd> <kbd className="admin-kbd">p</kbd> · Produkter<br />
+          <kbd className="admin-kbd">g</kbd> <kbd className="admin-kbd">c</kbd> · Kunder
         </div>
-        <a href="http://localhost:3000">
+        <a href={process.env.NEXT_PUBLIC_STOREFRONT_URL ?? 'http://localhost:3000'} target="_blank" rel="noopener noreferrer">
           <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
             <path d="M19 12H5M12 5l-7 7 7 7" />
           </svg>
@@ -134,6 +141,17 @@ export default function AdminSidebar() {
         </a>
       </div>
     </aside>
+  )
+}
+
+function IconDashboard() {
+  return (
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8">
+      <rect x="3" y="3" width="7" height="9" rx="1" />
+      <rect x="14" y="3" width="7" height="5" rx="1" />
+      <rect x="14" y="12" width="7" height="9" rx="1" />
+      <rect x="3" y="16" width="7" height="5" rx="1" />
+    </svg>
   )
 }
 
