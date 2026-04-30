@@ -8,6 +8,12 @@ import { useToast } from '@/components/Toast'
 
 const STATUS_OPTIONS = ['Bekreftet', 'Pakkes', 'Sendt', 'Levert']
 
+const SHIPPING_METHOD_LABELS: Record<string, string> = {
+  'self-pickup': 'Hent i butikk',
+  'bring-pickup-point': 'Bring hentested',
+  'postnord-locker': 'PostNord pakkeboks',
+}
+
 function statusBadge(status: string) {
   const map: Record<string, string> = {
     Bekreftet: 'admin-badge-blue',
@@ -172,6 +178,69 @@ export default function AdminOrderDetailPage() {
                 <Field label="Postnr / By" value={`${order.shipping_address?.postalCode ?? ''} ${order.shipping_address?.city ?? ''}`} />
                 <Field label="Land" value={order.shipping_address?.country ?? ''} />
               </div>
+            </div>
+          </div>
+
+          <div className="admin-card">
+            <div className="admin-card-header">
+              <div className="admin-card-title">Frakt og sporing</div>
+            </div>
+            <div style={{ padding: '20px', display: 'grid', gap: 16 }}>
+              <div className="admin-field-row">
+                <Field
+                  label="Fraktmetode"
+                  value={order.shipping_method ? (SHIPPING_METHOD_LABELS[order.shipping_method] ?? order.shipping_method) : ''}
+                />
+                <Field label="Sporingsnummer" value={order.consignment_number ?? ''} mono />
+              </div>
+              {order.shipping_method && order.shipping_method !== 'self-pickup' && (
+                <>
+                  <div className="admin-field-row">
+                    <Field label="Hentested" value={order.pickup_point_name ?? ''} />
+                    <Field label="Adresse" value={order.pickup_point_address1 ?? ''} />
+                  </div>
+                  <div className="admin-field-row">
+                    <Field
+                      label="Postnr / By"
+                      value={`${order.pickup_point_postcode ?? ''} ${order.pickup_point_city ?? ''}`.trim()}
+                    />
+                    <Field
+                      label="Forventet levering"
+                      value={
+                        order.shipping_expected_delivery
+                          ? `${order.shipping_expected_delivery}${order.shipping_working_days ? ` (${order.shipping_working_days} virkedager)` : ''}`
+                          : ''
+                      }
+                    />
+                  </div>
+                </>
+              )}
+              {(order.tracking_url || order.consignment_pdf_url) && (
+                <div style={{ display: 'flex', gap: 10, flexWrap: 'wrap', paddingTop: 4 }}>
+                  {order.tracking_url && (
+                    <a
+                      href={order.tracking_url}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="admin-btn admin-btn-secondary"
+                      style={{ fontSize: 12, height: 30, padding: '0 12px' }}
+                    >
+                      Spor pakken →
+                    </a>
+                  )}
+                  {order.consignment_pdf_url && (
+                    <a
+                      href={order.consignment_pdf_url}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="admin-btn admin-btn-secondary"
+                      style={{ fontSize: 12, height: 30, padding: '0 12px' }}
+                    >
+                      Åpne fraktetikett (PDF) →
+                    </a>
+                  )}
+                </div>
+              )}
             </div>
           </div>
         </div>

@@ -5,7 +5,7 @@ export async function GET(req: NextRequest) {
   const token = await getToken({
     req,
     secret: process.env.AUTH_SECRET,
-    secureCookie: false,
+    secureCookie: req.nextUrl.protocol === 'https:',
   })
   return NextResponse.json({
     hasToken: !!token,
