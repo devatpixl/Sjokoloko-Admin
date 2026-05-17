@@ -101,8 +101,29 @@ export default function AdminNewProductPage() {
                 <input name="price" type="number" step="0.01" required className="admin-form-input" placeholder="249.00" />
               </div>
               <div className="admin-form-group">
+                <label className="admin-label">Min pris (valgfritt)</label>
+                <input name="price_min" type="number" step="0.01" className="admin-form-input" placeholder="261.00" />
+              </div>
+              <div className="admin-form-group">
                 <label className="admin-label">Maks pris (valgfritt)</label>
-                <input name="price_max" type="number" step="0.01" className="admin-form-input" placeholder="499.00" />
+                <input name="price_max" type="number" step="0.01" className="admin-form-input" placeholder="471.00" />
+              </div>
+            </div>
+
+            <div className="admin-field-row">
+              <div className="admin-form-group">
+                <label className="admin-label">Variant-gruppe (valgfritt)</label>
+                <input name="variant_group" className="admin-form-input" placeholder="vanlig-16" />
+                <div style={{ fontSize: 11, color: 'var(--admin-text-dim)', marginTop: 4 }}>
+                  Produkter med samme gruppe vises som én familie-kort på butikken.
+                </div>
+              </div>
+              <div className="admin-form-group">
+                <label className="admin-label">Variant-etikett (valgfritt)</label>
+                <input name="variant_label" className="admin-form-input" placeholder="Klassisk" />
+                <div style={{ fontSize: 11, color: 'var(--admin-text-dim)', marginTop: 4 }}>
+                  Kort navn for denne varianten innen gruppen.
+                </div>
               </div>
             </div>
 

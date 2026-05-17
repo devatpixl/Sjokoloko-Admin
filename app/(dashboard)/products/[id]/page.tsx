@@ -136,8 +136,26 @@ export default function AdminEditProductPage() {
                   <input name="price" type="number" step="0.01" defaultValue={product.price} className="admin-form-input" />
                 </div>
                 <div className="admin-form-group">
+                  <label className="admin-label">Min pris</label>
+                  <input name="price_min" type="number" step="0.01" defaultValue={product.price_min ?? ''} className="admin-form-input" />
+                </div>
+                <div className="admin-form-group">
                   <label className="admin-label">Maks pris</label>
                   <input name="price_max" type="number" step="0.01" defaultValue={product.price_max ?? ''} className="admin-form-input" />
+                </div>
+              </div>
+
+              <div className="admin-field-row">
+                <div className="admin-form-group">
+                  <label className="admin-label">Variant-gruppe</label>
+                  <input name="variant_group" defaultValue={product.variant_group ?? ''} className="admin-form-input" placeholder="f.eks. vanlig-16" />
+                  <div style={{ fontSize: 11, color: 'var(--admin-text-dim)', marginTop: 4 }}>
+                    Produkter med samme gruppe vises som én familie-kort.
+                  </div>
+                </div>
+                <div className="admin-form-group">
+                  <label className="admin-label">Variant-etikett</label>
+                  <input name="variant_label" defaultValue={product.variant_label ?? ''} className="admin-form-input" placeholder="f.eks. Klassisk" />
                 </div>
               </div>
 

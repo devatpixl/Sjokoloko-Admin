@@ -11,6 +11,7 @@ const NAV = [
       { href: '/dashboard', label: 'Dashboard', shortcut: 'g d', icon: <IconDashboard />, badgeKey: null },
       { href: '/orders', label: 'Bestillinger', shortcut: 'g o', icon: <IconOrders />, badgeKey: null },
       { href: '/products', label: 'Produkter', shortcut: 'g p', icon: <IconProducts />, badgeKey: null },
+      { href: '/flavors', label: 'Smaker', shortcut: 'g f', icon: <IconFlavors />, badgeKey: null },
       { href: '/customers', label: 'Kunder', shortcut: 'g c', icon: <IconCustomers />, badgeKey: null },
     ],
   },
@@ -27,6 +28,7 @@ const SHORTCUT_MAP: Record<string, string> = {
   'g d': '/dashboard',
   'g o': '/orders',
   'g p': '/products',
+  'g f': '/flavors',
   'g c': '/customers',
   'g w': '/waitlist',
   'g k': '/contact',
@@ -168,6 +170,16 @@ function IconProducts() {
     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8">
       <rect x="2" y="7" width="20" height="14" rx="2" />
       <path d="M16 7V5a2 2 0 00-2-2h-4a2 2 0 00-2 2v2" />
+    </svg>
+  )
+}
+
+function IconFlavors() {
+  return (
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8">
+      <circle cx="7" cy="9" r="3.5" />
+      <circle cx="15" cy="9" r="3.5" />
+      <circle cx="11" cy="16" r="3.5" />
     </svg>
   )
 }

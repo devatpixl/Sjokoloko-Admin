@@ -225,7 +225,7 @@ export default function AdminOrderDetailPage() {
                 <div style={{ fontWeight: 500 }}>{order.customer_name}</div>
                 <div style={{ fontSize: 13, color: 'var(--admin-text-dim)', marginTop: 4 }}>{order.shipping_address?.email ?? ''}</div>
                 <Link
-                  href={`/customers/${order.user}`}
+                  href={`/customers/${order.user?.id ?? ''}`}
                   className="admin-btn admin-btn-secondary"
                   style={{ marginTop: 12, fontSize: 12, height: 30, padding: '0 10px' }}
                 >
