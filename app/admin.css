@@ -408,6 +408,7 @@ table.admin-table {
   display: grid;
   grid-template-columns: 1fr 1fr;
   gap: 16px;
+  align-items: start;
 }
 
 .admin-field-label {
@@ -459,6 +460,7 @@ table.admin-table {
 .admin-form-group {
   display: grid;
   gap: 6px;
+  align-content: start;
 }
 
 .admin-label {

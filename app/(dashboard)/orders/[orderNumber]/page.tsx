@@ -149,6 +149,27 @@ export default function AdminOrderDetailPage() {
                     <td style={{ textAlign: 'right', fontWeight: 500 }}>{formatNOK(item.unit_price)}</td>
                   </tr>
                 ))}
+                {Array.isArray(order.bundles_applied) && order.bundles_applied.map((b: any, i: number) => (
+                  <tr key={`b-${i}`}>
+                    <td colSpan={3} style={{ color: 'var(--admin-text-dim)', fontSize: 13 }}>
+                      Tilbud: {b.name}
+                    </td>
+                    <td style={{ textAlign: 'right', color: 'var(--admin-text-dim)' }}>
+                      − {formatNOK(b.discount)}
+                    </td>
+                  </tr>
+                ))}
+                {order.coupon_code && (
+                  <tr>
+                    <td colSpan={3} style={{ color: 'var(--admin-text-dim)', fontSize: 13 }}>
+                      Rabattkode ({order.coupon_code})
+                      {order.coupon_free_shipping && ' · fri frakt'}
+                    </td>
+                    <td style={{ textAlign: 'right', color: 'var(--admin-text-dim)' }}>
+                      {parseFloat(order.discount_amount) > 0 ? `− ${formatNOK(order.discount_amount)}` : '—'}
+                    </td>
+                  </tr>
+                )}
                 <tr>
                   <td colSpan={3} style={{ color: 'var(--admin-text-dim)', fontSize: 13 }}>Frakt</td>
                   <td style={{ textAlign: 'right' }}>{formatNOK(order.shipping)}</td>
@@ -278,6 +299,9 @@ export default function AdminOrderDetailPage() {
             <div style={{ padding: 20, display: 'grid', gap: 12 }}>
               <Field label="Betalingsmetode" value={order.payment_method} />
               <Field label="Delsum" value={formatNOK(order.subtotal)} />
+              {parseFloat(order.discount_amount ?? '0') > 0 && (
+                <Field label="Rabatt" value={`− ${formatNOK(order.discount_amount)}${order.coupon_code ? ` (${order.coupon_code})` : ''}`} />
+              )}
               <Field label="Frakt" value={formatNOK(order.shipping)} />
               <div style={{ borderTop: '1px solid var(--admin-border)', paddingTop: 12 }}>
                 <Field label="Totalt" value={formatNOK(order.total)} />

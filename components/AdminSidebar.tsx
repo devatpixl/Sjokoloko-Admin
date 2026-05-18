@@ -16,6 +16,13 @@ const NAV = [
     ],
   },
   {
+    label: 'Markedsføring',
+    items: [
+      { href: '/coupons', label: 'Rabattkoder', shortcut: 'g r', icon: <IconCoupons />, badgeKey: null },
+      { href: '/bundles', label: 'Tilbud / pakker', shortcut: 'g t', icon: <IconBundles />, badgeKey: null },
+    ],
+  },
+  {
     label: 'Innhold',
     items: [
       { href: '/waitlist', label: 'Venteliste', shortcut: 'g w', icon: <IconWaitlist />, badgeKey: 'waitlist' as const },
@@ -30,6 +37,8 @@ const SHORTCUT_MAP: Record<string, string> = {
   'g p': '/products',
   'g f': '/flavors',
   'g c': '/customers',
+  'g r': '/coupons',
+  'g t': '/bundles',
   'g w': '/waitlist',
   'g k': '/contact',
 }
@@ -208,6 +217,24 @@ function IconContact() {
   return (
     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8">
       <path d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
+    </svg>
+  )
+}
+
+function IconCoupons() {
+  return (
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8">
+      <path d="M21 11V8a2 2 0 00-2-2H5a2 2 0 00-2 2v3a2 2 0 010 4v3a2 2 0 002 2h14a2 2 0 002-2v-3a2 2 0 010-4z" />
+      <path d="M9 9v.01M9 15v.01M15 9l-6 6" strokeLinecap="round" />
+    </svg>
+  )
+}
+
+function IconBundles() {
+  return (
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8">
+      <path d="M12 2l9 4.9v10.2L12 22 3 17.1V6.9L12 2z" />
+      <path d="M12 22V12M3 6.9l9 5.1 9-5.1" />
     </svg>
   )
 }
