@@ -35,6 +35,20 @@ function formatNOK(val: string | number) {
   return `kr ${Number(val).toLocaleString('nb-NO', { minimumFractionDigits: 0 })}`
 }
 
+// Aggregate a Bygg-din-eske custom_slots array (e.g. [{name:'Mango'}, {name:'Mango'}, null])
+// into a counted list: [{ name:'Mango', qty:2 }]. Nulls (empty slots) are ignored.
+function countCustomSlots(slots: any): { name: string; qty: number }[] {
+  if (!Array.isArray(slots) || slots.length === 0) return []
+  const counts = new Map<string, number>()
+  for (const slot of slots) {
+    if (!slot) continue
+    const name = typeof slot === 'string' ? slot : (slot.name ?? slot.id ?? '')
+    if (!name) continue
+    counts.set(name, (counts.get(name) ?? 0) + 1)
+  }
+  return Array.from(counts.entries()).map(([name, qty]) => ({ name, qty }))
+}
+
 export default function AdminOrderDetailPage() {
   const { orderNumber } = useParams<{ orderNumber: string }>()
   const router = useRouter()
@@ -138,17 +152,36 @@ export default function AdminOrderDetailPage() {
                 </tr>
               </thead>
               <tbody>
-                {order.items?.map((item: any, i: number) => (
-                  <tr key={i}>
-                    <td style={{ fontWeight: 500 }}>{item.product?.name ?? item.product_name ?? '—'}</td>
-                    <td style={{ color: 'var(--admin-text-dim)', fontSize: 13 }}>
-                      {item.variant || '—'}
-                      {item.initials && <span style={{ marginLeft: 6, fontFamily: 'var(--admin-mono)' }}>({item.initials})</span>}
-                    </td>
-                    <td style={{ textAlign: 'right' }}>{item.quantity}</td>
-                    <td style={{ textAlign: 'right', fontWeight: 500 }}>{formatNOK(item.unit_price)}</td>
-                  </tr>
-                ))}
+                {order.items?.map((item: any, i: number) => {
+                  const slots = countCustomSlots(item.custom_slots)
+                  return (
+                    <tr key={i}>
+                      <td style={{ fontWeight: 500 }}>
+                        <div>{item.product?.name ?? item.product_name ?? '—'}</div>
+                        {slots.length > 0 && (
+                          <ul style={{
+                            margin: '6px 0 0 0',
+                            padding: '0 0 0 16px',
+                            color: 'var(--admin-text-dim)',
+                            fontSize: 12,
+                            fontWeight: 400,
+                            listStyle: 'disc',
+                          }}>
+                            {slots.map(s => (
+                              <li key={s.name}>{s.qty}× {s.name}</li>
+                            ))}
+                          </ul>
+                        )}
+                      </td>
+                      <td style={{ color: 'var(--admin-text-dim)', fontSize: 13 }}>
+                        {item.variant || '—'}
+                        {item.initials && <span style={{ marginLeft: 6, fontFamily: 'var(--admin-mono)' }}>({item.initials})</span>}
+                      </td>
+                      <td style={{ textAlign: 'right' }}>{item.quantity}</td>
+                      <td style={{ textAlign: 'right', fontWeight: 500 }}>{formatNOK(item.unit_price)}</td>
+                    </tr>
+                  )
+                })}
                 {Array.isArray(order.bundles_applied) && order.bundles_applied.map((b: any, i: number) => (
                   <tr key={`b-${i}`}>
                     <td colSpan={3} style={{ color: 'var(--admin-text-dim)', fontSize: 13 }}>
