@@ -154,10 +154,17 @@ export default function AdminOrderDetailPage() {
               <tbody>
                 {order.items?.map((item: any, i: number) => {
                   const slots = countCustomSlots(item.custom_slots)
+                  const meta = [item.product?.size, item.product?.variant_label].filter(Boolean).join(' · ')
+                  const productFlavors: string[] = Array.isArray(item.product?.flavors) ? item.product.flavors : []
                   return (
                     <tr key={i}>
                       <td style={{ fontWeight: 500 }}>
                         <div>{item.product?.name ?? item.product_name ?? '—'}</div>
+                        {meta && (
+                          <div style={{ fontSize: 12, color: 'var(--admin-text-dim)', fontWeight: 400, marginTop: 2 }}>
+                            {meta}
+                          </div>
+                        )}
                         {slots.length > 0 && (
                           <ul style={{
                             margin: '6px 0 0 0',
@@ -169,6 +176,20 @@ export default function AdminOrderDetailPage() {
                           }}>
                             {slots.map(s => (
                               <li key={s.name}>{s.qty}× {s.name}</li>
+                            ))}
+                          </ul>
+                        )}
+                        {slots.length === 0 && productFlavors.length > 0 && (
+                          <ul style={{
+                            margin: '6px 0 0 0',
+                            padding: '0 0 0 16px',
+                            color: 'var(--admin-text-dim)',
+                            fontSize: 12,
+                            fontWeight: 400,
+                            listStyle: 'disc',
+                          }}>
+                            {productFlavors.map((f, j) => (
+                              <li key={j}>{f}</li>
                             ))}
                           </ul>
                         )}
