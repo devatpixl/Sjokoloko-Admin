@@ -25,6 +25,7 @@ const NAV = [
   {
     label: 'Innhold',
     items: [
+      { href: '/loyalty', label: 'Kundeklubb', shortcut: 'g m', icon: <IconWaitlist />, badgeKey: null },
       { href: '/waitlist', label: 'Venteliste', shortcut: 'g w', icon: <IconWaitlist />, badgeKey: 'waitlist' as const },
       { href: '/contact', label: 'Kontakt', shortcut: 'g k', icon: <IconContact />, badgeKey: 'unread_contact' as const },
     ],
@@ -39,6 +40,7 @@ const SHORTCUT_MAP: Record<string, string> = {
   'g c': '/customers',
   'g r': '/coupons',
   'g t': '/bundles',
+  'g m': '/loyalty',
   'g w': '/waitlist',
   'g k': '/contact',
 }

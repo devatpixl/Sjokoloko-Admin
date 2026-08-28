@@ -101,6 +101,13 @@ export async function adminGetWaitlist(params?: { batch?: string }) {
   return adminFetch(`/api/admin/waitlist/${qs}`)
 }
 
+export async function adminGetLoyalty(params?: { search?: string }) {
+  const q = new URLSearchParams()
+  if (params?.search) q.set('search', params.search)
+  const qs = q.toString() ? `?${q}` : ''
+  return adminFetch(`/api/admin/loyalty/${qs}`)
+}
+
 export async function adminGetContact(params?: { is_read?: string }) {
   const q = new URLSearchParams()
   if (params?.is_read !== undefined) q.set('is_read', params.is_read)
