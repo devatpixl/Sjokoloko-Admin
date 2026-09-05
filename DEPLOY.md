@@ -56,6 +56,48 @@ If it ever happens, restore it with:
 ln -sf /srv/sjokoloko/secrets/admin.env /srv/sjokoloko/admin/.env.local
 ```
 
+### Fresh clones are dangerous
+
+Because the file is tracked, a **fresh clone of `main` ships the localhost
+values and a dev `AUTH_SECRET` that is readable in the repo**. Deploying from a
+new clone without recreating the symlink first will boot the admin against
+`http://localhost:8000` and sign sessions with a public secret, so logins on
+`admin.sjokoloco.no` break. Create the symlink before the first `npm run build`,
+not after.
+
+### The server no longer trips over this
+
+As of 2026-09-05 the server copy is marked so git stops seeing the typechange:
+
+```bash
+git update-index --skip-worktree .env.local
+```
+
+`git status` is clean now and `git pull --ff-only` no longer aborts. If a future
+commit ever changes `.env.local` upstream, the pull will complain about the
+skip-worktree flag; clear it with `--no-skip-worktree`, sort the file out, then
+set it again.
+
+## Trap: don't pipe `git pull` into `tail`
+
+`set -e` does not fire on a failed command inside a pipeline, because the
+pipeline's exit status is the *last* command's. A deploy written as
+
+```bash
+set -e
+git pull --ff-only origin main 2>&1 | tail -3   # <-- failure is swallowed
+npm run build
+```
+
+will happily rebuild the **old** code and restart, reporting success. This
+actually happened on 2026-09-05. Use `set -euo pipefail`, leave the pull
+unpiped, and assert the result before building:
+
+```bash
+git merge --ff-only origin/main
+[ "$(git rev-parse --short HEAD)" = "<expected>" ] || { echo ABORT; exit 1; }
+```
+
 ## New in this version
 
 - **Etiketter** — print layout for the Zebra 32 × 94 mm ingredient labels,
