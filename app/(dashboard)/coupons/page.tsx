@@ -119,26 +119,26 @@ export default function AdminCouponsPage() {
               )}
               {coupons?.map(c => (
                 <tr key={c.id} style={{ opacity: c.is_active ? 1 : 0.55 }}>
-                  <td style={{ fontFamily: 'var(--admin-mono)', fontWeight: 600 }}>{c.code}</td>
-                  <td>{kindLabel(c.kind)}</td>
-                  <td style={{ fontFamily: 'var(--admin-mono)', fontSize: 13 }}>{formatValue(c)}</td>
-                  <td style={{ fontFamily: 'var(--admin-mono)', fontSize: 13 }}>
+                  <td data-label="Kode" style={{ fontFamily: 'var(--admin-mono)', fontWeight: 600 }}>{c.code}</td>
+                  <td data-label="Type">{kindLabel(c.kind)}</td>
+                  <td data-label="Verdi" style={{ fontFamily: 'var(--admin-mono)', fontSize: 13 }}>{formatValue(c)}</td>
+                  <td data-label="Min. delsum" style={{ fontFamily: 'var(--admin-mono)', fontSize: 13 }}>
                     {parseFloat(c.min_subtotal) > 0 ? `kr ${parseFloat(c.min_subtotal).toFixed(0)}` : '—'}
                   </td>
-                  <td style={{ fontFamily: 'var(--admin-mono)', fontSize: 13 }}>
+                  <td data-label="Brukt" style={{ fontFamily: 'var(--admin-mono)', fontSize: 13 }}>
                     {c.times_used}{c.max_uses ? ` / ${c.max_uses}` : ''}
                   </td>
-                  <td style={{ fontSize: 12, color: 'var(--admin-text-dim)' }}>
+                  <td data-label="Gyldig" style={{ fontSize: 12, color: 'var(--admin-text-dim)' }}>
                     {c.valid_from || c.valid_to
                       ? `${c.valid_from ? new Date(c.valid_from).toLocaleDateString('nb-NO') : '–'} → ${c.valid_to ? new Date(c.valid_to).toLocaleDateString('nb-NO') : '∞'}`
                       : 'Alltid'}
                   </td>
-                  <td>
+                  <td data-label="Status">
                     <span className={`admin-badge ${c.is_active ? 'admin-badge-green' : 'admin-badge-gray'}`}>
                       {c.is_active ? 'Aktiv' : 'Inaktiv'}
                     </span>
                   </td>
-                  <td style={{ textAlign: 'right' }}>
+                  <td data-label="" style={{ textAlign: 'right' }}>
                     <div style={{ display: 'inline-flex', gap: 6 }}>
                       <button
                         onClick={() => toggleActive(c)}

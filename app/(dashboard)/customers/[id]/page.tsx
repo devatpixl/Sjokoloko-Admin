@@ -90,7 +90,7 @@ export default function AdminCustomerDetailPage() {
     return (
       <div>
         <div className="admin-skeleton" style={{ height: 24, width: 200, marginBottom: 24 }} />
-        <div style={{ display: 'grid', gridTemplateColumns: '1fr 300px', gap: 20 }}>
+        <div className="admin-split">
           <div className="admin-card" style={{ padding: 24 }}>
             <div className="admin-skeleton" style={{ height: 40, marginBottom: 12 }} />
             <div className="admin-skeleton" style={{ height: 40, marginBottom: 12 }} />
@@ -133,7 +133,7 @@ export default function AdminCustomerDetailPage() {
         </button>
       </div>
 
-      <div style={{ display: 'grid', gridTemplateColumns: '1fr 320px', gap: 20, alignItems: 'start' }}>
+      <div className="admin-split">
         {/* Orders */}
         <div className="admin-card">
           <div className="admin-card-header">
@@ -164,14 +164,14 @@ export default function AdminCustomerDetailPage() {
                 <tbody>
                   {orders.map((order: any) => (
                     <tr key={order.order_number}>
-                      <td className="mono">{order.order_number}</td>
-                      <td style={{ fontSize: 13, color: 'var(--admin-text-dim)' }}>{formatDate(order.created_at)}</td>
-                      <td style={{ fontSize: 13, color: 'var(--admin-text-dim)' }}>{order.items?.length ?? 0}</td>
-                      <td style={{ fontWeight: 600 }}>{formatNOK(order.total)}</td>
-                      <td>
+                      <td data-label="Ordrenr." className="mono">{order.order_number}</td>
+                      <td data-label="Dato" style={{ fontSize: 13, color: 'var(--admin-text-dim)' }}>{formatDate(order.created_at)}</td>
+                      <td data-label="Varer" style={{ fontSize: 13, color: 'var(--admin-text-dim)' }}>{order.items?.length ?? 0}</td>
+                      <td data-label="Total" style={{ fontWeight: 600 }}>{formatNOK(order.total)}</td>
+                      <td data-label="Status">
                         <span className={`admin-badge ${statusBadge(order.status)}`}>{order.status}</span>
                       </td>
-                      <td>
+                      <td data-label="">
                         <Link
                           href={`/orders/${order.order_number}`}
                           className="admin-btn admin-btn-secondary"

@@ -104,20 +104,20 @@ export default async function AdminOrdersPage({
               )}
               {orders.map((order: any) => (
                 <tr key={order.order_number}>
-                  <td className="mono">{order.order_number}</td>
-                  <td style={{ color: 'var(--admin-text-dim)', fontSize: 13 }}>{formatDate(order.created_at)}</td>
-                  <td>
+                  <td data-label="Ordrenr." className="mono">{order.order_number}</td>
+                  <td data-label="Dato" style={{ color: 'var(--admin-text-dim)', fontSize: 13 }}>{formatDate(order.created_at)}</td>
+                  <td data-label="Kunde">
                     <div style={{ fontWeight: 500 }}>{order.customer_name}</div>
                     <div style={{ fontSize: 12, color: 'var(--admin-text-dim)' }}>{order.ship_email}</div>
                   </td>
-                  <td style={{ color: 'var(--admin-text-dim)', fontSize: 13 }}>
+                  <td data-label="Produkter" style={{ color: 'var(--admin-text-dim)', fontSize: 13 }}>
                     {order.items?.length ?? 0} vare{order.items?.length !== 1 ? 'r' : ''}
                   </td>
-                  <td style={{ fontWeight: 600 }}>{formatNOK(order.total)}</td>
-                  <td>
+                  <td data-label="Total" style={{ fontWeight: 600 }}>{formatNOK(order.total)}</td>
+                  <td data-label="Status">
                     <span className={`admin-badge ${statusBadge(order.status)}`}>{order.status}</span>
                   </td>
-                  <td style={{ textAlign: 'right' }}>
+                  <td data-label="" style={{ textAlign: 'right' }}>
                     <OrderRowActions orderNumber={order.order_number} />
                   </td>
                 </tr>

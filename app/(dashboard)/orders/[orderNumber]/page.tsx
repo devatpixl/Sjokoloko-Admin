@@ -182,7 +182,7 @@ export default function AdminOrderDetailPage() {
                   const productFlavors: string[] = Array.isArray(item.product?.flavors) ? item.product.flavors : []
                   return (
                     <tr key={i}>
-                      <td style={{ fontWeight: 500 }}>
+                      <td data-label="Produkt" style={{ fontWeight: 500 }}>
                         <div>{item.product?.name ?? item.product_name ?? '—'}</div>
                         {meta && (
                           <div style={{ fontSize: 12, color: 'var(--admin-text-dim)', fontWeight: 400, marginTop: 2 }}>
@@ -218,12 +218,12 @@ export default function AdminOrderDetailPage() {
                           </ul>
                         )}
                       </td>
-                      <td style={{ color: 'var(--admin-text-dim)', fontSize: 13 }}>
+                      <td data-label="Variant" style={{ color: 'var(--admin-text-dim)', fontSize: 13 }}>
                         {item.variant || '—'}
                         {item.initials && <span style={{ marginLeft: 6, fontFamily: 'var(--admin-mono)' }}>({item.initials})</span>}
                       </td>
-                      <td style={{ textAlign: 'right' }}>{item.quantity}</td>
-                      <td style={{ textAlign: 'right', fontWeight: 500 }}>{formatNOK(item.unit_price)}</td>
+                      <td data-label="Antall" style={{ textAlign: 'right' }}>{item.quantity}</td>
+                      <td data-label="Pris" style={{ textAlign: 'right', fontWeight: 500 }}>{formatNOK(item.unit_price)}</td>
                     </tr>
                   )
                 })}
@@ -232,7 +232,7 @@ export default function AdminOrderDetailPage() {
                     <td colSpan={3} style={{ color: 'var(--admin-text-dim)', fontSize: 13 }}>
                       Tilbud: {b.name}
                     </td>
-                    <td style={{ textAlign: 'right', color: 'var(--admin-text-dim)' }}>
+                    <td data-label="" style={{ textAlign: 'right', color: 'var(--admin-text-dim)' }}>
                       − {formatNOK(b.discount)}
                     </td>
                   </tr>
@@ -243,18 +243,18 @@ export default function AdminOrderDetailPage() {
                       Rabattkode ({order.coupon_code})
                       {order.coupon_free_shipping && ' · fri frakt'}
                     </td>
-                    <td style={{ textAlign: 'right', color: 'var(--admin-text-dim)' }}>
+                    <td data-label="" style={{ textAlign: 'right', color: 'var(--admin-text-dim)' }}>
                       {parseFloat(order.discount_amount) > 0 ? `− ${formatNOK(order.discount_amount)}` : '—'}
                     </td>
                   </tr>
                 )}
                 <tr>
                   <td colSpan={3} style={{ color: 'var(--admin-text-dim)', fontSize: 13 }}>Frakt</td>
-                  <td style={{ textAlign: 'right' }}>{formatNOK(order.shipping)}</td>
+                  <td data-label="" style={{ textAlign: 'right' }}>{formatNOK(order.shipping)}</td>
                 </tr>
                 <tr>
                   <td colSpan={3} style={{ fontWeight: 700 }}>Totalt</td>
-                  <td style={{ textAlign: 'right', fontWeight: 700, fontSize: 15 }}>{formatNOK(order.total)}</td>
+                  <td data-label="" style={{ textAlign: 'right', fontWeight: 700, fontSize: 15 }}>{formatNOK(order.total)}</td>
                 </tr>
               </tbody>
             </table>

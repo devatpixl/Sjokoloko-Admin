@@ -173,7 +173,7 @@ export default function AdminContactPage() {
                     style={{ cursor: 'pointer', background: !entry.is_read ? '#FFFBF2' : undefined }}
                     onClick={() => setExpanded(expanded === entry.id ? null : entry.id)}
                   >
-                    <td onClick={e => e.stopPropagation()}>
+                    <td data-label="" onClick={e => e.stopPropagation()}>
                       <input
                         type="checkbox"
                         className="admin-checkbox"
@@ -182,23 +182,23 @@ export default function AdminContactPage() {
                         aria-label={`Velg ${entry.email}`}
                       />
                     </td>
-                    <td>
+                    <td data-label="">
                       {!entry.is_read && (
                         <div style={{ width: 7, height: 7, borderRadius: '50%', background: 'var(--admin-accent)' }} />
                       )}
                     </td>
-                    <td>
+                    <td data-label="Fra">
                       <div style={{ fontWeight: entry.is_read ? 400 : 600 }}>{entry.name}</div>
                       <div style={{ fontSize: 12, color: 'var(--admin-text-dim)' }}>{entry.email}</div>
                     </td>
-                    <td style={{ fontWeight: entry.is_read ? 400 : 500 }}>{entry.subject}</td>
-                    <td style={{ fontSize: 13, color: 'var(--admin-text-dim)' }}>{formatDate(entry.created_at)}</td>
-                    <td>
+                    <td data-label="Emne" style={{ fontWeight: entry.is_read ? 400 : 500 }}>{entry.subject}</td>
+                    <td data-label="Dato" style={{ fontSize: 13, color: 'var(--admin-text-dim)' }}>{formatDate(entry.created_at)}</td>
+                    <td data-label="Status">
                       <span className={`admin-badge ${entry.is_read ? 'admin-badge-gray' : 'admin-badge-gold'}`}>
                         {entry.is_read ? 'Lest' : 'Ulest'}
                       </span>
                     </td>
-                    <td style={{ textAlign: 'right' }} onClick={e => e.stopPropagation()}>
+                    <td data-label="" style={{ textAlign: 'right' }} onClick={e => e.stopPropagation()}>
                       <div style={{ display: 'flex', gap: 6, justifyContent: 'flex-end' }}>
                         {!entry.is_read && (
                           <button

@@ -99,25 +99,25 @@ export default function AdminFlavorsPage() {
               )}
               {truffles?.map(t => (
                 <tr key={t.id} style={{ opacity: t.is_active ? 1 : 0.55 }}>
-                  <td>
+                  <td data-label="">
                     <span style={{
                       display: 'inline-block', width: 28, height: 28, borderRadius: '50%',
                       background: t.color,
                       border: '1px solid var(--admin-border)',
                     }} />
                   </td>
-                  <td>
+                  <td data-label="Navn">
                     <div style={{ fontWeight: 500, fontSize: 14 }}>{t.name}</div>
                     <div style={{ fontSize: 12, color: 'var(--admin-text-dim)' }}>{t.note}</div>
                   </td>
-                  <td style={{ fontFamily: 'var(--admin-mono)', fontSize: 12 }}>{t.id}</td>
-                  <td style={{ fontFamily: 'var(--admin-mono)', fontSize: 12 }}>{t.color}</td>
-                  <td>
+                  <td data-label="ID" style={{ fontFamily: 'var(--admin-mono)', fontSize: 12 }}>{t.id}</td>
+                  <td data-label="Tone" style={{ fontFamily: 'var(--admin-mono)', fontSize: 12 }}>{t.color}</td>
+                  <td data-label="Status">
                     <span className={`admin-badge ${t.is_active ? 'admin-badge-green' : 'admin-badge-gray'}`}>
                       {t.is_active ? 'Aktiv' : 'Sikkerhetskopi'}
                     </span>
                   </td>
-                  <td style={{ textAlign: 'right' }}>
+                  <td data-label="" style={{ textAlign: 'right' }}>
                     <div style={{ display: 'inline-flex', gap: 6 }}>
                       <button
                         onClick={() => toggleActive(t)}

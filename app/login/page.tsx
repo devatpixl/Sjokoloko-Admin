@@ -40,14 +40,15 @@ function LoginForm() {
 
   return (
     <div style={{
-      minHeight: '100vh',
+      minHeight: '100dvh',
       background: '#F4F6F8',
+      padding: 16,
       display: 'flex',
       alignItems: 'center',
       justifyContent: 'center',
       fontFamily: 'Inter, system-ui, sans-serif',
     }}>
-      <div style={{
+      <div className="login-card" style={{
         background: '#fff',
         border: '1px solid #E1E5EA',
         borderRadius: 12,
@@ -74,6 +75,7 @@ function LoginForm() {
               autoFocus
               defaultValue="dev@pixlmedia.no"
               onFocus={() => setError('')}
+              className="login-input"
               style={{
                 height: 38, padding: '0 12px', border: '1px solid #E1E5EA',
                 borderRadius: 6, fontSize: 13.5, outline: 'none', width: '100%',
@@ -87,6 +89,7 @@ function LoginForm() {
               type="password"
               required
               onFocus={() => setError('')}
+              className="login-input"
               style={{
                 height: 38, padding: '0 12px', border: '1px solid #E1E5EA',
                 borderRadius: 6, fontSize: 13.5, outline: 'none', width: '100%',
@@ -103,6 +106,7 @@ function LoginForm() {
           <button
             type="submit"
             disabled={isPending}
+            className="login-btn"
             style={{
               height: 38, background: '#C9A35B', color: '#1A1A1A', border: 'none',
               borderRadius: 6, fontWeight: 600, fontSize: 13.5, cursor: 'pointer',

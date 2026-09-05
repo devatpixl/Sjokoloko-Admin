@@ -68,16 +68,16 @@ export default async function AdminWaitlistPage({
               )}
               {entries.map((entry: any, i: number) => (
                 <tr key={entry.id}>
-                  <td className="mono" style={{ color: 'var(--admin-text-dim)' }}>{i + 1}</td>
-                  <td style={{ fontWeight: 500 }}>{entry.email}</td>
-                  <td>
+                  <td data-label="#" className="mono" style={{ color: 'var(--admin-text-dim)' }}>{i + 1}</td>
+                  <td data-label="E-post" style={{ fontWeight: 500 }}>{entry.email}</td>
+                  <td data-label="Batch">
                     <span className="admin-badge admin-badge-gold">Batch {entry.batch}</span>
                   </td>
-                  <td className="mono">{entry.position}</td>
-                  <td style={{ fontSize: 13, color: 'var(--admin-text-dim)' }}>
+                  <td data-label="Posisjon" className="mono">{entry.position}</td>
+                  <td data-label="Meldt på" style={{ fontSize: 13, color: 'var(--admin-text-dim)' }}>
                     {formatDate(entry.created_at)}
                   </td>
-                  <td style={{ textAlign: 'right' }}>
+                  <td data-label="" style={{ textAlign: 'right' }}>
                     <WaitlistRowActions id={entry.id} email={entry.email} />
                   </td>
                 </tr>

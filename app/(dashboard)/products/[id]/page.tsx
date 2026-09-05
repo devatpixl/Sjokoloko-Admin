@@ -97,7 +97,7 @@ export default function AdminEditProductPage() {
         </button>
       </div>
 
-      <div style={{ display: 'grid', gridTemplateColumns: '1fr 280px', gap: 20, alignItems: 'start' }}>
+      <div className="admin-split">
         <div className="admin-card">
           <div className="admin-card-header">
             <div className="admin-card-title">Produktdetaljer</div>
@@ -247,7 +247,7 @@ export default function AdminEditProductPage() {
 
 function ProductDetailSkeleton() {
   return (
-    <div style={{ display: 'grid', gridTemplateColumns: '1fr 280px', gap: 20, alignItems: 'start' }}>
+    <div className="admin-split">
       <div className="admin-card" style={{ padding: 24 }}>
         <div className="admin-skeleton" style={{ height: 36, width: '40%', marginBottom: 24 }} />
         {[...Array(6)].map((_, i) => (

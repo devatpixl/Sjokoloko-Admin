@@ -106,32 +106,32 @@ export default function AdminBundlesPage() {
               )}
               {bundles?.map(b => (
                 <tr key={b.id} style={{ opacity: b.is_active ? 1 : 0.55 }}>
-                  <td>
+                  <td data-label="Navn">
                     <div style={{ fontWeight: 500, fontSize: 14 }}>{b.name}</div>
                     {b.description && (
                       <div style={{ fontSize: 12, color: 'var(--admin-text-dim)' }}>{b.description}</div>
                     )}
                   </td>
-                  <td style={{ fontFamily: 'var(--admin-mono)', fontSize: 13 }}>
+                  <td data-label="Variantgruppe" style={{ fontFamily: 'var(--admin-mono)', fontSize: 13 }}>
                     {b.variant_group || `${b.products.length} produkt(er)`}
                   </td>
-                  <td>{b.required_quantity}</td>
-                  <td style={{ fontFamily: 'var(--admin-mono)', fontSize: 13 }}>
+                  <td data-label="Antall">{b.required_quantity}</td>
+                  <td data-label="Pakkepris" style={{ fontFamily: 'var(--admin-mono)', fontSize: 13 }}>
                     kr {parseFloat(b.bundle_price).toFixed(0)}
                   </td>
-                  <td>
+                  <td data-label="Fri frakt">
                     {b.includes_free_shipping ? (
                       <span className="admin-badge admin-badge-green">Ja</span>
                     ) : (
                       <span style={{ color: 'var(--admin-text-dim)', fontSize: 12 }}>Nei</span>
                     )}
                   </td>
-                  <td>
+                  <td data-label="Status">
                     <span className={`admin-badge ${b.is_active ? 'admin-badge-green' : 'admin-badge-gray'}`}>
                       {b.is_active ? 'Aktiv' : 'Inaktiv'}
                     </span>
                   </td>
-                  <td style={{ textAlign: 'right' }}>
+                  <td data-label="" style={{ textAlign: 'right' }}>
                     <div style={{ display: 'inline-flex', gap: 6 }}>
                       <button
                         onClick={() => toggleActive(b)}

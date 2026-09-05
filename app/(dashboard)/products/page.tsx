@@ -79,7 +79,7 @@ export default async function AdminProductsPage({
               )}
               {products.map((product: any) => (
                 <tr key={product.id}>
-                  <td>
+                  <td data-label="Produkt">
                     <div style={{ display: 'flex', alignItems: 'center', gap: 12 }}>
                       {product.image_url ? (
                         <div style={{ width: 40, height: 40, borderRadius: 6, overflow: 'hidden', background: '#F4F6F8', flexShrink: 0 }}>
@@ -98,22 +98,22 @@ export default async function AdminProductsPage({
                       </div>
                     </div>
                   </td>
-                  <td>
+                  <td data-label="Kategori">
                     <span className="admin-badge admin-badge-gray">
                       {CATEGORY_LABELS[product.category] ?? product.category}
                     </span>
                   </td>
-                  <td style={{ color: 'var(--admin-text-dim)', fontSize: 13 }}>{product.size}</td>
-                  <td style={{ fontWeight: 600 }}>{formatNOK(product.price)}</td>
-                  <td style={{ fontFamily: 'var(--admin-mono)', fontSize: 12.5 }}>
+                  <td data-label="Størrelse" style={{ color: 'var(--admin-text-dim)', fontSize: 13 }}>{product.size}</td>
+                  <td data-label="Pris" style={{ fontWeight: 600 }}>{formatNOK(product.price)}</td>
+                  <td data-label="Batch" style={{ fontFamily: 'var(--admin-mono)', fontSize: 12.5 }}>
                     {product.batch_number} · {product.batch_count}/{product.batch_total}
                   </td>
-                  <td>
+                  <td data-label="Status">
                     <span className={`admin-badge ${product.in_stock ? 'admin-badge-green' : 'admin-badge-red'}`}>
                       {product.in_stock ? 'På lager' : 'Utsolgt'}
                     </span>
                   </td>
-                  <td style={{ textAlign: 'right' }}>
+                  <td data-label="" style={{ textAlign: 'right' }}>
                     <ProductRowActions id={product.id} name={product.name} />
                   </td>
                 </tr>

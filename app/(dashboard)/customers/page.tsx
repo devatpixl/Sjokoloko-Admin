@@ -67,13 +67,13 @@ export default async function AdminCustomersPage({
               )}
               {users.map((user: any) => (
                 <tr key={user.id}>
-                  <td style={{ fontWeight: 500 }}>{user.name}</td>
-                  <td style={{ color: 'var(--admin-text-dim)', fontSize: 13 }}>{user.email}</td>
-                  <td style={{ color: 'var(--admin-text-dim)', fontSize: 13 }}>{formatDate(user.created_at)}</td>
-                  <td style={{ fontFamily: 'var(--admin-mono)', fontSize: 13 }}>
+                  <td data-label="Navn" style={{ fontWeight: 500 }}>{user.name}</td>
+                  <td data-label="E-post" style={{ color: 'var(--admin-text-dim)', fontSize: 13 }}>{user.email}</td>
+                  <td data-label="Registrert" style={{ color: 'var(--admin-text-dim)', fontSize: 13 }}>{formatDate(user.created_at)}</td>
+                  <td data-label="Bestillinger" style={{ fontFamily: 'var(--admin-mono)', fontSize: 13 }}>
                     {user.order_count ?? 0}
                   </td>
-                  <td>
+                  <td data-label="Venteliste">
                     {user.waitlist_batches?.length > 0 ? (
                       <span className="admin-badge admin-badge-gold">
                         Batch {user.waitlist_batches.join(', ')}
@@ -82,7 +82,7 @@ export default async function AdminCustomersPage({
                       <span style={{ color: 'var(--admin-text-dim)', fontSize: 12 }}>—</span>
                     )}
                   </td>
-                  <td style={{ textAlign: 'right' }}>
+                  <td data-label="" style={{ textAlign: 'right' }}>
                     <CustomerRowActions
                       id={user.id}
                       name={user.name}

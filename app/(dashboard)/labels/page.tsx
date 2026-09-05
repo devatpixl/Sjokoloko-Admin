@@ -169,7 +169,7 @@ export default function LabelsPage() {
         </button>
       </div>
 
-      <div className="no-print" style={{ display: 'grid', gridTemplateColumns: 'minmax(280px, 420px) 1fr', gap: 24, alignItems: 'start' }}>
+      <div className="no-print admin-split admin-split-labels">
         {/* Editor */}
         <div className="admin-card" style={{ padding: 20, display: 'flex', flexDirection: 'column', gap: 14 }}>
           <div className="admin-form-group">
@@ -188,7 +188,7 @@ export default function LabelsPage() {
             <label className="admin-label">Bunnlinje</label>
             <input className="admin-form-input" value={state.footer} onChange={e => set('footer', e.target.value)} />
           </div>
-          <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 12 }}>
+          <div className="admin-field-row">
             <div className="admin-form-group">
               <label className="admin-label">Skriftstørrelse (pt)</label>
               <input className="admin-form-input" type="number" min={5} max={16} step={0.5} value={state.fontPt} onChange={e => set('fontPt', parseFloat(e.target.value) || 6.5)} />
@@ -273,8 +273,10 @@ export default function LabelsPage() {
         {/* True-size preview */}
         <div>
           <div className="admin-label" style={{ marginBottom: 10 }}>Forhåndsvisning (faktisk størrelse)</div>
-          <div style={{ border: '1px dashed var(--admin-border)', display: 'inline-block', padding: 6, background: 'repeating-conic-gradient(#8882 0% 25%, transparent 0% 50%) 0 0 / 12px 12px' }}>
-            <LabelArea state={state} bestBefore={bestBefore} style={labelStyle} innerRef={measureRef} />
+          <div className="label-preview-scroll">
+            <div style={{ border: '1px dashed var(--admin-border)', display: 'inline-block', padding: 6, background: 'repeating-conic-gradient(#8882 0% 25%, transparent 0% 50%) 0 0 / 12px 12px' }}>
+              <LabelArea state={state} bestBefore={bestBefore} style={labelStyle} innerRef={measureRef} />
+            </div>
           </div>
           <p className="admin-page-subtitle" style={{ marginTop: 12, maxWidth: 420 }}>
             Skriv ut: velg Zebra-skriveren, papirstørrelse 94 × 32 mm (eller «faktisk størrelse» / 100 %),

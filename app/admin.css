@@ -1,4 +1,15 @@
 /* ── Admin shell reset ── */
+
+/* Form controls were content-box, so width:100% plus padding overflowed the
+   column they sit in. Only the controls are switched, to leave the rest of
+   the desktop layout exactly as it was. */
+.admin-shell input,
+.admin-shell select,
+.admin-shell textarea,
+.admin-shell button {
+  box-sizing: border-box;
+}
+
 .admin-shell {
   --admin-bg: #F4F6F8;
   --admin-sidebar: #1A1A1A;
@@ -136,18 +147,25 @@
   min-width: 0;
 }
 
-/* Top bar */
-.admin-topbar {
-  height: 56px;
+/* Top bar — the wrapper owns the sticky/chrome so the hamburger sits inside it */
+.admin-topwrap {
+  position: sticky;
+  top: 0;
+  z-index: 30;
+  display: flex;
+  align-items: center;
   background: var(--admin-surface);
   border-bottom: 1px solid var(--admin-border);
+}
+
+.admin-topbar {
+  height: 56px;
   display: flex;
   align-items: center;
   padding: 0 28px;
   gap: 16px;
-  position: sticky;
-  top: 0;
-  z-index: 10;
+  flex: 1;
+  min-width: 0;
 }
 
 .admin-topbar-title {
@@ -397,6 +415,19 @@ table.admin-table {
   grid-template-columns: 1fr 340px;
   gap: 20px;
   align-items: start;
+}
+
+/* Content + aside split used by the detail and label pages */
+.admin-split {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 300px;
+  gap: 20px;
+  align-items: start;
+}
+
+.admin-split-labels {
+  grid-template-columns: minmax(280px, 420px) minmax(0, 1fr);
+  gap: 24px;
 }
 
 .admin-field-group {
@@ -952,4 +983,425 @@ table.admin-table {
   font-size: 12px;
   color: var(--admin-text-dim);
   line-height: 1.45;
+}
+
+/* ══════════════════════════════════════════════════════════════════
+   Mobile
+   The admin was built desktop-only: a 240px sidebar permanently in
+   flow, wide tables, and multi-column grids. Below 900px the sidebar
+   becomes a drawer and every grid collapses to one column.
+   ══════════════════════════════════════════════════════════════════ */
+
+/* Hamburger + drawer chrome (hidden on desktop) */
+.admin-hamburger {
+  display: none;
+  width: 44px;
+  height: 44px;
+  margin-left: 8px;
+  border: none;
+  background: transparent;
+  cursor: pointer;
+  padding: 0;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 5px;
+  border-radius: 8px;
+  flex-shrink: 0;
+}
+
+.admin-hamburger span {
+  display: block;
+  width: 20px;
+  height: 2px;
+  border-radius: 2px;
+  background: var(--admin-text);
+  transition: transform 200ms ease, opacity 150ms ease;
+}
+
+.admin-hamburger:active { background: var(--admin-bg); }
+
+.nav-open .admin-hamburger span:nth-child(1) { transform: translateY(7px) rotate(45deg); }
+.nav-open .admin-hamburger span:nth-child(2) { opacity: 0; }
+.nav-open .admin-hamburger span:nth-child(3) { transform: translateY(-7px) rotate(-45deg); }
+
+.admin-scrim,
+.admin-nav-close { display: none; }
+
+@media (max-width: 900px) {
+  .admin-hamburger { display: flex; }
+
+  /* Sidebar leaves the flow and slides in from the left */
+  .admin-sidebar {
+    position: fixed;
+    top: 0;
+    left: 0;
+    z-index: 60;
+    width: min(84vw, 300px);
+    height: 100dvh;
+    transform: translateX(-100%);
+    transition: transform 260ms cubic-bezier(0.22, 1, 0.36, 1);
+    box-shadow: none;
+    overscroll-behavior: contain;
+  }
+
+  .nav-open .admin-sidebar {
+    transform: translateX(0);
+    box-shadow: 0 0 60px rgba(0, 0, 0, 0.5);
+  }
+
+  .admin-scrim {
+    display: block;
+    position: fixed;
+    inset: 0;
+    z-index: 55;
+    border: none;
+    padding: 0;
+    background: rgba(0, 0, 0, 0.5);
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 240ms ease;
+    cursor: pointer;
+  }
+
+  .nav-open .admin-scrim {
+    opacity: 1;
+    pointer-events: auto;
+  }
+
+  .admin-nav-close {
+    display: flex;
+    position: fixed;
+    top: 10px;
+    left: min(84vw, 300px);
+    margin-left: -52px;
+    z-index: 61;
+    width: 42px;
+    height: 42px;
+    align-items: center;
+    justify-content: center;
+    border: none;
+    border-radius: 10px;
+    background: transparent;
+    color: rgba(255, 255, 255, 0.75);
+    cursor: pointer;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 200ms ease;
+  }
+
+  .nav-open .admin-nav-close {
+    opacity: 1;
+    pointer-events: auto;
+  }
+
+  /* Body takes the full width now that the sidebar is out of flow */
+  .admin-body { width: 100%; }
+  .admin-shell { display: block; }
+
+  /* Roomier tap targets in the drawer */
+  .admin-nav-link {
+    padding-top: 11px;
+    padding-bottom: 11px;
+    font-size: 15px;
+  }
+
+  .admin-sidebar-nav { padding: 12px 0 8px; }
+
+  /* Keyboard shortcuts are meaningless on a phone */
+  .admin-sidebar-footer .admin-kbd,
+  .admin-sidebar-footer > div { display: none; }
+  .admin-sidebar-footer { padding-top: 8px; }
+  .admin-sidebar-footer a { font-size: 14px; padding: 10px 8px; }
+
+  /* Page chrome */
+  .admin-topbar { padding: 0 14px 0 6px; gap: 10px; height: 52px; }
+  .admin-topbar-badge {
+    max-width: 40vw;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+  .admin-main { padding: 16px 14px 40px; }
+
+  .admin-page-header {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 12px;
+    margin-bottom: 18px;
+  }
+  .admin-page-title { font-size: 22px; }
+
+  /* Stats: two up, and beat the inline repeat(4, 1fr) the pages set */
+  .admin-stats-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+    gap: 10px;
+    margin-bottom: 18px;
+  }
+  .admin-stat-card { padding: 14px; }
+  .admin-stat-label { font-size: 10.5px; margin-bottom: 5px; }
+  .admin-stat-value { font-size: 21px; overflow-wrap: anywhere; }
+
+  /* Every two-column layout becomes one column */
+  .admin-dashboard-grid,
+  .admin-detail-grid,
+  .admin-field-row,
+  .admin-split {
+    grid-template-columns: minmax(0, 1fr) !important;
+    gap: 16px;
+  }
+
+  .admin-card-header {
+    padding: 14px;
+    flex-wrap: wrap;
+    gap: 10px;
+  }
+
+  /* Controls: 16px keeps iOS Safari from zooming on focus */
+  .admin-input,
+  .admin-select,
+  .admin-form-input,
+  .admin-form-select,
+  .admin-form-textarea {
+    font-size: 16px;
+    width: 100%;
+    min-width: 0;
+  }
+
+  /* 44px tall, but only for single-line controls — the label editor writes
+     its multi-line fields with the input class and rows=6/7. */
+  input.admin-input,
+  input.admin-form-input,
+  select.admin-select,
+  select.admin-form-select {
+    height: 44px;
+  }
+
+  textarea.admin-form-input,
+  textarea.admin-input,
+  .admin-form-textarea {
+    height: auto;
+    min-height: 110px;
+    line-height: 1.5;
+  }
+
+  .admin-filters {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 8px;
+  }
+  .admin-filters > * { width: 100%; }
+
+  /* Row and toolbar buttons carry inline desktop heights (28-30px), which is
+     below the 44px a finger needs, so the breakpoint has to outrank them. */
+  .admin-btn {
+    height: 44px !important;
+    min-height: 44px;
+    padding: 0 16px !important;
+    font-size: 14px !important;
+  }
+
+  .admin-row-delete,
+  .dropzone-clear {
+    width: 44px !important;
+    height: 44px !important;
+  }
+
+  .admin-checkbox {
+    width: 20px;
+    height: 20px;
+  }
+
+  /* A lone button in a page header spans the width; grouped ones share the row */
+  .admin-page-header .admin-btn { justify-content: center; }
+
+  .admin-form { max-width: none; gap: 16px; }
+
+  .admin-bulk-bar {
+    flex-wrap: wrap;
+    padding: 10px 14px;
+    gap: 8px;
+  }
+
+  .admin-empty-state { padding: 40px 16px; }
+
+  .toast-stack {
+    left: 14px;
+    right: 14px;
+    bottom: 14px;
+  }
+  .toast { width: 100%; }
+
+  .confirm-dialog { padding: 22px; }
+  .confirm-actions .admin-btn { flex: 1; justify-content: center; }
+
+  /* ── Tables become stacked cards ──
+     A 7-column table cannot be read on a 390px screen, and a horizontal
+     scrollbar hides whole columns. Each row turns into a card and each
+     cell prints its column name from data-label. */
+  .admin-table-wrap { overflow-x: visible; }
+
+  table.admin-table,
+  .admin-table thead,
+  .admin-table tbody,
+  .admin-table tr,
+  .admin-table th,
+  .admin-table td {
+    display: block;
+    width: auto;
+  }
+
+  .admin-table thead {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    overflow: hidden;
+    clip: rect(0 0 0 0);
+    white-space: nowrap;
+  }
+
+  .admin-table tr {
+    border-bottom: 1px solid var(--admin-border);
+    padding: 12px 14px;
+  }
+
+  .admin-table tr:last-child { border-bottom: none; }
+  .admin-table tr:hover td { background: transparent; }
+
+  .admin-table td {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 14px;
+    padding: 5px 0;
+    border-bottom: none;
+    text-align: right !important;
+    overflow-wrap: anywhere;
+    min-height: 0;
+  }
+
+  /* A cell holding block content (product name + meta + flavour list,
+     customer name + e-mail) would put each block in its own flex column and
+     squeeze them all. Those cells stack the label above the content instead. */
+  .admin-table td:has(> div),
+  .admin-table td:has(> ul),
+  .admin-table td:has(> ol) {
+    display: block;
+    text-align: left !important;
+    padding: 7px 0;
+  }
+
+  .admin-table td:has(> div)::before,
+  .admin-table td:has(> ul)::before,
+  .admin-table td:has(> ol)::before {
+    display: block;
+    margin-bottom: 4px;
+    padding-top: 0;
+  }
+
+  .admin-table td ul,
+  .admin-table td ol {
+    text-align: left;
+  }
+
+  .admin-table td[data-label]::before {
+    content: attr(data-label);
+    flex-shrink: 0;
+    font-size: 10.5px;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--admin-text-dim);
+    padding-top: 3px;
+  }
+
+  /* Cells carrying only a control or an image need no label column */
+  .admin-table td[data-label='']::before { content: none; }
+
+  /* The right-hand side of each cell */
+  .admin-table td > * { min-width: 0; }
+
+  /* The first real cell reads as the card's heading */
+  .admin-table td:first-child:not([data-label='']) {
+    font-weight: 600;
+    font-size: 15px;
+    padding-bottom: 8px;
+  }
+
+  /* An unlabelled trailing cell holds the row actions */
+  .admin-table td[data-label='']:last-child {
+    justify-content: flex-end;
+    gap: 8px;
+    padding-top: 10px;
+  }
+
+  /* Summary rows (Frakt, Totalt, rabatt) keep label and amount side by side */
+  .admin-table tr:has(> td[colspan]) {
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    gap: 12px;
+  }
+
+  .admin-table tr:has(> td[colspan]) td {
+    padding: 4px 0;
+    display: block;
+  }
+
+  .admin-table td[colspan] { flex: 1; }
+
+  /* The label preview is a true-size 94mm sheet, wider than a phone. It
+     scrolls sideways inside its own box rather than stretching the page. */
+  .label-preview-scroll {
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+    padding-bottom: 8px;
+  }
+
+  .admin-quick-actions { grid-template-columns: minmax(0, 1fr); }
+  .admin-dashboard-bars { height: 120px; gap: 4px; }
+  .admin-dashboard-bar-label { font-size: 9px; }
+
+  /* 14 dates will not fit across a phone, so label every other bar */
+  .admin-dashboard-bar-col:nth-child(even) .admin-dashboard-bar-label {
+    visibility: hidden;
+  }
+}
+
+/* Very narrow phones */
+@media (max-width: 420px) {
+  .admin-main { padding: 14px 12px 36px; }
+  .admin-page-title { font-size: 20px; }
+  .admin-topbar-badge { max-width: 32vw; }
+  .admin-stats-grid { gap: 8px; }
+  .admin-stat-card { padding: 12px; }
+  .admin-stat-value { font-size: 18px; }
+  .admin-stat-label { font-size: 10px; letter-spacing: 0.05em; }
+}
+
+/* Nothing may push the page sideways */
+@media (max-width: 900px) {
+  html, body { max-width: 100%; overflow-x: hidden; }
+  .admin-shell img { max-width: 100%; height: auto; }
+}
+
+/* ── Login screen ──
+   This page sits outside .admin-shell and is styled inline, so it needs its
+   own rules: the inputs were content-box and overflowed the card, and 13.5px
+   text makes iOS Safari zoom in the moment you tap a field. */
+.login-input,
+.login-btn {
+  box-sizing: border-box;
+  width: 100%;
+  font-family: var(--font-admin, 'Inter', system-ui, sans-serif);
+}
+
+@media (max-width: 900px) {
+  .login-card { padding: 28px 20px !important; }
+
+  .login-input,
+  .login-btn {
+    height: 48px !important;
+    font-size: 16px !important;
+  }
 }
