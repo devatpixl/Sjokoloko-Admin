@@ -4,6 +4,7 @@ import OrderRowActions from './_row-actions'
 
 function statusBadge(status: string) {
   const map: Record<string, string> = {
+    Mottatt: 'admin-badge-orange',
     Bekreftet: 'admin-badge-blue',
     Pakkes: 'admin-badge-orange',
     Sendt: 'admin-badge-purple',

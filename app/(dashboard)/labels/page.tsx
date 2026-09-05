@@ -69,6 +69,54 @@ export default function LabelsPage() {
   const [loaded, setLoaded] = useState(false)
   const [overflow, setOverflow] = useState(0)
   const measureRef = useRef<HTMLDivElement>(null)
+  const [saved, setSaved] = useState<any[]>([])
+  const [saveName, setSaveName] = useState('')
+  const [busy, setBusy] = useState(false)
+  const [saveError, setSaveError] = useState('')
+  const [savedMsg, setSavedMsg] = useState('')
+
+  async function loadSaved() {
+    try {
+      const res = await fetch('/api/admin-proxy/labels')
+      if (res.ok) setSaved(await res.json())
+    } catch { /* list simply stays as it was */ }
+  }
+  useEffect(() => { loadSaved() }, [])
+
+  async function saveCurrent() {
+    const name = saveName.trim()
+    if (!name) { setSaveError('Skriv inn et navn først.'); return }
+    setBusy(true); setSaveError(''); setSavedMsg('')
+    try {
+      const res = await fetch('/api/admin-proxy/labels', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ name, data: state }),
+      })
+      if (!res.ok) {
+        const d = await res.json().catch(() => ({}))
+        setSaveError(d?.detail || 'Kunne ikke lagre.')
+      } else {
+        setSaveName('')
+        setSavedMsg(`«${name}» er lagret.`)
+        await loadSaved()
+      }
+    } catch {
+      setSaveError('Kunne ikke kontakte serveren.')
+    } finally {
+      // finally, so the button never stays stuck on "Lagrer…"
+      setBusy(false)
+    }
+  }
+
+  async function removeSaved(id: number, name: string) {
+    if (!window.confirm(`Slette «${name}»? Dette kan ikke angres.`)) return
+    setBusy(true); setSavedMsg('')
+    try {
+      await fetch(`/api/admin-proxy/labels/${id}`, { method: 'DELETE' })
+      await loadSaved()
+    } catch { /* ignore */ } finally { setBusy(false) }
+  }
 
   useEffect(() => {
     try {
@@ -230,8 +278,96 @@ export default function LabelsPage() {
           </div>
           <p className="admin-page-subtitle" style={{ marginTop: 12, maxWidth: 420 }}>
             Skriv ut: velg Zebra-skriveren, papirstørrelse 94 × 32 mm (eller «faktisk størrelse» / 100 %),
-            marger 0. Teksten og størrelsene huskes i denne nettleseren.
+            marger 0.
           </p>
+
+          {/* Saved labels. Each product's ingredient text is written once and
+              pulled back when that chocolate is made again. Stored on the
+              server so everyone sees the same list. */}
+          <div className="admin-card" style={{ marginTop: 24, maxWidth: 480 }}>
+            <div className="admin-card-header">
+              <div className="admin-card-title">Lagrede etiketter</div>
+            </div>
+            <div style={{ padding: 20, display: 'grid', gap: 14 }}>
+              <div className="admin-page-subtitle" style={{ marginBottom: 2 }}>
+                Har du én etikett per produkt, slipper du å skrive teksten på nytt.
+                Skriv teksten til venstre, gi den et navn og trykk <strong>Lagre</strong>.
+                Neste gang henter du den fram igjen med <strong>Bruk</strong>.
+              </div>
+
+              <div>
+                <label className="admin-label">Navn på etiketten</label>
+                <div style={{ display: 'flex', gap: 8, flexWrap: 'wrap' }}>
+                  <input
+                    className="admin-form-input"
+                    placeholder="F.eks. «Signature 16 biter»"
+                    value={saveName}
+                    onChange={e => { setSaveName(e.target.value); setSaveError(''); setSavedMsg('') }}
+                    onKeyDown={e => { if (e.key === 'Enter') saveCurrent() }}
+                    style={{ flex: 1, minWidth: 200 }}
+                  />
+                  <button className="admin-btn admin-btn-primary" onClick={saveCurrent} disabled={busy}>
+                    {busy ? 'Lagrer…' : 'Lagre'}
+                  </button>
+                </div>
+              </div>
+
+              {saveError && <div className="admin-alert admin-alert-error">{saveError}</div>}
+              {savedMsg && <div className="admin-alert">{savedMsg}</div>}
+
+              {saved.length === 0 ? (
+                <div className="admin-page-subtitle">
+                  Ingen lagrede etiketter ennå.
+                </div>
+              ) : (
+                <div style={{ display: 'grid', gap: 8 }}>
+                  <div className="admin-label" style={{ marginBottom: 0 }}>
+                    Dine etiketter ({saved.length})
+                  </div>
+                  {saved.map(t => (
+                    <div
+                      key={t.id}
+                      style={{
+                        display: 'flex', alignItems: 'center', justifyContent: 'space-between',
+                        gap: 10, padding: '10px 12px', border: '1px solid var(--admin-border)',
+                      }}
+                    >
+                      <div style={{ minWidth: 0 }}>
+                        <div style={{ fontWeight: 500, overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>
+                          {t.name}
+                        </div>
+                        <div className="admin-page-subtitle" style={{ fontSize: 12 }}>
+                          Sist endret {new Date(t.updated_at).toLocaleDateString('nb-NO', { day: '2-digit', month: 'short', year: 'numeric' })}
+                        </div>
+                      </div>
+                      <div style={{ display: 'flex', gap: 6, flexShrink: 0 }}>
+                        <button
+                          className="admin-btn admin-btn-secondary"
+                          style={{ fontSize: 12, height: 30, padding: '0 12px' }}
+                          title="Hent denne teksten inn i editoren til venstre"
+                          onClick={() => {
+                            setState({ ...DEFAULTS, ...t.data })
+                            setSaveName(t.name)
+                            setSavedMsg(`«${t.name}» er hentet fram. Endre teksten til venstre og trykk Lagre for å oppdatere den.`)
+                          }}
+                        >
+                          Bruk
+                        </button>
+                        <button
+                          className="admin-btn admin-btn-secondary"
+                          style={{ fontSize: 12, height: 30, padding: '0 12px' }}
+                          onClick={() => removeSaved(t.id, t.name)}
+                          disabled={busy}
+                        >
+                          Slett
+                        </button>
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              )}
+            </div>
+          </div>
         </div>
       </div>
 

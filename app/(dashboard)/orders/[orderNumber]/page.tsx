@@ -6,7 +6,7 @@ import Link from 'next/link'
 import ConfirmDialog from '@/components/ConfirmDialog'
 import { useToast } from '@/components/Toast'
 
-const STATUS_OPTIONS = ['Bekreftet', 'Pakkes', 'Sendt', 'Levert']
+const STATUS_OPTIONS = ['Mottatt', 'Bekreftet', 'Pakkes', 'Sendt', 'Levert']
 
 const SHIPPING_METHOD_LABELS: Record<string, string> = {
   'self-pickup': 'Hent i butikk',
@@ -16,6 +16,7 @@ const SHIPPING_METHOD_LABELS: Record<string, string> = {
 
 function statusBadge(status: string) {
   const map: Record<string, string> = {
+    Mottatt: 'admin-badge-orange',
     Bekreftet: 'admin-badge-blue',
     Pakkes: 'admin-badge-orange',
     Sendt: 'admin-badge-purple',

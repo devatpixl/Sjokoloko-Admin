@@ -49,9 +49,10 @@ export async function adminUpdateOrderStatus(orderNumber: string, status: string
   })
 }
 
-export async function adminGetProducts(params?: { category?: string }) {
+export async function adminGetProducts(params?: { category?: string; in_stock?: string }) {
   const q = new URLSearchParams()
   if (params?.category) q.set('category', params.category)
+  if (params?.in_stock) q.set('in_stock', params.in_stock)
   const qs = q.toString() ? `?${q}` : ''
   return adminFetch(`/api/admin/products/${qs}`)
 }

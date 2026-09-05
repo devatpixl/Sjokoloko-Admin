@@ -16,10 +16,10 @@ function formatNOK(val: string | number) {
 export default async function AdminProductsPage({
   searchParams,
 }: {
-  searchParams: Promise<{ category?: string }>
+  searchParams: Promise<{ category?: string; in_stock?: string }>
 }) {
   const params = await searchParams
-  const products = await adminGetProducts({ category: params.category })
+  const products = await adminGetProducts({ category: params.category, in_stock: params.in_stock })
 
   return (
     <>

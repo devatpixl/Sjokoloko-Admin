@@ -10,20 +10,28 @@ const CATEGORY_OPTIONS = [
   { value: 'sjokoladebarer', label: 'Sjokoladebarer' },
 ]
 
+const STATUS_OPTIONS = [
+  { value: '', label: 'Alle statuser' },
+  { value: 'true', label: 'Kun på lager' },
+  { value: 'false', label: 'Kun utsolgt' },
+]
+
 export default function ProductsFilter() {
   const router = useRouter()
   const params = useSearchParams()
   const [isPending, startTransition] = useTransition()
   const current = params.get('category') ?? ''
+  const currentStock = params.get('in_stock') ?? ''
 
-  function setFilter(value: string) {
+  function setParam(key: string, value: string) {
     const sp = new URLSearchParams(params)
-    if (value) sp.set('category', value)
-    else sp.delete('category')
+    if (value) sp.set(key, value)
+    else sp.delete(key)
     startTransition(() => {
       router.push(`/products${sp.toString() ? `?${sp}` : ''}`)
     })
   }
+  const setFilter = (value: string) => setParam('category', value)
 
   return (
     <div className="admin-filters" style={{ opacity: isPending ? 0.7 : 1 }}>
@@ -37,10 +45,20 @@ export default function ProductsFilter() {
           <option key={o.value} value={o.value}>{o.label}</option>
         ))}
       </select>
-      {current && (
+      <select
+        value={currentStock}
+        onChange={e => setParam('in_stock', e.target.value)}
+        className="admin-select"
+        disabled={isPending}
+      >
+        {STATUS_OPTIONS.map(o => (
+          <option key={o.value} value={o.value}>{o.label}</option>
+        ))}
+      </select>
+      {(current || currentStock) && (
         <button
           type="button"
-          onClick={() => setFilter('')}
+          onClick={() => startTransition(() => router.push('/products'))}
           className="admin-btn admin-btn-secondary"
         >
           Nullstill
