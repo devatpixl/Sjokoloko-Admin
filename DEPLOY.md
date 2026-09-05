@@ -3,8 +3,28 @@
 Server: `root@187.124.180.167`, code at `/srv/sjokoloko/admin`, service
 `sjokoloko-admin` (Next.js, port 3001).
 
-**The admin is served at `https://test-admin.sjokoloco.no`.** Despite the
-name that is production — `admin.sjokoloco.no` does not exist.
+**The admin is served at `https://admin.sjokoloco.no`.**
+
+`test-admin.sjokoloco.no` is the retired old name. It still resolves and still
+works, but nothing should use it — retire it with
+`bash /srv/sjokoloko/retire-test-admin.sh` once you are happy, then delete its
+Cloudflare DNS record.
+
+## Trap: never `npm run build` while `sjokoloko-admin` is running
+
+The build rewrites `.next` underneath the running server, so every
+`/_next/static/chunks/*.js` request returns **500** for the ~3 minutes the
+build takes. The page still returns 200 but no JS loads, so it renders
+**completely blank** — the login form is a client component and only appears
+after hydration. It fixes itself on `systemctl restart sjokoloko-admin`.
+
+To avoid the blank window entirely:
+
+```bash
+systemctl stop sjokoloko-admin
+npm run build
+systemctl start sjokoloko-admin
+```
 
 ```bash
 ssh root@187.124.180.167
