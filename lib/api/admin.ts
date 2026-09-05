@@ -1,4 +1,5 @@
 import { auth } from '@/auth'
+import { redirect } from 'next/navigation'
 
 const API = process.env.NEXT_PUBLIC_API_URL ?? 'http://localhost:8000'
 
@@ -14,6 +15,12 @@ async function adminFetch(path: string, init?: RequestInit) {
     },
     cache: 'no-store',
   })
+  // The access token lives 8 hours and the session carries no refresh token,
+  // so it simply expires while someone has the admin open. Send them to the
+  // login page instead of crashing every page with a 500.
+  if (res.status === 401 || res.status === 403) {
+    redirect('/login?expired=1')
+  }
   if (!res.ok) throw new Error(`Admin API ${path} → ${res.status}`)
   if (res.status === 204) return null
   return res.json()

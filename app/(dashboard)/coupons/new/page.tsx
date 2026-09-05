@@ -24,6 +24,7 @@ export default function AdminNewCouponPage() {
       valid_from: fd.get('valid_from') ? new Date(String(fd.get('valid_from'))).toISOString() : null,
       valid_to: fd.get('valid_to') ? new Date(String(fd.get('valid_to'))).toISOString() : null,
       is_active: fd.has('is_active'),
+      show_in_account: fd.has('show_in_account'),
     }
 
     setPending(true)
@@ -127,6 +128,11 @@ export default function AdminNewCouponPage() {
             <div className="admin-checkbox-row">
               <input name="is_active" type="checkbox" id="is_active_new" defaultChecked className="admin-checkbox" />
               <label htmlFor="is_active_new" className="admin-label" style={{ marginBottom: 0 }}>Aktiv</label>
+            </div>
+
+            <div className="admin-checkbox-row">
+              <input name="show_in_account" type="checkbox" id="show_in_account_new" className="admin-checkbox" />
+              <label htmlFor="show_in_account_new" className="admin-label" style={{ marginBottom: 0 }}>Vis i kundekonto</label>
             </div>
 
             {error && <div className="admin-alert admin-alert-error">{error}</div>}

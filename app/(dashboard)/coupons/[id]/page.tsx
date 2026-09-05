@@ -16,6 +16,7 @@ interface Coupon {
   max_uses: number | null
   times_used: number
   is_active: boolean
+  show_in_account: boolean
 }
 
 function toLocalInput(iso: string | null): string {
@@ -56,6 +57,7 @@ export default function AdminEditCouponPage() {
       valid_from: fd.get('valid_from') ? new Date(String(fd.get('valid_from'))).toISOString() : null,
       valid_to: fd.get('valid_to') ? new Date(String(fd.get('valid_to'))).toISOString() : null,
       is_active: fd.has('is_active'),
+      show_in_account: fd.has('show_in_account'),
     }
     setPending(true)
     setError('')
@@ -138,6 +140,11 @@ export default function AdminEditCouponPage() {
             <div className="admin-checkbox-row">
               <input name="is_active" type="checkbox" id="is_active_edit" defaultChecked={coupon.is_active} className="admin-checkbox" />
               <label htmlFor="is_active_edit" className="admin-label" style={{ marginBottom: 0 }}>Aktiv</label>
+            </div>
+
+            <div className="admin-checkbox-row">
+              <input name="show_in_account" type="checkbox" id="show_in_account_edit" defaultChecked={coupon.show_in_account} className="admin-checkbox" />
+              <label htmlFor="show_in_account_edit" className="admin-label" style={{ marginBottom: 0 }}>Vis i kundekonto</label>
             </div>
 
             {error && <div className="admin-alert admin-alert-error">{error}</div>}

@@ -57,6 +57,9 @@ export default function AdminOrderDetailPage() {
   const [status, setStatus] = useState('')
   const [isPending, setIsPending] = useState(false)
   const [confirmDelete, setConfirmDelete] = useState(false)
+  const [confirmLabel, setConfirmLabel] = useState(false)
+  const [isLabeling, setIsLabeling] = useState(false)
+  const [labelError, setLabelError] = useState('')
   const [isDeleting, setIsDeleting] = useState(false)
 
   useEffect(() => {
@@ -82,6 +85,26 @@ export default function AdminOrderDetailPage() {
       toast.error('Kunne ikke oppdatere status')
     }
     setIsPending(false)
+  }
+
+  async function handleCreateLabel() {
+    setIsLabeling(true)
+    setLabelError('')
+    try {
+      const res = await fetch(`/api/admin-proxy/orders/${orderNumber}/label`, { method: 'POST' })
+      const data = await res.json().catch(() => ({}))
+      if (!res.ok) {
+        setLabelError(data?.detail || 'Kunne ikke lage fraktetikett.')
+      } else {
+        setOrder(data)
+        setStatus(data.status)
+        toast.success(`Fraktetikett laget · ${data.consignment_number ?? ''}`)
+        setConfirmLabel(false)
+      }
+    } catch {
+      setLabelError('Kunne ikke kontakte serveren.')
+    }
+    setIsLabeling(false)
   }
 
   async function handleDelete() {
@@ -290,6 +313,33 @@ export default function AdminOrderDetailPage() {
                   </div>
                 </>
               )}
+              {/* No label exists until ops presses this: the carrier is told
+                  about the parcel when it is actually being shipped, not when
+                  the customer checks out. */}
+              {!order.consignment_number
+                && order.shipping_method
+                && !(order.shipping_method === 'self-pickup' && order.status === 'Sendt') && (
+                <div style={{ paddingTop: 4, display: 'grid', gap: 8 }}>
+                  <button
+                    className="admin-btn admin-btn-primary"
+                    onClick={() => { setLabelError(''); setConfirmLabel(true) }}
+                    disabled={isLabeling || order.payment_status !== 'CAPTURED'}
+                    style={{ justifySelf: 'start' }}
+                  >
+                    {isLabeling
+                      ? 'Sender…'
+                      : order.shipping_method === 'self-pickup'
+                        ? 'Marker som klar til henting →'
+                        : 'Lag fraktetikett og send →'}
+                  </button>
+                  {order.payment_status !== 'CAPTURED' && (
+                    <div className="admin-page-subtitle">
+                      Ordren er ikke betalt ennå, så det lages ingen fraktetikett.
+                    </div>
+                  )}
+                  {labelError && <div className="admin-alert admin-alert-error">{labelError}</div>}
+                </div>
+              )}
               {(order.tracking_url || order.consignment_pdf_url) && (
                 <div style={{ display: 'flex', gap: 10, flexWrap: 'wrap', paddingTop: 4 }}>
                   {order.tracking_url && (
@@ -383,6 +433,20 @@ export default function AdminOrderDetailPage() {
           )}
         </div>
       </div>
+
+      <ConfirmDialog
+        open={confirmLabel}
+        title={order?.shipping_method === 'self-pickup'
+          ? `Melde fra at ${orderNumber} er klar til henting?`
+          : `Lage fraktetikett for ${orderNumber}?`}
+        message={order?.shipping_method === 'self-pickup'
+          ? 'Kunden får e-post om at bestillingen kan hentes i butikken, og ordren settes til Sendt.'
+          : 'Etiketten opprettes hos Bring/PostNord, ordren settes til Sendt og kunden får sporingslenken på e-post. Dette kan ikke angres.'}
+        confirmLabel={order?.shipping_method === 'self-pickup' ? 'Send beskjed' : 'Lag fraktetikett'}
+        pending={isLabeling}
+        onConfirm={handleCreateLabel}
+        onCancel={() => setConfirmLabel(false)}
+      />
 
       <ConfirmDialog
         open={confirmDelete}

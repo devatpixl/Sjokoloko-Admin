@@ -13,7 +13,9 @@ function LoginForm() {
       ? 'Denne kontoen har ikke admintilgang.'
       : params.get('error') === 'CredentialsSignin'
         ? 'Feil e-post eller passord.'
-        : ''
+        : params.get('expired') === '1'
+          ? 'Innloggingen din er utløpt. Logg inn på nytt for å fortsette.'
+          : ''
   )
 
   async function handleSubmit(e: React.FormEvent<HTMLFormElement>) {

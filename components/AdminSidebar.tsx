@@ -28,6 +28,7 @@ const NAV = [
       { href: '/loyalty', label: 'Kundeklubb', shortcut: 'g m', icon: <IconWaitlist />, badgeKey: null },
       { href: '/waitlist', label: 'Venteliste', shortcut: 'g w', icon: <IconWaitlist />, badgeKey: 'waitlist' as const },
       { href: '/contact', label: 'Kontakt', shortcut: 'g k', icon: <IconContact />, badgeKey: 'unread_contact' as const },
+      { href: '/labels', label: 'Etiketter', shortcut: 'g e', icon: <IconContact />, badgeKey: null },
     ],
   },
 ]
@@ -43,6 +44,7 @@ const SHORTCUT_MAP: Record<string, string> = {
   'g m': '/loyalty',
   'g w': '/waitlist',
   'g k': '/contact',
+  'g e': '/labels',
 }
 
 export default function AdminSidebar() {
