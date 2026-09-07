@@ -37,13 +37,9 @@ export default function VariantRow({
     return () => { alive = false }
   }, [group])
 
-  if (!group) {
-    return (
-      <div className="variant-row-empty">
-        Uten variant-gruppe står produktet alene — ingen «Velg variant»-rad vises i butikken.
-      </div>
-    )
-  }
+  // The picker above already says what "no group" means, so saying it twice
+  // two lines apart just reads as clutter.
+  if (!group) return null
 
   if (siblings === null) return <div className="variant-row-empty">Henter varianter…</div>
 

@@ -6,6 +6,7 @@ import Link from 'next/link'
 import ImageDropzone from '@/components/ImageDropzone'
 import FlavorLinesEditor from '@/components/FlavorLinesEditor'
 import VariantRow from '@/components/VariantRow'
+import VariantGroupPicker from '@/components/VariantGroupPicker'
 import ConfirmDialog from '@/components/ConfirmDialog'
 import { useToast } from '@/components/Toast'
 
@@ -159,16 +160,10 @@ export default function AdminEditProductPage() {
               <div className="admin-field-row">
                 <div className="admin-form-group">
                   <label className="admin-label">Variant-gruppe</label>
-                  <input
-                    name="variant_group"
-                    defaultValue={product.variant_group ?? ''}
-                    className="admin-form-input"
-                    placeholder="f.eks. vanlig-16"
-                    onChange={e => setVariantGroup(e.target.value)}
+                  <VariantGroupPicker
+                    initial={product.variant_group ?? ''}
+                    onChange={setVariantGroup}
                   />
-                  <div style={{ fontSize: 11, color: 'var(--admin-text-dim)', marginTop: 4 }}>
-                    Produkter med samme gruppe vises som varianter av hverandre.
-                  </div>
                 </div>
                 <div className="admin-form-group">
                   <label className="admin-label">Variantnavn</label>
@@ -228,6 +223,14 @@ export default function AdminEditProductPage() {
               </div>
 
               {error && <div className="admin-alert admin-alert-error">{error}</div>}
+
+              {/* There is no draft mode: the shop reads this table directly, so a save
+                  is published. Worth saying plainly, because the page otherwise looks
+                  like a form you can safely experiment in. */}
+              <div className="admin-live-warning">
+                <strong>Endringene blir synlige i nettbutikken.</strong> Det finnes ingen kladd —
+                når du lagrer, ser kundene det innen ett minutt.
+              </div>
 
               <div style={{ display: 'flex', gap: 10 }}>
                 <button type="submit" disabled={isPending} className="admin-btn admin-btn-primary">

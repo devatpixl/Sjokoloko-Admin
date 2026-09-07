@@ -1563,3 +1563,17 @@ table.admin-table {
   .flavor-preview-chip,
   .variant-chip { font-size: 10px; }
 }
+
+/* Saving a product publishes it — there is no draft state, so the form says so
+   right where the decision is made. */
+.admin-live-warning {
+  padding: 11px 14px;
+  border: 1px solid rgba(201, 163, 91, 0.4);
+  background: var(--admin-accent-soft);
+  border-radius: 8px;
+  font-size: 12.5px;
+  line-height: 1.5;
+  color: var(--admin-text);
+}
+
+.admin-live-warning strong { font-weight: 600; }

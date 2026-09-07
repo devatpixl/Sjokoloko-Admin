@@ -5,6 +5,7 @@ import { useState } from 'react'
 import Link from 'next/link'
 import ImageDropzone from '@/components/ImageDropzone'
 import FlavorLinesEditor from '@/components/FlavorLinesEditor'
+import VariantGroupPicker from '@/components/VariantGroupPicker'
 import { useToast } from '@/components/Toast'
 
 const CATEGORIES = [
@@ -114,10 +115,7 @@ export default function AdminNewProductPage() {
             <div className="admin-field-row">
               <div className="admin-form-group">
                 <label className="admin-label">Variant-gruppe (valgfritt)</label>
-                <input name="variant_group" className="admin-form-input" placeholder="vanlig-16" />
-                <div style={{ fontSize: 11, color: 'var(--admin-text-dim)', marginTop: 4 }}>
-                  Produkter med samme gruppe vises som én familie-kort på butikken.
-                </div>
+                <VariantGroupPicker initial="" />
               </div>
               <div className="admin-form-group">
                 <label className="admin-label">Variant-etikett (valgfritt)</label>
@@ -163,6 +161,14 @@ export default function AdminNewProductPage() {
             </div>
 
             {error && <div className="admin-alert admin-alert-error">{error}</div>}
+
+            {/* There is no draft mode: the shop reads this table directly, so a save
+                is published. Worth saying plainly, because the page otherwise looks
+                like a form you can safely experiment in. */}
+            <div className="admin-live-warning">
+              <strong>Endringene blir synlige i nettbutikken.</strong> Det finnes ingen kladd —
+              når du lagrer, ser kundene det innen ett minutt.
+            </div>
 
             <div style={{ display: 'flex', gap: 10 }}>
               <button
