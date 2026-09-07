@@ -8,6 +8,30 @@ import { useToast } from '@/components/Toast'
 
 const STATUS_OPTIONS = ['Mottatt', 'Bekreftet', 'Pakkes', 'Sendt', 'Levert']
 
+// Whether the money actually arrived. Deliberately separate from the status
+// above: that one tracks what the kitchen is doing, this one tracks payment.
+// Without it on screen an aborted checkout looks exactly like a paid order,
+// which is how someone ends up packing a parcel nobody paid for.
+const PAYMENT_LABELS: Record<string, { text: string; className: string }> = {
+  CAPTURED: { text: 'Betalt', className: 'admin-badge-green' },
+  AUTHORIZED: { text: 'Reservert — ikke trukket enda', className: 'admin-badge-blue' },
+  REFUNDED: { text: 'Refundert', className: 'admin-badge-gray' },
+  PENDING: { text: 'Ikke betalt — betaling ikke startet', className: 'admin-badge-red' },
+  CREATED: { text: 'Ikke betalt — venter på kunden', className: 'admin-badge-red' },
+  ABORTED: { text: 'Avbrutt av kunden — ikke betalt', className: 'admin-badge-red' },
+  EXPIRED: { text: 'Utløpt — ikke betalt', className: 'admin-badge-red' },
+  CANCELLED: { text: 'Kansellert — ikke betalt', className: 'admin-badge-red' },
+  TERMINATED: { text: 'Avsluttet — ikke betalt', className: 'admin-badge-red' },
+  FAILED: { text: 'Betaling feilet', className: 'admin-badge-red' },
+}
+
+// An unrecognised status is treated as unpaid on purpose: the costly mistake is
+// shipping something nobody paid for, not double-checking one that was paid.
+function paymentBadge(status?: string | null) {
+  return PAYMENT_LABELS[(status ?? '').toUpperCase()]
+    ?? { text: status ? `Ukjent status (${status}) — behandle som ubetalt` : 'Ukjent — behandle som ubetalt', className: 'admin-badge-red' }
+}
+
 const SHIPPING_METHOD_LABELS: Record<string, string> = {
   'self-pickup': 'Hent i butikk',
   'bring-pickup-point': 'Bring hentested',
@@ -158,6 +182,17 @@ export default function AdminOrderDetailPage() {
           </button>
         </div>
       </div>
+
+      {/* Impossible to miss: an unpaid order otherwise looks exactly like a
+          paid one, and the only difference that matters is whether the money
+          arrived. Shipping is blocked for these server-side too. */}
+      {order.payment_status !== 'CAPTURED' && (
+        <div className="admin-alert admin-alert-error" style={{ marginBottom: 20 }}>
+          <strong>Denne ordren er ikke betalt.</strong>{' '}
+          {paymentBadge(order.payment_status).text}. Ikke pakk eller send den — ingen penger er
+          mottatt. Fraktetikett kan ikke kjøpes før betalingen er gjennomført.
+        </div>
+      )}
 
       <div className="admin-detail-grid">
         <div style={{ display: 'grid', gap: 20 }}>
@@ -402,6 +437,14 @@ export default function AdminOrderDetailPage() {
               <div className="admin-card-title">Betaling</div>
             </div>
             <div style={{ padding: 20, display: 'grid', gap: 12 }}>
+              <div>
+                <div className="admin-field-label">Betalingsstatus</div>
+                <div style={{ marginTop: 5 }}>
+                  <span className={`admin-badge ${paymentBadge(order.payment_status).className}`}>
+                    {paymentBadge(order.payment_status).text}
+                  </span>
+                </div>
+              </div>
               <Field label="Betalingsmetode" value={order.payment_method} />
               <Field label="Delsum" value={formatNOK(order.subtotal)} />
               {parseFloat(order.discount_amount ?? '0') > 0 && (

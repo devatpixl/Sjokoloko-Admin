@@ -2,6 +2,28 @@ import { adminGetOrders, adminGetStats } from '@/lib/api/admin'
 import OrdersFilter from './_filter'
 import OrderRowActions from './_row-actions'
 
+// An unpaid order must be obvious from the list, not only after opening it.
+// CAPTURED is the only status that means the money actually arrived, so
+// anything else is flagged — including a status we do not recognise, which
+// must never be mistaken for paid.
+const PAYMENT_FLAGS: Record<string, { text: string; className: string }> = {
+  AUTHORIZED: { text: 'Reservert', className: 'admin-badge-blue' },
+  REFUNDED: { text: 'Refundert', className: 'admin-badge-gray' },
+  PENDING: { text: 'Ikke betalt', className: 'admin-badge-red' },
+  CREATED: { text: 'Ikke betalt', className: 'admin-badge-red' },
+  ABORTED: { text: 'Avbrutt', className: 'admin-badge-red' },
+  EXPIRED: { text: 'Utløpt', className: 'admin-badge-red' },
+  CANCELLED: { text: 'Kansellert', className: 'admin-badge-red' },
+  TERMINATED: { text: 'Avsluttet', className: 'admin-badge-red' },
+  FAILED: { text: 'Feilet', className: 'admin-badge-red' },
+}
+
+function paymentFlag(paymentStatus?: string | null) {
+  const s = (paymentStatus ?? '').toUpperCase()
+  if (s === 'CAPTURED') return null
+  return PAYMENT_FLAGS[s] ?? { text: 'Ikke betalt', className: 'admin-badge-red' }
+}
+
 function statusBadge(status: string) {
   const map: Record<string, string> = {
     Mottatt: 'admin-badge-orange',
@@ -116,6 +138,14 @@ export default async function AdminOrdersPage({
                   <td data-label="Total" style={{ fontWeight: 600 }}>{formatNOK(order.total)}</td>
                   <td data-label="Status">
                     <span className={`admin-badge ${statusBadge(order.status)}`}>{order.status}</span>
+                    {paymentFlag(order.payment_status) && (
+                      <span
+                        className={`admin-badge ${paymentFlag(order.payment_status)!.className}`}
+                        style={{ marginLeft: 6 }}
+                      >
+                        {paymentFlag(order.payment_status)!.text}
+                      </span>
+                    )}
                   </td>
                   <td data-label="" style={{ textAlign: 'right' }}>
                     <OrderRowActions orderNumber={order.order_number} />
