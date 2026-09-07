@@ -1405,3 +1405,161 @@ table.admin-table {
     font-size: 16px !important;
   }
 }
+
+/* ── Smaksnoter + variant editors ── */
+.flavor-line {
+  display: grid;
+  grid-template-columns: 14px minmax(0, 1fr) auto;
+  align-items: center;
+  gap: 10px;
+}
+
+.flavor-line-dot {
+  width: 14px;
+  height: 14px;
+  border-radius: 50%;
+  border: 1px dashed var(--admin-border);
+  box-shadow: inset 0 0 0 1px rgba(0, 0, 0, 0.08);
+  flex-shrink: 0;
+}
+
+.flavor-line-actions {
+  display: flex;
+  gap: 4px;
+}
+
+.flavor-line-btn {
+  width: 32px;
+  height: 32px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border: 1px solid var(--admin-border);
+  border-radius: 6px;
+  background: var(--admin-surface);
+  color: var(--admin-text-dim);
+  cursor: pointer;
+  transition: background 150ms, color 150ms, border-color 150ms;
+}
+
+.flavor-line-btn:hover:not(:disabled) {
+  background: var(--admin-bg);
+  color: var(--admin-text);
+}
+
+.flavor-line-btn:disabled {
+  opacity: 0.35;
+  cursor: default;
+}
+
+.flavor-line-btn-danger:hover:not(:disabled) {
+  background: #FEE2E2;
+  border-color: #FECACA;
+  color: #DC2626;
+}
+
+.flavor-line-warn {
+  grid-column: 2 / -1;
+  font-size: 11px;
+  color: #B45309;
+  margin-top: -2px;
+}
+
+/* The shop is dark, so the preview is too — otherwise the pale dots lie */
+.flavor-preview { margin-top: 18px; }
+
+.flavor-preview-stage {
+  background: #1A120B;
+  border: 1px solid #2C2117;
+  border-radius: 10px;
+  padding: 16px;
+}
+
+.flavor-preview-heading {
+  font-family: var(--admin-mono);
+  font-size: 10px;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: rgba(255, 255, 255, 0.45);
+  margin-bottom: 10px;
+}
+
+.flavor-preview-chips,
+.variant-row-chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.flavor-preview-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 7px 12px;
+  border: 1px solid rgba(255, 255, 255, 0.18);
+  font-family: var(--admin-mono);
+  font-size: 10.5px;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: rgba(255, 255, 255, 0.72);
+}
+
+.flavor-preview-chip-dot {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.06);
+  flex-shrink: 0;
+}
+
+.variant-chip {
+  padding: 9px 14px;
+  border: 1px solid rgba(255, 255, 255, 0.22);
+  font-family: var(--admin-mono);
+  font-size: 11px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: rgba(255, 255, 255, 0.72);
+  text-decoration: none;
+  transition: border-color 150ms, color 150ms;
+}
+
+.variant-chip:hover { border-color: var(--admin-accent); color: #FFF; }
+
+.variant-chip-active {
+  background: #FFF;
+  border-color: #FFF;
+  color: #1A120B;
+  font-weight: 600;
+}
+
+.variant-row-empty,
+.flavor-hint {
+  font-size: 11.5px;
+  color: var(--admin-text-dim);
+  line-height: 1.6;
+  margin-top: 8px;
+}
+
+@media (max-width: 900px) {
+  /* Stack the row: dot + field, then the buttons on their own line */
+  .flavor-line {
+    grid-template-columns: 14px minmax(0, 1fr);
+    row-gap: 6px;
+    padding-bottom: 10px;
+    border-bottom: 1px solid var(--admin-border);
+  }
+
+  .flavor-line-actions {
+    grid-column: 2;
+    justify-content: flex-end;
+  }
+
+  .flavor-line-btn {
+    width: 44px;
+    height: 44px;
+  }
+
+  .flavor-preview-chip,
+  .variant-chip { font-size: 10px; }
+}

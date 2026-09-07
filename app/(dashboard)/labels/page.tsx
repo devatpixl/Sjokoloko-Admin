@@ -10,6 +10,7 @@
  */
 
 import { useEffect, useMemo, useRef, useState } from 'react'
+import { createPortal } from 'react-dom'
 
 const STORAGE_KEY = 'sjokoloko-label-editor-v1'
 
@@ -67,6 +68,9 @@ function plusDays(days: number): string {
 export default function LabelsPage() {
   const [state, setState] = useState(DEFAULTS)
   const [loaded, setLoaded] = useState(false)
+  // The print copy is portalled into <body>, which only exists client-side.
+  const [mounted, setMounted] = useState(false)
+  useEffect(() => { setMounted(true) }, [])
   const [overflow, setOverflow] = useState(0)
   const measureRef = useRef<HTMLDivElement>(null)
   const [saved, setSaved] = useState<any[]>([])
@@ -146,6 +150,11 @@ export default function LabelsPage() {
   const labelStyle: React.CSSProperties = {
     width: '94mm',
     height: '32mm',
+    // Without this the padding is added *outside* the 94 x 32 mm, making the
+    // label 98 x 35 mm — 4 mm wider than the sheet it prints on, which is why
+    // the right-hand nutrition column came off the edge. It also made the
+    // "content fits" check too generous, since it measured against 35 mm.
+    boxSizing: 'border-box',
     background: '#fff',
     color: '#000',
     padding: '1.5mm 2mm',
@@ -373,17 +382,44 @@ export default function LabelsPage() {
         </div>
       </div>
 
-      {/* Print-only copy */}
-      <div className="label-print-wrap">
-        <LabelArea state={state} bestBefore={bestBefore} style={labelStyle} />
-      </div>
+      {/* Print-only copy.
+          Rendered into <body> through a portal so the print rules can take the
+          whole admin shell out of the layout. Hiding it with `visibility`
+          instead left every panel still occupying space, so the document
+          stayed thousands of pixels tall and the printer emitted one 94 x 32 mm
+          page after another — measured at 20 pages for a single label. */}
+      {mounted && createPortal(
+        <div className="label-print-wrap">
+          <LabelArea state={state} bestBefore={bestBefore} style={labelStyle} />
+        </div>,
+        document.body,
+      )}
 
       <style jsx global>{`
         @media print {
           @page { size: 94mm 32mm; margin: 0; }
-          body * { visibility: hidden !important; }
-          .label-print-wrap, .label-print-wrap * { visibility: visible !important; }
-          .label-print-wrap { position: fixed; inset: 0; }
+
+          /* One label, one page: the sheet is exactly the label, and nothing
+             else is allowed to contribute height. */
+          html, body {
+            width: 94mm;
+            height: 32mm;
+            margin: 0 !important;
+            padding: 0 !important;
+            overflow: hidden;
+            background: #fff;
+          }
+
+          body > *:not(.label-print-wrap) { display: none !important; }
+
+          .label-print-wrap {
+            display: block !important;
+            position: static;
+            width: 94mm;
+            height: 32mm;
+            overflow: hidden;
+          }
+
           .label-print-wrap > div { box-shadow: none !important; }
         }
         @media screen {

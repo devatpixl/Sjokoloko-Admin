@@ -4,6 +4,8 @@ import { useParams, useRouter } from 'next/navigation'
 import { useEffect, useState } from 'react'
 import Link from 'next/link'
 import ImageDropzone from '@/components/ImageDropzone'
+import FlavorLinesEditor from '@/components/FlavorLinesEditor'
+import VariantRow from '@/components/VariantRow'
 import ConfirmDialog from '@/components/ConfirmDialog'
 import { useToast } from '@/components/Toast'
 
@@ -22,11 +24,20 @@ export default function AdminEditProductPage() {
   const [isDeleting, setIsDeleting] = useState(false)
   const [confirmOpen, setConfirmOpen] = useState(false)
   const [error, setError] = useState('')
+  // Mirrors of the two variant inputs, so the row below previews as you type.
+  const [variantGroup, setVariantGroup] = useState('')
+  const [variantLabel, setVariantLabel] = useState('')
 
   useEffect(() => {
     fetch(`/api/admin-proxy/products/${id}`)
       .then(r => r.ok ? r.json() : null)
-      .then(setProduct)
+      .then(p => {
+        setProduct(p)
+        if (p) {
+          setVariantGroup(p.variant_group ?? '')
+          setVariantLabel(p.variant_label ?? '')
+        }
+      })
       .catch(() => setProduct(null))
   }, [id])
 
@@ -148,15 +159,40 @@ export default function AdminEditProductPage() {
               <div className="admin-field-row">
                 <div className="admin-form-group">
                   <label className="admin-label">Variant-gruppe</label>
-                  <input name="variant_group" defaultValue={product.variant_group ?? ''} className="admin-form-input" placeholder="f.eks. vanlig-16" />
+                  <input
+                    name="variant_group"
+                    defaultValue={product.variant_group ?? ''}
+                    className="admin-form-input"
+                    placeholder="f.eks. vanlig-16"
+                    onChange={e => setVariantGroup(e.target.value)}
+                  />
                   <div style={{ fontSize: 11, color: 'var(--admin-text-dim)', marginTop: 4 }}>
-                    Produkter med samme gruppe vises som én familie-kort.
+                    Produkter med samme gruppe vises som varianter av hverandre.
                   </div>
                 </div>
                 <div className="admin-form-group">
-                  <label className="admin-label">Variant-etikett</label>
-                  <input name="variant_label" defaultValue={product.variant_label ?? ''} className="admin-form-input" placeholder="f.eks. Klassisk" />
+                  <label className="admin-label">Variantnavn</label>
+                  <input
+                    name="variant_label"
+                    defaultValue={product.variant_label ?? ''}
+                    className="admin-form-input"
+                    placeholder="f.eks. Klassisk"
+                    onChange={e => setVariantLabel(e.target.value)}
+                  />
+                  <div style={{ fontSize: 11, color: 'var(--admin-text-dim)', marginTop: 4 }}>
+                    Teksten på knappen under «Velg variant».
+                  </div>
                 </div>
+              </div>
+
+              <VariantRow group={variantGroup} currentId={product.id} currentLabel={variantLabel} />
+
+              <div className="admin-form-group">
+                <label className="admin-label">Smaksnoter</label>
+                <div style={{ fontSize: 11, color: 'var(--admin-text-dim)', marginBottom: 8 }}>
+                  Linjene som vises under «Smaksnoter» på produktsiden, i denne rekkefølgen.
+                </div>
+                <FlavorLinesEditor initial={Array.isArray(product.flavors) ? product.flavors : []} />
               </div>
 
               <div className="admin-form-group">

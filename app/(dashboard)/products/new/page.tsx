@@ -4,6 +4,7 @@ import { useRouter } from 'next/navigation'
 import { useState } from 'react'
 import Link from 'next/link'
 import ImageDropzone from '@/components/ImageDropzone'
+import FlavorLinesEditor from '@/components/FlavorLinesEditor'
 import { useToast } from '@/components/Toast'
 
 const CATEGORIES = [
@@ -125,6 +126,14 @@ export default function AdminNewProductPage() {
                   Kort navn for denne varianten innen gruppen.
                 </div>
               </div>
+            </div>
+
+            <div className="admin-form-group">
+              <label className="admin-label">Smaksnoter</label>
+              <div style={{ fontSize: 11, color: 'var(--admin-text-dim)', marginBottom: 8 }}>
+                Linjene som vises under «Smaksnoter» på produktsiden, i denne rekkefølgen.
+              </div>
+              <FlavorLinesEditor initial={[]} />
             </div>
 
             <div className="admin-form-group">
