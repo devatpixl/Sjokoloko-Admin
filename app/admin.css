@@ -1577,3 +1577,10 @@ table.admin-table {
 }
 
 .admin-live-warning strong { font-weight: 600; }
+
+/* The current product's chip before it is saved into the group — shown so you
+   can see where it lands, but marked as not yet part of the row. */
+.variant-chip-pending {
+  border-style: dashed;
+  opacity: 0.85;
+}

@@ -43,13 +43,12 @@ export default function VariantRow({
 
   if (siblings === null) return <div className="variant-row-empty">Henter varianter…</div>
 
-  if (siblings.length < 2) {
-    return (
-      <div className="variant-row-empty">
-        Bare dette produktet har gruppen «{group}». Butikken skjuler raden til minst to produkter deler den.
-      </div>
-    )
-  }
+  // Until the product is saved into the group it is not in the fetched list, so
+  // its chip is added here. Otherwise picking a group showed the other products'
+  // chips with none highlighted, while the text claimed one of them was this
+  // product — which is exactly the moment you want to see where yours lands.
+  const alreadyInGroup = siblings.some(s => String(s.id) === String(currentId))
+  const memberCount = alreadyInGroup ? siblings.length : siblings.length + 1
 
   return (
     <div>
@@ -67,11 +66,26 @@ export default function VariantRow({
               </Link>
             )
           })}
+          {!alreadyInGroup && (
+            <span className="variant-chip variant-chip-active variant-chip-pending">
+              {currentLabel || '(uten navn)'}
+            </span>
+          )}
         </div>
       </div>
       <div className="flavor-hint">
-        {siblings.length} varianter deler gruppen «{group}». Den uthevede er dette produktet — endre navnet i feltet over.
-        Klikk en av de andre for å redigere den.
+        {memberCount < 2 ? (
+          <>
+            Bare dette produktet har gruppen «{group}». Butikken viser ingen «Velg variant»-rad
+            før minst to produkter deler gruppen — sett samme gruppe på et annet produkt.
+          </>
+        ) : (
+          <>
+            {memberCount} varianter deler gruppen «{group}». Den uthevede er dette produktet — endre
+            navnet i feltet over, og klikk en av de andre for å redigere den.
+            {!alreadyInGroup && ' Ditt produkt legges til i raden når du lagrer.'}
+          </>
+        )}
       </div>
     </div>
   )
