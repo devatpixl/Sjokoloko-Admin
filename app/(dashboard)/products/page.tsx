@@ -112,6 +112,11 @@ export default async function AdminProductsPage({
                     <span className={`admin-badge ${product.in_stock ? 'admin-badge-green' : 'admin-badge-red'}`}>
                       {product.in_stock ? 'På lager' : 'Utsolgt'}
                     </span>
+                    {product.is_active === false && (
+                      <span className="admin-badge admin-badge-red" style={{ marginLeft: 6 }}>
+                        Deaktivert
+                      </span>
+                    )}
                   </td>
                   <td data-label="" style={{ textAlign: 'right' }}>
                     <ProductRowActions id={product.id} name={product.name} />

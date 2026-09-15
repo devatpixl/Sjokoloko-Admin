@@ -28,6 +28,7 @@ export default function AdminNewProductPage() {
       data.delete('image')
     }
     data.set('in_stock', data.has('in_stock') ? 'true' : 'false')
+    data.set('is_active', data.has('is_active') ? 'true' : 'false')
 
     setIsPending(true)
     setError('')
@@ -158,6 +159,11 @@ export default function AdminNewProductPage() {
             <div className="admin-checkbox-row">
               <input name="in_stock" type="checkbox" id="in_stock" defaultChecked className="admin-checkbox" />
               <label htmlFor="in_stock" className="admin-label" style={{ marginBottom: 0 }}>På lager</label>
+            </div>
+
+            <div className="admin-checkbox-row">
+              <input name="is_active" type="checkbox" id="is_active" defaultChecked className="admin-checkbox" />
+              <label htmlFor="is_active" className="admin-label" style={{ marginBottom: 0 }}>Aktiv (vises i nettbutikken)</label>
             </div>
 
             {error && <div className="admin-alert admin-alert-error">{error}</div>}
