@@ -49,7 +49,6 @@ export default function AdminEditProductPage() {
       data.delete('image')
     }
     data.set('in_stock', data.has('in_stock') ? 'true' : 'false')
-    data.set('is_active', data.has('is_active') ? 'true' : 'false')
 
     setIsPending(true)
     setError('')
@@ -223,19 +222,6 @@ export default function AdminEditProductPage() {
                 <label htmlFor="in_stock" className="admin-label" style={{ marginBottom: 0 }}>På lager</label>
               </div>
 
-              {/* Two different ideas, so two separate switches:
-                  "På lager" off = Utsolgt — the page still exists and stays findable.
-                  "Aktiv" off    = removed from the nettbutikk entirely. */}
-              <div className="admin-checkbox-row">
-                <input name="is_active" type="checkbox" id="is_active" defaultChecked={product.is_active ?? true} className="admin-checkbox" />
-                <label htmlFor="is_active" className="admin-label" style={{ marginBottom: 0 }}>Aktiv (vises i nettbutikken)</label>
-              </div>
-              <div style={{ color: 'var(--admin-text-dim)', fontSize: 12, marginTop: -4, marginBottom: 8 }}>
-                Slå av «Aktiv» for å fjerne produktet helt fra nettbutikken — det forsvinner
-                fra butikksiden, og produktsiden blir utilgjengelig. «Utsolgt» beholder siden,
-                men produktet kan ikke kjøpes.
-              </div>
-
               {error && <div className="admin-alert admin-alert-error">{error}</div>}
 
               {/* There is no draft mode: the shop reads this table directly, so a save
@@ -275,13 +261,10 @@ export default function AdminEditProductPage() {
             <div style={{ fontWeight: 700, marginTop: 8, color: 'var(--admin-accent)' }}>
               kr {Number(product.price).toLocaleString('nb-NO')}
             </div>
-            <div style={{ marginTop: 8, display: 'flex', gap: 6, flexWrap: 'wrap' }}>
+            <div style={{ marginTop: 8 }}>
               <span className={`admin-badge ${product.in_stock ? 'admin-badge-green' : 'admin-badge-red'}`}>
                 {product.in_stock ? 'På lager' : 'Utsolgt'}
               </span>
-              {product.is_active === false && (
-                <span className="admin-badge admin-badge-red">Deaktivert</span>
-              )}
             </div>
           </div>
         </div>
