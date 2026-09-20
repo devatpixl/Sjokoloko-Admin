@@ -206,8 +206,8 @@ export default function AdminOrderDetailPage() {
                 <tr>
                   <th>Produkt</th>
                   <th>Variant</th>
-                  <th style={{ textAlign: 'right' }}>Antall</th>
-                  <th style={{ textAlign: 'right' }}>Pris</th>
+                  <th className="t-actions">Antall</th>
+                  <th className="t-actions">Pris</th>
                 </tr>
               </thead>
               <tbody>
@@ -217,7 +217,7 @@ export default function AdminOrderDetailPage() {
                   const productFlavors: string[] = Array.isArray(item.product?.flavors) ? item.product.flavors : []
                   return (
                     <tr key={i}>
-                      <td data-label="Produkt" style={{ fontWeight: 500 }}>
+                      <td className="t-strong" data-label="Produkt">
                         <div>{item.product?.name ?? item.product_name ?? '—'}</div>
                         {meta && (
                           <div style={{ fontSize: 12, color: 'var(--admin-text-dim)', fontWeight: 400, marginTop: 2 }}>
@@ -253,18 +253,18 @@ export default function AdminOrderDetailPage() {
                           </ul>
                         )}
                       </td>
-                      <td data-label="Variant" style={{ color: 'var(--admin-text-dim)', fontSize: 13 }}>
+                      <td className="t-dim" data-label="Variant">
                         {item.variant || '—'}
                         {item.initials && <span style={{ marginLeft: 6, fontFamily: 'var(--admin-mono)' }}>({item.initials})</span>}
                       </td>
-                      <td data-label="Antall" style={{ textAlign: 'right' }}>{item.quantity}</td>
+                      <td className="t-actions" data-label="Antall">{item.quantity}</td>
                       <td data-label="Pris" style={{ textAlign: 'right', fontWeight: 500 }}>{formatNOK(item.unit_price)}</td>
                     </tr>
                   )
                 })}
                 {Array.isArray(order.bundles_applied) && order.bundles_applied.map((b: any, i: number) => (
                   <tr key={`b-${i}`}>
-                    <td colSpan={3} style={{ color: 'var(--admin-text-dim)', fontSize: 13 }}>
+                    <td className="t-dim" colSpan={3}>
                       Tilbud: {b.name}
                     </td>
                     <td data-label="" style={{ textAlign: 'right', color: 'var(--admin-text-dim)' }}>
@@ -274,7 +274,7 @@ export default function AdminOrderDetailPage() {
                 ))}
                 {order.coupon_code && (
                   <tr>
-                    <td colSpan={3} style={{ color: 'var(--admin-text-dim)', fontSize: 13 }}>
+                    <td className="t-dim" colSpan={3}>
                       Rabattkode ({order.coupon_code})
                       {order.coupon_free_shipping && ' · fri frakt'}
                     </td>
@@ -284,11 +284,11 @@ export default function AdminOrderDetailPage() {
                   </tr>
                 )}
                 <tr>
-                  <td colSpan={3} style={{ color: 'var(--admin-text-dim)', fontSize: 13 }}>Frakt</td>
-                  <td data-label="" style={{ textAlign: 'right' }}>{formatNOK(order.shipping)}</td>
+                  <td className="t-dim" colSpan={3}>Frakt</td>
+                  <td className="t-actions" data-label="">{formatNOK(order.shipping)}</td>
                 </tr>
                 <tr>
-                  <td colSpan={3} style={{ fontWeight: 700 }}>Totalt</td>
+                  <td className="t-bold" colSpan={3}>Totalt</td>
                   <td data-label="" style={{ textAlign: 'right', fontWeight: 700, fontSize: 15 }}>{formatNOK(order.total)}</td>
                 </tr>
               </tbody>
@@ -383,8 +383,7 @@ export default function AdminOrderDetailPage() {
                       href={order.tracking_url}
                       target="_blank"
                       rel="noopener noreferrer"
-                      className="admin-btn admin-btn-secondary"
-                      style={{ fontSize: 12, height: 30, padding: '0 12px' }}
+                      className="admin-btn admin-btn-secondary admin-btn-sm"
                     >
                       Spor pakken →
                     </a>
@@ -394,8 +393,7 @@ export default function AdminOrderDetailPage() {
                       href={order.consignment_pdf_url}
                       target="_blank"
                       rel="noopener noreferrer"
-                      className="admin-btn admin-btn-secondary"
-                      style={{ fontSize: 12, height: 30, padding: '0 12px' }}
+                      className="admin-btn admin-btn-secondary admin-btn-sm"
                     >
                       Åpne fraktetikett (PDF) →
                     </a>
@@ -463,7 +461,7 @@ export default function AdminOrderDetailPage() {
                 <div className="admin-card-title">Kunde</div>
               </div>
               <div style={{ padding: 20 }}>
-                <div style={{ fontWeight: 500 }}>{order.customer_name}</div>
+                <div className="t-strong">{order.customer_name}</div>
                 <div style={{ fontSize: 13, color: 'var(--admin-text-dim)', marginTop: 4 }}>{order.shipping_address?.email ?? ''}</div>
                 <Link
                   href={`/customers/${order.user?.id ?? ''}`}

@@ -94,7 +94,7 @@ export default function AdminBundlesPage() {
                 <th>Pakkepris</th>
                 <th>Fri frakt</th>
                 <th>Status</th>
-                <th style={{ textAlign: 'right' }}></th>
+                <th className="t-actions"></th>
               </tr>
             </thead>
             <tbody>
@@ -109,7 +109,7 @@ export default function AdminBundlesPage() {
                   <td data-label="Navn">
                     <div style={{ fontWeight: 500, fontSize: 14 }}>{b.name}</div>
                     {b.description && (
-                      <div style={{ fontSize: 12, color: 'var(--admin-text-dim)' }}>{b.description}</div>
+                      <div className="t-dim">{b.description}</div>
                     )}
                   </td>
                   <td data-label="Variantgruppe" style={{ fontFamily: 'var(--admin-mono)', fontSize: 13 }}>
@@ -123,7 +123,7 @@ export default function AdminBundlesPage() {
                     {b.includes_free_shipping ? (
                       <span className="admin-badge admin-badge-green">Ja</span>
                     ) : (
-                      <span style={{ color: 'var(--admin-text-dim)', fontSize: 12 }}>Nei</span>
+                      <span className="t-dim">Nei</span>
                     )}
                   </td>
                   <td data-label="Status">
@@ -131,28 +131,25 @@ export default function AdminBundlesPage() {
                       {b.is_active ? 'Aktiv' : 'Inaktiv'}
                     </span>
                   </td>
-                  <td data-label="" style={{ textAlign: 'right' }}>
+                  <td className="t-actions" data-label="">
                     <div style={{ display: 'inline-flex', gap: 6 }}>
                       <button
                         onClick={() => toggleActive(b)}
                         disabled={pending === b.id}
-                        className="admin-btn admin-btn-secondary"
-                        style={{ padding: '4px 10px', fontSize: 12 }}
+                        className="admin-btn admin-btn-secondary admin-btn-xs"
                       >
                         {b.is_active ? 'Deaktiver' : 'Aktivér'}
                       </button>
                       <Link
                         href={`/bundles/${b.id}`}
-                        className="admin-btn admin-btn-secondary"
-                        style={{ padding: '4px 10px', fontSize: 12 }}
+                        className="admin-btn admin-btn-secondary admin-btn-xs"
                       >
                         Rediger
                       </Link>
                       <button
                         onClick={() => remove(b)}
                         disabled={pending === b.id}
-                        className="admin-btn admin-btn-danger"
-                        style={{ padding: '4px 10px', fontSize: 12 }}
+                        className="admin-btn admin-btn-danger admin-btn-xs"
                       >
                         Slett
                       </button>

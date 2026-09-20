@@ -41,7 +41,7 @@ export default async function AdminProductsPage({
           <div className="admin-card-title">Produktkatalog</div>
         </div>
 
-        <div style={{ padding: '16px 20px', borderBottom: '1px solid var(--admin-border)' }}>
+        <div className="admin-card-toolbar">
           <ProductsFilter />
         </div>
 
@@ -55,7 +55,7 @@ export default async function AdminProductsPage({
                 <th>Pris</th>
                 <th>Batch</th>
                 <th>Status</th>
-                <th style={{ textAlign: 'right' }}></th>
+                <th className="t-actions"></th>
               </tr>
             </thead>
             <tbody>
@@ -103,9 +103,9 @@ export default async function AdminProductsPage({
                       {CATEGORY_LABELS[product.category] ?? product.category}
                     </span>
                   </td>
-                  <td data-label="Størrelse" style={{ color: 'var(--admin-text-dim)', fontSize: 13 }}>{product.size}</td>
-                  <td data-label="Pris" style={{ fontWeight: 600 }}>{formatNOK(product.price)}</td>
-                  <td data-label="Batch" style={{ fontFamily: 'var(--admin-mono)', fontSize: 12.5 }}>
+                  <td className="t-dim" data-label="Størrelse">{product.size}</td>
+                  <td className="t-bold" data-label="Pris">{formatNOK(product.price)}</td>
+                  <td className="mono" data-label="Batch">
                     {product.batch_number} · {product.batch_count}/{product.batch_total}
                   </td>
                   <td data-label="Status">
@@ -113,7 +113,7 @@ export default async function AdminProductsPage({
                       {product.in_stock ? 'På lager' : 'Utsolgt'}
                     </span>
                   </td>
-                  <td data-label="" style={{ textAlign: 'right' }}>
+                  <td className="t-actions" data-label="">
                     <ProductRowActions id={product.id} name={product.name} />
                   </td>
                 </tr>

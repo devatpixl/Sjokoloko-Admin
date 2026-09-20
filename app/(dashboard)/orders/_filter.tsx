@@ -43,7 +43,7 @@ export default function OrdersFilter() {
   const hasFilters = !!params.get('status') || !!params.get('search')
 
   return (
-    <div className="admin-filters" style={{ opacity: isPending ? 0.7 : 1 }}>
+    <div className={`admin-filters${isPending ? ' is-pending' : ''}`}>
       <input
         value={search}
         onChange={e => setSearch(e.target.value)}

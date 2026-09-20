@@ -87,7 +87,7 @@ export default function AdminFlavorsPage() {
                 <th>ID</th>
                 <th>Tone</th>
                 <th>Status</th>
-                <th style={{ textAlign: 'right' }}></th>
+                <th className="t-actions"></th>
               </tr>
             </thead>
             <tbody>
@@ -108,37 +108,34 @@ export default function AdminFlavorsPage() {
                   </td>
                   <td data-label="Navn">
                     <div style={{ fontWeight: 500, fontSize: 14 }}>{t.name}</div>
-                    <div style={{ fontSize: 12, color: 'var(--admin-text-dim)' }}>{t.note}</div>
+                    <div className="t-dim">{t.note}</div>
                   </td>
-                  <td data-label="ID" style={{ fontFamily: 'var(--admin-mono)', fontSize: 12 }}>{t.id}</td>
-                  <td data-label="Tone" style={{ fontFamily: 'var(--admin-mono)', fontSize: 12 }}>{t.color}</td>
+                  <td className="mono" data-label="ID">{t.id}</td>
+                  <td className="mono" data-label="Tone">{t.color}</td>
                   <td data-label="Status">
                     <span className={`admin-badge ${t.is_active ? 'admin-badge-green' : 'admin-badge-gray'}`}>
                       {t.is_active ? 'Aktiv' : 'Sikkerhetskopi'}
                     </span>
                   </td>
-                  <td data-label="" style={{ textAlign: 'right' }}>
+                  <td className="t-actions" data-label="">
                     <div style={{ display: 'inline-flex', gap: 6 }}>
                       <button
                         onClick={() => toggleActive(t)}
                         disabled={pending === t.id}
-                        className="admin-btn admin-btn-secondary"
-                        style={{ padding: '4px 10px', fontSize: 12 }}
+                        className="admin-btn admin-btn-secondary admin-btn-xs"
                       >
                         {t.is_active ? 'Sett inaktiv' : 'Aktivér'}
                       </button>
                       <Link
                         href={`/flavors/${t.id}`}
-                        className="admin-btn admin-btn-secondary"
-                        style={{ padding: '4px 10px', fontSize: 12 }}
+                        className="admin-btn admin-btn-secondary admin-btn-xs"
                       >
                         Rediger
                       </Link>
                       <button
                         onClick={() => remove(t)}
                         disabled={pending === t.id}
-                        className="admin-btn admin-btn-danger"
-                        style={{ padding: '4px 10px', fontSize: 12 }}
+                        className="admin-btn admin-btn-danger admin-btn-xs"
                       >
                         Slett
                       </button>

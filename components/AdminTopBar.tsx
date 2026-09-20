@@ -21,8 +21,7 @@ export default async function AdminTopBar() {
         >
           <button
             type="submit"
-            className="admin-btn admin-btn-secondary"
-            style={{ fontSize: 12, height: 30, padding: '0 12px' }}
+            className="admin-btn admin-btn-secondary admin-btn-sm"
           >
             <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
               <path d="M9 21H5a2 2 0 01-2-2V5a2 2 0 012-2h4" />

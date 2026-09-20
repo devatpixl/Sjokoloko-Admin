@@ -31,7 +31,7 @@ export default async function AdminWaitlistPage({
           <div className="admin-card-title">Ventelistepåmeldte</div>
         </div>
 
-        <div style={{ padding: '16px 20px', borderBottom: '1px solid var(--admin-border)' }}>
+        <div className="admin-card-toolbar">
           <WaitlistFilter />
         </div>
 
@@ -44,7 +44,7 @@ export default async function AdminWaitlistPage({
                 <th>Batch</th>
                 <th>Posisjon</th>
                 <th>Meldt på</th>
-                <th style={{ textAlign: 'right' }}></th>
+                <th className="t-actions"></th>
               </tr>
             </thead>
             <tbody>
@@ -69,15 +69,15 @@ export default async function AdminWaitlistPage({
               {entries.map((entry: any, i: number) => (
                 <tr key={entry.id}>
                   <td data-label="#" className="mono" style={{ color: 'var(--admin-text-dim)' }}>{i + 1}</td>
-                  <td data-label="E-post" style={{ fontWeight: 500 }}>{entry.email}</td>
+                  <td className="t-strong" data-label="E-post">{entry.email}</td>
                   <td data-label="Batch">
                     <span className="admin-badge admin-badge-gold">Batch {entry.batch}</span>
                   </td>
                   <td data-label="Posisjon" className="mono">{entry.position}</td>
-                  <td data-label="Meldt på" style={{ fontSize: 13, color: 'var(--admin-text-dim)' }}>
+                  <td className="t-dim" data-label="Meldt på">
                     {formatDate(entry.created_at)}
                   </td>
-                  <td data-label="" style={{ textAlign: 'right' }}>
+                  <td className="t-actions" data-label="">
                     <WaitlistRowActions id={entry.id} email={entry.email} />
                   </td>
                 </tr>

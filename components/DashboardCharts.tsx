@@ -115,7 +115,7 @@ export function DashboardStatusBars({
             {rows.map((r) => (
               <div key={r.status}>
                 <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: 12, marginBottom: 4 }}>
-                  <span style={{ fontWeight: 600 }}>{r.status}</span>
+                  <span className="t-bold">{r.status}</span>
                   <span style={{ color: 'var(--admin-text-dim)' }}>{r.count}</span>
                 </div>
                 <div

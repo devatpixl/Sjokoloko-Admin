@@ -165,17 +165,16 @@ export default function AdminCustomerDetailPage() {
                   {orders.map((order: any) => (
                     <tr key={order.order_number}>
                       <td data-label="Ordrenr." className="mono">{order.order_number}</td>
-                      <td data-label="Dato" style={{ fontSize: 13, color: 'var(--admin-text-dim)' }}>{formatDate(order.created_at)}</td>
-                      <td data-label="Varer" style={{ fontSize: 13, color: 'var(--admin-text-dim)' }}>{order.items?.length ?? 0}</td>
-                      <td data-label="Total" style={{ fontWeight: 600 }}>{formatNOK(order.total)}</td>
+                      <td className="t-dim" data-label="Dato">{formatDate(order.created_at)}</td>
+                      <td className="t-dim" data-label="Varer">{order.items?.length ?? 0}</td>
+                      <td className="t-bold" data-label="Total">{formatNOK(order.total)}</td>
                       <td data-label="Status">
                         <span className={`admin-badge ${statusBadge(order.status)}`}>{order.status}</span>
                       </td>
                       <td data-label="">
                         <Link
                           href={`/orders/${order.order_number}`}
-                          className="admin-btn admin-btn-secondary"
-                          style={{ height: 28, padding: '0 10px', fontSize: 12 }}
+                          className="admin-btn admin-btn-secondary admin-btn-xs"
                         >
                           Se ordre
                         </Link>

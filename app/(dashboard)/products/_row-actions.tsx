@@ -32,8 +32,7 @@ export default function ProductRowActions({ id, name }: { id: number; name: stri
       <div style={{ display: 'flex', gap: 6, justifyContent: 'flex-end' }}>
         <Link
           href={`/products/${id}`}
-          className="admin-btn admin-btn-secondary"
-          style={{ height: 28, padding: '0 10px', fontSize: 12 }}
+          className="admin-btn admin-btn-secondary admin-btn-xs"
         >
           Rediger
         </Link>

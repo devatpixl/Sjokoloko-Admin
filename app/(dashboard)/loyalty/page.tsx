@@ -38,7 +38,7 @@ export default async function AdminLoyaltyPage({
           <div className="admin-card-title">Påmeldte fra /bli-medlem</div>
         </div>
 
-        <div style={{ padding: '16px 20px', borderBottom: '1px solid var(--admin-border)' }}>
+        <div className="admin-card-toolbar">
           <LoyaltyFilter />
         </div>
 
@@ -79,15 +79,15 @@ export default async function AdminLoyaltyPage({
               {members.map((m: any, i: number) => (
                 <tr key={m.id}>
                   <td data-label="#" className="mono" style={{ color: 'var(--admin-text-dim)' }}>{i + 1}</td>
-                  <td data-label="Navn" style={{ fontWeight: 500 }}>{m.first_name}</td>
+                  <td className="t-strong" data-label="Navn">{m.first_name}</td>
                   <td data-label="E-post">
                     <a href={`mailto:${m.email}`} style={{ color: 'inherit' }}>{m.email}</a>
                   </td>
                   <td data-label="Telefon" className="mono">
                     <a href={`tel:${m.phone.replace(/\s/g, '')}`} style={{ color: 'inherit' }}>{m.phone}</a>
                   </td>
-                  <td data-label="Bursdag" style={{ fontSize: 13, color: 'var(--admin-text-dim)' }}>{formatBirthday(m.birthday)}</td>
-                  <td data-label="Meldt på" style={{ fontSize: 13, color: 'var(--admin-text-dim)' }}>{formatDate(m.created_at)}</td>
+                  <td className="t-dim" data-label="Bursdag">{formatBirthday(m.birthday)}</td>
+                  <td className="t-dim" data-label="Meldt på">{formatDate(m.created_at)}</td>
                 </tr>
               ))}
             </tbody>

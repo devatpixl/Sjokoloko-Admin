@@ -58,7 +58,7 @@ export default async function DashboardPage() {
         </div>
       </div>
 
-      <div className="admin-stats-grid" style={{ gridTemplateColumns: 'repeat(4, 1fr)' }}>
+      <div className="admin-stats-grid cols-4">
         <div className="admin-stat-card">
           <div className="admin-stat-label">Bestillinger</div>
           <div className="admin-stat-value">{stats.orders}</div>

@@ -148,7 +148,7 @@ export default function AdminContactPage() {
                 <th>Emne</th>
                 <th>Dato</th>
                 <th>Status</th>
-                <th style={{ textAlign: 'right' }}></th>
+                <th className="t-actions"></th>
               </tr>
             </thead>
             <tbody>
@@ -189,23 +189,22 @@ export default function AdminContactPage() {
                     </td>
                     <td data-label="Fra">
                       <div style={{ fontWeight: entry.is_read ? 400 : 600 }}>{entry.name}</div>
-                      <div style={{ fontSize: 12, color: 'var(--admin-text-dim)' }}>{entry.email}</div>
+                      <div className="t-dim">{entry.email}</div>
                     </td>
                     <td data-label="Emne" style={{ fontWeight: entry.is_read ? 400 : 500 }}>{entry.subject}</td>
-                    <td data-label="Dato" style={{ fontSize: 13, color: 'var(--admin-text-dim)' }}>{formatDate(entry.created_at)}</td>
+                    <td className="t-dim" data-label="Dato">{formatDate(entry.created_at)}</td>
                     <td data-label="Status">
                       <span className={`admin-badge ${entry.is_read ? 'admin-badge-gray' : 'admin-badge-gold'}`}>
                         {entry.is_read ? 'Lest' : 'Ulest'}
                       </span>
                     </td>
-                    <td data-label="" style={{ textAlign: 'right' }} onClick={e => e.stopPropagation()}>
+                    <td className="t-actions" data-label="" onClick={e => e.stopPropagation()}>
                       <div style={{ display: 'flex', gap: 6, justifyContent: 'flex-end' }}>
                         {!entry.is_read && (
                           <button
                             onClick={() => markRead(entry.id)}
                             disabled={pending}
-                            className="admin-btn admin-btn-secondary"
-                            style={{ height: 28, padding: '0 10px', fontSize: 12 }}
+                            className="admin-btn admin-btn-secondary admin-btn-xs"
                           >
                             Merk lest
                           </button>

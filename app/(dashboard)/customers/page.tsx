@@ -41,7 +41,7 @@ export default async function AdminCustomersPage({
           <div className="admin-card-title">Alle kunder</div>
         </div>
 
-        <div style={{ padding: '16px 20px', borderBottom: '1px solid var(--admin-border)' }}>
+        <div className="admin-card-toolbar">
           <CustomersFilter />
         </div>
 
@@ -54,7 +54,7 @@ export default async function AdminCustomersPage({
                 <th>Registrert</th>
                 <th>Bestillinger</th>
                 <th>Venteliste</th>
-                <th style={{ textAlign: 'right' }}></th>
+                <th className="t-actions"></th>
               </tr>
             </thead>
             <tbody>
@@ -78,7 +78,7 @@ export default async function AdminCustomersPage({
               )}
               {users.map((user: any) => (
                 <tr key={user.id}>
-                  <td data-label="Navn" style={{ fontWeight: 500 }}>
+                  <td className="t-strong" data-label="Navn">
                     {user.name}
                     {user.user_type === 'registered' && !user.is_seen && (
                       <span className="admin-badge admin-badge-gold" style={{ marginLeft: 8 }}>
@@ -86,8 +86,8 @@ export default async function AdminCustomersPage({
                       </span>
                     )}
                   </td>
-                  <td data-label="E-post" style={{ color: 'var(--admin-text-dim)', fontSize: 13 }}>{user.email}</td>
-                  <td data-label="Registrert" style={{ color: 'var(--admin-text-dim)', fontSize: 13 }}>{formatDate(user.created_at)}</td>
+                  <td className="t-dim" data-label="E-post">{user.email}</td>
+                  <td className="t-dim" data-label="Registrert">{formatDate(user.created_at)}</td>
                   <td data-label="Bestillinger" style={{ fontFamily: 'var(--admin-mono)', fontSize: 13 }}>
                     {user.order_count ?? 0}
                   </td>
@@ -97,10 +97,10 @@ export default async function AdminCustomersPage({
                         Batch {user.waitlist_batches.join(', ')}
                       </span>
                     ) : (
-                      <span style={{ color: 'var(--admin-text-dim)', fontSize: 12 }}>—</span>
+                      <span className="t-dim">—</span>
                     )}
                   </td>
-                  <td data-label="" style={{ textAlign: 'right' }}>
+                  <td className="t-actions" data-label="">
                     <CustomerRowActions
                       id={user.id}
                       name={user.name}

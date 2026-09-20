@@ -68,7 +68,7 @@ export default function AdminNewCouponPage() {
               <div className="admin-form-group">
                 <label className="admin-label">Kode *</label>
                 <input name="code" required maxLength={40} className="admin-form-input" placeholder="VELKOMMEN10" style={{ textTransform: 'uppercase' }} />
-                <div style={{ fontSize: 11, color: 'var(--admin-text-dim)', marginTop: 4 }}>
+                <div className="admin-hint">
                   Det kunden skriver i kassen. Lagres alltid i versaler.
                 </div>
               </div>
@@ -101,7 +101,7 @@ export default function AdminNewCouponPage() {
             <div className="admin-form-group">
               <label className="admin-label">Minimum delsum (NOK)</label>
               <input name="min_subtotal" type="number" step="0.01" min="0" defaultValue="0" className="admin-form-input" />
-              <div style={{ fontSize: 11, color: 'var(--admin-text-dim)', marginTop: 4 }}>
+              <div className="admin-hint">
                 Sett til 0 for ingen minimum.
               </div>
             </div>
@@ -120,7 +120,7 @@ export default function AdminNewCouponPage() {
             <div className="admin-form-group">
               <label className="admin-label">Maks bruk</label>
               <input name="max_uses" type="number" min="1" className="admin-form-input" placeholder="Ubegrenset" />
-              <div style={{ fontSize: 11, color: 'var(--admin-text-dim)', marginTop: 4 }}>
+              <div className="admin-hint">
                 Antall ganger koden kan brukes totalt. La stå tom for ubegrenset.
               </div>
             </div>

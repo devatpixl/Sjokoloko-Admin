@@ -107,7 +107,7 @@ export default function AdminCouponsPage() {
                 <th>Brukt</th>
                 <th>Gyldig</th>
                 <th>Status</th>
-                <th style={{ textAlign: 'right' }}></th>
+                <th className="t-actions"></th>
               </tr>
             </thead>
             <tbody>
@@ -128,7 +128,7 @@ export default function AdminCouponsPage() {
                   <td data-label="Brukt" style={{ fontFamily: 'var(--admin-mono)', fontSize: 13 }}>
                     {c.times_used}{c.max_uses ? ` / ${c.max_uses}` : ''}
                   </td>
-                  <td data-label="Gyldig" style={{ fontSize: 12, color: 'var(--admin-text-dim)' }}>
+                  <td className="t-dim" data-label="Gyldig">
                     {c.valid_from || c.valid_to
                       ? `${c.valid_from ? new Date(c.valid_from).toLocaleDateString('nb-NO') : '–'} → ${c.valid_to ? new Date(c.valid_to).toLocaleDateString('nb-NO') : '∞'}`
                       : 'Alltid'}
@@ -138,28 +138,25 @@ export default function AdminCouponsPage() {
                       {c.is_active ? 'Aktiv' : 'Inaktiv'}
                     </span>
                   </td>
-                  <td data-label="" style={{ textAlign: 'right' }}>
+                  <td className="t-actions" data-label="">
                     <div style={{ display: 'inline-flex', gap: 6 }}>
                       <button
                         onClick={() => toggleActive(c)}
                         disabled={pending === c.id}
-                        className="admin-btn admin-btn-secondary"
-                        style={{ padding: '4px 10px', fontSize: 12 }}
+                        className="admin-btn admin-btn-secondary admin-btn-xs"
                       >
                         {c.is_active ? 'Deaktiver' : 'Aktivér'}
                       </button>
                       <Link
                         href={`/coupons/${c.id}`}
-                        className="admin-btn admin-btn-secondary"
-                        style={{ padding: '4px 10px', fontSize: 12 }}
+                        className="admin-btn admin-btn-secondary admin-btn-xs"
                       >
                         Rediger
                       </Link>
                       <button
                         onClick={() => remove(c)}
                         disabled={pending === c.id}
-                        className="admin-btn admin-btn-danger"
-                        style={{ padding: '4px 10px', fontSize: 12 }}
+                        className="admin-btn admin-btn-danger admin-btn-xs"
                       >
                         Slett
                       </button>

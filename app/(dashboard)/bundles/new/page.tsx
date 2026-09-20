@@ -118,13 +118,13 @@ export default function AdminNewBundlePage() {
                   <datalist id="variant_group_list">
                     {variantGroups.map(g => <option key={g} value={g} />)}
                   </datalist>
-                  <div style={{ fontSize: 11, color: 'var(--admin-text-dim)', marginTop: 4 }}>
+                  <div className="admin-hint">
                     Alle produkter som deler denne variant_group telles. F.eks. <code>vanlig-16</code>.
                   </div>
                 </>
               ) : (
                 <div style={{ border: '1px solid var(--admin-border)', padding: 12, maxHeight: 200, overflow: 'auto' }}>
-                  {products.length === 0 && <div style={{ fontSize: 12, color: 'var(--admin-text-dim)' }}>Laster produkter…</div>}
+                  {products.length === 0 && <div className="t-dim">Laster produkter…</div>}
                   {products.map(p => (
                     <label key={p.id} style={{ display: 'flex', gap: 8, padding: '4px 0', fontSize: 13 }}>
                       <input type="checkbox" checked={selectedProducts.includes(p.id)} onChange={() => toggleProduct(p.id)} />

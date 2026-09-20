@@ -34,7 +34,7 @@ export default function ProductsFilter() {
   const setFilter = (value: string) => setParam('category', value)
 
   return (
-    <div className="admin-filters" style={{ opacity: isPending ? 0.7 : 1 }}>
+    <div className={`admin-filters${isPending ? ' is-pending' : ''}`}>
       <select
         value={current}
         onChange={e => setFilter(e.target.value)}

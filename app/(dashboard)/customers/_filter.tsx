@@ -25,7 +25,7 @@ export default function CustomersFilter() {
   }, [search])
 
   return (
-    <div className="admin-filters" style={{ opacity: isPending ? 0.7 : 1 }}>
+    <div className={`admin-filters${isPending ? ' is-pending' : ''}`}>
       <input
         value={search}
         onChange={e => setSearch(e.target.value)}

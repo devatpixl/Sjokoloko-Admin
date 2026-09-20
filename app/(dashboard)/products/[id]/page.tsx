@@ -174,7 +174,7 @@ export default function AdminEditProductPage() {
                     placeholder="f.eks. Klassisk"
                     onChange={e => setVariantLabel(e.target.value)}
                   />
-                  <div style={{ fontSize: 11, color: 'var(--admin-text-dim)', marginTop: 4 }}>
+                  <div className="admin-hint">
                     Teksten på knappen under «Velg variant».
                   </div>
                 </div>

@@ -120,7 +120,7 @@ export default function AdminNewProductPage() {
               <div className="admin-form-group">
                 <label className="admin-label">Variant-etikett (valgfritt)</label>
                 <input name="variant_label" className="admin-form-input" placeholder="Klassisk" />
-                <div style={{ fontSize: 11, color: 'var(--admin-text-dim)', marginTop: 4 }}>
+                <div className="admin-hint">
                   Kort navn for denne varianten innen gruppen.
                 </div>
               </div>

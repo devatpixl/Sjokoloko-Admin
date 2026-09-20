@@ -64,7 +64,7 @@ export default function AdminNewFlavorPage() {
               <div className="admin-form-group">
                 <label className="admin-label">ID *</label>
                 <input name="id" required maxLength={10} className="admin-form-input" placeholder="pis" />
-                <div style={{ fontSize: 11, color: 'var(--admin-text-dim)', marginTop: 4 }}>
+                <div className="admin-hint">
                   Kort kode (max 10 tegn). Brukes som referanse i bygge-din-egen.
                 </div>
               </div>
@@ -77,7 +77,7 @@ export default function AdminNewFlavorPage() {
             <div className="admin-form-group">
               <label className="admin-label">Farge (hex) *</label>
               <input name="color" required pattern="#[0-9A-Fa-f]{6}" className="admin-form-input" placeholder="#8A9A5B" />
-              <div style={{ fontSize: 11, color: 'var(--admin-text-dim)', marginTop: 4 }}>
+              <div className="admin-hint">
                 Hex-kode (#RRGGBB). Brukes til prikken i bygg-din-eske.
               </div>
             </div>

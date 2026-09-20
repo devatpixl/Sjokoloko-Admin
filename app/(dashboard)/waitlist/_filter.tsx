@@ -25,7 +25,7 @@ export default function WaitlistFilter() {
   }, [batch])
 
   return (
-    <div className="admin-filters" style={{ opacity: isPending ? 0.7 : 1 }}>
+    <div className={`admin-filters${isPending ? ' is-pending' : ''}`}>
       <input
         value={batch}
         onChange={e => setBatch(e.target.value)}

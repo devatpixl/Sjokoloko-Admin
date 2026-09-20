@@ -104,7 +104,7 @@ export default function VariantGroupPicker({
         </select>
       )}
 
-      <div style={{ fontSize: 11, color: 'var(--admin-text-dim)', marginTop: 4 }}>
+      <div className="admin-hint">
         {groups === null
           ? 'Henter grupper…'
           : value

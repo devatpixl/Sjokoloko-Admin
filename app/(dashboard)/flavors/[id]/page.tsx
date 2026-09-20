@@ -102,7 +102,7 @@ export default function AdminEditFlavorPage() {
               <div className="admin-form-group">
                 <label className="admin-label">ID</label>
                 <input value={truffle.id} disabled className="admin-form-input" style={{ opacity: 0.6 }} />
-                <div style={{ fontSize: 11, color: 'var(--admin-text-dim)', marginTop: 4 }}>
+                <div className="admin-hint">
                   ID kan ikke endres etter opprettelse.
                 </div>
               </div>

@@ -32,8 +32,7 @@ export default function OrderRowActions({ orderNumber }: { orderNumber: string }
       <div style={{ display: 'flex', gap: 6, justifyContent: 'flex-end' }}>
         <Link
           href={`/orders/${orderNumber}`}
-          className="admin-btn admin-btn-secondary"
-          style={{ height: 28, padding: '0 10px', fontSize: 12 }}
+          className="admin-btn admin-btn-secondary admin-btn-xs"
         >
           Detaljer
         </Link>

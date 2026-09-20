@@ -65,7 +65,7 @@ export default async function AdminOrdersPage({
         </div>
       </div>
 
-      <div className="admin-stats-grid" style={{ gridTemplateColumns: 'repeat(4, 1fr)', marginBottom: 24 }}>
+      <div className="admin-stats-grid cols-4">
         <div className="admin-stat-card">
           <div className="admin-stat-label">Totalt</div>
           <div className="admin-stat-value">{stats.orders}</div>
@@ -89,7 +89,7 @@ export default async function AdminOrdersPage({
           <div className="admin-card-title">Alle bestillinger</div>
         </div>
 
-        <div style={{ padding: '16px 20px', borderBottom: '1px solid var(--admin-border)' }}>
+        <div className="admin-card-toolbar">
           <OrdersFilter />
         </div>
 
@@ -103,7 +103,7 @@ export default async function AdminOrdersPage({
                 <th>Produkter</th>
                 <th>Total</th>
                 <th>Status</th>
-                <th style={{ textAlign: 'right' }}></th>
+                <th className="t-actions"></th>
               </tr>
             </thead>
             <tbody>
@@ -127,15 +127,15 @@ export default async function AdminOrdersPage({
               {orders.map((order: any) => (
                 <tr key={order.order_number}>
                   <td data-label="Ordrenr." className="mono">{order.order_number}</td>
-                  <td data-label="Dato" style={{ color: 'var(--admin-text-dim)', fontSize: 13 }}>{formatDate(order.created_at)}</td>
+                  <td className="t-dim" data-label="Dato">{formatDate(order.created_at)}</td>
                   <td data-label="Kunde">
-                    <div style={{ fontWeight: 500 }}>{order.customer_name}</div>
-                    <div style={{ fontSize: 12, color: 'var(--admin-text-dim)' }}>{order.ship_email}</div>
+                    <div className="t-strong">{order.customer_name}</div>
+                    <div className="t-dim">{order.ship_email}</div>
                   </td>
-                  <td data-label="Produkter" style={{ color: 'var(--admin-text-dim)', fontSize: 13 }}>
+                  <td className="t-dim" data-label="Produkter">
                     {order.items?.length ?? 0} vare{order.items?.length !== 1 ? 'r' : ''}
                   </td>
-                  <td data-label="Total" style={{ fontWeight: 600 }}>{formatNOK(order.total)}</td>
+                  <td className="t-bold" data-label="Total">{formatNOK(order.total)}</td>
                   <td data-label="Status">
                     <span className={`admin-badge ${statusBadge(order.status)}`}>{order.status}</span>
                     {paymentFlag(order.payment_status) && (
@@ -147,7 +147,7 @@ export default async function AdminOrdersPage({
                       </span>
                     )}
                   </td>
-                  <td data-label="" style={{ textAlign: 'right' }}>
+                  <td className="t-actions" data-label="">
                     <OrderRowActions orderNumber={order.order_number} />
                   </td>
                 </tr>

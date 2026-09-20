@@ -302,10 +302,11 @@
   -moz-osx-font-smoothing: grayscale;
 }
 
-/* Sidebar */
+/* ── §6  Shell ─────────────────────────────────────────────────────────── */
+
 .admin-sidebar {
   border-right: 1px solid var(--sb-edge);
-  width: 240px;
+  width: var(--sidebar-w);
   flex-shrink: 0;
   background: var(--admin-sidebar);
   display: flex;
@@ -314,103 +315,114 @@
   top: 0;
   height: 100vh;
   overflow-y: auto;
+  /* The panel is near-black; a default OS scrollbar draws a light bar down it */
+  scrollbar-width: thin;
+  scrollbar-color: rgba(255, 255, 255, .14) transparent;
+}
+.admin-sidebar::-webkit-scrollbar { width: 8px; }
+.admin-sidebar::-webkit-scrollbar-thumb {
+  background: rgba(255, 255, 255, .14);
+  border-radius: var(--r-full);
 }
 
 .admin-sidebar-logo {
-  padding: 24px 20px 20px;
+  padding: var(--sp-6) var(--sp-5) var(--sp-5);
   border-bottom: 1px solid var(--sb-line);
-  color: #FFFFFF;
+  color: var(--sb-ink);
+  font-size: var(--fs-md);
+  font-weight: var(--fw-bold);
+  letter-spacing: var(--tr-tight);
 }
 
 .admin-sidebar-logo span {
   display: block;
-  font-size: 11px;
-  font-weight: 500;
-  letter-spacing: 0.18em;
+  font-size: var(--fs-2xs);
+  font-weight: var(--fw-semibold);
+  letter-spacing: var(--tr-caps-loose);
   text-transform: uppercase;
-  opacity: 0.5;
-  margin-top: 4px;
+  color: var(--sb-ink-mute);
+  margin-top: var(--sp-1);
 }
 
 .admin-sidebar-nav {
-  padding: 16px 0;
+  padding: var(--sp-4) 0;
   flex: 1;
 }
 
-.admin-nav-section {
-  padding: 0 12px 8px;
-}
+.admin-nav-section { padding: 0 var(--sp-3) var(--sp-2); }
 
 .admin-nav-section-label {
-  font-size: 10px;
-  font-weight: 600;
-  letter-spacing: 0.14em;
+  font-size: var(--fs-2xs);
+  font-weight: var(--fw-semibold);
+  letter-spacing: var(--tr-caps);
   text-transform: uppercase;
   color: var(--sb-ink-mute);
-  padding: 8px 8px 4px;
+  padding: var(--sp-2) var(--sp-2) var(--sp-1);
 }
 
 .admin-nav-link {
+  position: relative;
   display: flex;
   align-items: center;
-  gap: 10px;
-  padding: 9px 10px;
-  border-radius: 6px;
+  gap: var(--sp-3);
+  height: 34px;
+  padding: 0 var(--sp-3);
+  border-radius: var(--r-md);
   color: var(--sb-ink-dim);
-  font-size: 13.5px;
-  font-weight: 500;
+  font-size: var(--fs-sm);
+  font-weight: var(--fw-medium);
   text-decoration: none;
-  transition: background 150ms, color 150ms;
   margin-bottom: 2px;
+  transition: background var(--dur-2) var(--ease-standard),
+              color var(--dur-2) var(--ease-standard);
 }
 
-.admin-nav-link:hover {
-  background: var(--sb-hover);
-  color: #FFFFFF;
-}
+/* One signal per event: hover lifts the background only, it does not also
+   change the ink. Two signals for one event reads as noise. */
+.admin-nav-link:hover { background: var(--sb-hover); color: var(--sb-ink); }
 
+/* Active is a rail plus white ink, not gold ink. Gold on a gold wash passes
+   contrast but reads muddy; a crisp rail is the more expensive signal. */
 .admin-nav-link.active {
-  background: rgba(201,163,91,0.15);
-  color: #C9A35B;
+  background: var(--sb-active-wash);
+  color: var(--sb-ink);
+  box-shadow: inset 2px 0 0 var(--admin-accent);
 }
 
 .admin-nav-link svg {
   width: 16px;
   height: 16px;
   flex-shrink: 0;
-  opacity: 0.8;
+  opacity: .75;
 }
-
-.admin-nav-link.active svg {
-  opacity: 1;
-}
+.admin-nav-link:hover svg,
+.admin-nav-link.active svg { opacity: 1; }
 
 .admin-nav-divider {
   height: 1px;
-  background: var(--sb-hover);
-  margin: 8px 12px;
+  background: var(--sb-line);
+  margin: var(--sp-2) var(--sp-3);
 }
 
 .admin-sidebar-footer {
-  padding: 16px 12px;
+  padding: var(--sp-4) var(--sp-3);
   border-top: 1px solid var(--sb-line);
 }
 
 .admin-sidebar-footer a {
   display: flex;
   align-items: center;
-  gap: 8px;
-  font-size: 12px;
+  gap: var(--sp-2);
+  font-size: var(--fs-xs);
   color: var(--sb-ink-mute);
   text-decoration: none;
-  padding: 6px 8px;
-  border-radius: 4px;
-  transition: color 150ms;
+  padding: var(--sp-2);
+  border-radius: var(--r-sm);
+  transition: color var(--dur-2) var(--ease-standard),
+              background var(--dur-2) var(--ease-standard);
 }
+.admin-sidebar-footer a:hover { color: var(--sb-ink); background: var(--sb-hover); }
 
-.admin-sidebar-footer a:hover { color: var(--sb-ink); }
-
-/* Body */
 .admin-body {
   flex: 1;
   display: flex;
@@ -418,267 +430,490 @@
   min-width: 0;
 }
 
-/* Top bar — the wrapper owns the sticky/chrome so the hamburger sits inside it */
+/* The wrapper owns the sticky chrome so the hamburger sits inside it */
 .admin-topwrap {
   position: sticky;
   top: 0;
-  z-index: 30;
+  z-index: var(--z-topbar);
   display: flex;
   align-items: center;
-  background: var(--admin-surface);
+  /* Translucent because it sits over scrolling content — the one modern
+     flourish here that costs nothing and reads immediately as considered. */
+  background: color-mix(in srgb, var(--admin-surface) 82%, transparent);
+  backdrop-filter: saturate(180%) blur(10px);
+  -webkit-backdrop-filter: saturate(180%) blur(10px);
   border-bottom: 1px solid var(--admin-border);
+}
+@supports not (backdrop-filter: blur(1px)) {
+  .admin-topwrap { background: var(--admin-surface); }
 }
 
 .admin-topbar {
-  height: 56px;
+  height: var(--topbar-h);
   display: flex;
   align-items: center;
-  padding: 0 28px;
-  gap: 16px;
+  padding: 0 var(--sp-6);
+  gap: var(--sp-3);
   flex: 1;
   min-width: 0;
 }
 
 .admin-topbar-title {
-  font-size: 14px;
-  font-weight: 600;
+  font-size: var(--fs-sm);
+  font-weight: var(--fw-semibold);
   color: var(--admin-text);
   flex: 1;
+  min-width: 0;
 }
 
+/* The logged-in user's own name is not news, so it is no longer a gold pill.
+   Gold is reserved for the primary button, the active nav item, the focus
+   ring, and the single most important number on a page. */
 .admin-topbar-badge {
-  font-size: 11px;
-  font-weight: 600;
-  background: var(--admin-accent-soft);
-  color: var(--admin-accent);
-  padding: 3px 8px;
-  border-radius: 20px;
-  letter-spacing: 0.05em;
+  display: inline-flex;
+  align-items: center;
+  gap: var(--sp-2);
+  font-size: var(--fs-xs);
+  font-weight: var(--fw-medium);
+  color: var(--admin-text-dim);
+  padding: 0;
+  letter-spacing: 0;
+}
+.admin-topbar-badge::before {
+  content: "";
+  width: 26px;
+  height: 26px;
+  border-radius: var(--r-full);
+  background: var(--admin-surface-sunken);
+  border: 1px solid var(--admin-border);
+  flex-shrink: 0;
 }
 
-/* Main content */
+.admin-topbar-divider {
+  width: 1px;
+  height: 20px;
+  background: var(--admin-border);
+  flex-shrink: 0;
+}
+
 .admin-main {
-  padding: 28px;
+  padding: var(--sp-6);
   flex: 1;
+  width: 100%;
+  max-width: 1560px;
+  margin: 0 auto;
 }
 
-/* ── Shared admin components ── */
+/* ── §7  Layout primitives ─────────────────────────────────────────────── */
+/* Nine names, capped at nine. Growing this into .gap-4 .flex .items-center
+   would be Tailwind rebuilt by hand, which is the thing we chose against. */
+.stack     { display: grid; gap: var(--sp-3); }
+.stack-sm  { display: grid; gap: var(--sp-2); }
+.stack-lg  { display: grid; gap: var(--sp-5); }
+.row       { display: flex; align-items: center; gap: var(--sp-3); }
+.row-sm    { display: flex; align-items: center; gap: var(--sp-2); }
+.row-end   { display: flex; align-items: center; gap: var(--sp-2); justify-content: flex-end; }
+.row-between { display: flex; align-items: center; gap: var(--sp-3); justify-content: space-between; }
+.row-wrap  { display: flex; align-items: center; gap: var(--sp-2); flex-wrap: wrap; }
+.admin-actions { display: flex; align-items: center; gap: var(--sp-2); justify-content: flex-end; }
+
+.is-pending { opacity: .6; pointer-events: none; transition: opacity var(--dur-2); }
+
+/* ── §8  Typography helpers — applied to the cell itself, never a wrapper ── */
+.t-dim      { color: var(--admin-text-dim); }
+.t-mute     { color: var(--admin-text-mute); }
+.t-strong   { font-weight: var(--fw-medium); }
+.t-bold     { font-weight: var(--fw-semibold); }
+.t-num      { text-align: right; font-variant-numeric: tabular-nums; }
+.t-actions  { text-align: right; white-space: nowrap; }
+.t-nowrap   { white-space: nowrap; }
+.t-truncate { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; max-width: 0; }
+.admin-hint { font-size: var(--fs-xs); color: var(--admin-text-dim); }
+.admin-error-text { font-size: var(--fs-xs); color: var(--st-neg-ink); }
+
+/* ── §9  Page header ───────────────────────────────────────────────────── */
 .admin-page-header {
   display: flex;
-  align-items: center;
+  align-items: flex-end;
   justify-content: space-between;
-  margin-bottom: 24px;
-  gap: 16px;
+  gap: var(--sp-4);
+  flex-wrap: wrap;
+  padding-bottom: var(--sp-4);
+  margin-bottom: var(--sp-5);
+  border-bottom: 1px solid var(--admin-border-subtle);
 }
 
 .admin-page-title {
-  font-size: 20px;
-  font-weight: 700;
+  font-size: var(--fs-lg);
+  font-weight: var(--fw-bold);
+  letter-spacing: var(--tr-tight);
   color: var(--admin-text);
-  letter-spacing: -0.02em;
+  line-height: var(--lh-tight);
 }
 
 .admin-page-subtitle {
-  font-size: 13px;
+  font-size: var(--fs-sm);
   color: var(--admin-text-dim);
-  margin-top: 2px;
+  margin-top: var(--sp-1);
 }
 
-/* Cards */
+/* ── §10  Card ─────────────────────────────────────────────────────────── */
 .admin-card {
   background: var(--admin-surface);
   border: 1px solid var(--admin-border);
-  border-radius: 10px;
-  overflow: hidden;
+  border-radius: var(--r-lg);
+  overflow: hidden;          /* keeps table corners inside the radius */
+  box-shadow: var(--sh-inset-top);
+  margin-bottom: var(--sp-5);
 }
 
 .admin-card-header {
-  padding: 16px 20px;
-  border-bottom: 1px solid var(--admin-border);
   display: flex;
   align-items: center;
   justify-content: space-between;
+  gap: var(--sp-3);
+  padding: var(--sp-4) var(--gutter);
+  /* Subtle, not the outer border colour — an inner divider drawn in the same
+     ink as the outer edge makes a card look segmented rather than divided. */
+  border-bottom: 1px solid var(--admin-border-subtle);
 }
 
 .admin-card-title {
-  font-size: 14px;
-  font-weight: 600;
+  font-size: var(--fs-base);
+  font-weight: var(--fw-semibold);
+  color: var(--admin-text);
 }
 
-/* Stats grid */
+/* .admin-card carries no padding, so every card body used to supply its own
+   inline. These three cover all ~32 of those sites. */
+.admin-card-body { padding: var(--gutter); }
+.admin-card-body.is-flush { padding: 0; }
+.admin-card-body.stack    { display: grid; gap: var(--sp-3); }
+.admin-card-body.stack-lg { display: grid; gap: var(--sp-5); }
+
+.admin-card-toolbar {
+  display: flex;
+  align-items: center;
+  gap: var(--sp-3);
+  flex-wrap: wrap;
+  padding: var(--sp-3) var(--gutter);
+  border-bottom: 1px solid var(--admin-border-subtle);
+}
+
+.admin-card-footer {
+  padding: var(--sp-3) var(--gutter);
+  border-top: 1px solid var(--admin-border-subtle);
+  background: var(--admin-surface-sunken);
+}
+
+/* ── §11  Stat cards ───────────────────────────────────────────────────── */
 .admin-stats-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
-  gap: 16px;
-  margin-bottom: 28px;
+  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+  gap: var(--sp-4);
+  margin-bottom: var(--sp-5);
 }
+/* Named column counts replace the inline gridTemplateColumns overrides that
+   the mobile breakpoint previously had to defeat with !important. */
+.admin-stats-grid.cols-4 { grid-template-columns: repeat(4, 1fr); }
+.admin-stats-grid.cols-3 { grid-template-columns: repeat(3, 1fr); }
+.admin-stats-grid.cols-2 { grid-template-columns: repeat(2, 1fr); }
 
 .admin-stat-card {
   background: var(--admin-surface);
   border: 1px solid var(--admin-border);
-  border-radius: 10px;
-  padding: 20px;
+  border-radius: var(--r-lg);
+  padding: var(--sp-4) var(--gutter);
+  box-shadow: var(--sh-inset-top);
 }
 
 .admin-stat-label {
-  font-size: 12px;
-  font-weight: 600;
-  letter-spacing: 0.08em;
+  font-size: var(--fs-2xs);
+  font-weight: var(--fw-semibold);
+  letter-spacing: var(--tr-wide);
   text-transform: uppercase;
-  color: var(--admin-text-dim);
-  margin-bottom: 8px;
+  color: var(--admin-text-mute);
 }
 
 .admin-stat-value {
-  font-size: 28px;
-  font-weight: 700;
+  font-size: var(--fs-xl);
+  font-weight: var(--fw-bold);
   letter-spacing: -0.03em;
+  /* A row of figures that does not align optically is the whole failure mode
+     of a stat row. */
+  font-variant-numeric: tabular-nums;
   color: var(--admin-text);
+  margin-top: var(--sp-1);
+  line-height: var(--lh-tight);
 }
 
-.admin-stat-value.accent { color: var(--admin-accent); }
+/* The one gold number on the page. */
+.admin-stat-value.accent { color: var(--admin-accent-ink); }
 
-/* Table */
-.admin-table-wrap {
-  overflow-x: auto;
+.admin-stat-delta {
+  font-size: var(--fs-xs);
+  font-weight: var(--fw-medium);
+  margin-top: var(--sp-1);
 }
+.admin-stat-delta.up   { color: var(--st-pos-ink); }
+.admin-stat-delta.down { color: var(--st-neg-ink); }
 
-table.admin-table {
+/* ── §12  Table ────────────────────────────────────────────────────────── */
+.admin-table-wrap { overflow-x: auto; }
+
+.admin-table {
   width: 100%;
   border-collapse: collapse;
-  font-size: 13.5px;
+  font-size: var(--fs-sm);
 }
 
 .admin-table th {
+  position: sticky;
+  top: 0;
+  z-index: var(--z-sticky);
   text-align: left;
-  padding: 11px 16px;
-  font-size: 11px;
-  font-weight: 700;
-  letter-spacing: 0.1em;
+  padding: var(--sp-3) var(--gutter);
+  font-size: var(--fs-2xs);
+  font-weight: var(--fw-bold);
+  letter-spacing: var(--tr-caps);
   text-transform: uppercase;
-  color: var(--admin-text-dim);
-  border-bottom: 1px solid var(--admin-border);
+  color: var(--admin-text-mute);
+  /* Sunken, so the band still reads as distinct when rows scroll under it.
+     The inset shadow is how a border survives on a sticky cell. */
+  background: var(--admin-surface-sunken);
+  box-shadow: inset 0 -1px 0 var(--admin-border);
   white-space: nowrap;
 }
 
 .admin-table td {
-  padding: 13px 16px;
-  border-bottom: 1px solid var(--admin-border);
+  padding: var(--cell-y) var(--gutter);
+  border-bottom: 1px solid var(--admin-border-subtle);
   vertical-align: middle;
+  color: var(--admin-text);
 }
 
 .admin-table tr:last-child td { border-bottom: none; }
 
-.admin-table tr:hover td { background: #FAFAFA; }
-
-.admin-table .mono {
-  font-family: var(--admin-mono);
-  font-size: 12.5px;
+/* An inset shadow rather than border-left on the <tr>: under
+   border-collapse a row border is unreliable across engines and can shift
+   content. This is identical visually and costs no layout. */
+.admin-table tbody tr:hover td,
+.admin-table tbody tr:focus-within td {
+  background: var(--admin-surface-hover);
+}
+.admin-table tbody tr:hover td:first-child,
+.admin-table tbody tr:focus-within td:first-child {
+  box-shadow: inset 3px 0 0 var(--admin-accent);
 }
 
-/* Filters bar */
+.admin-table .mono,
+.mono {
+  font-family: var(--admin-mono);
+  font-size: var(--fs-xs);
+  font-variant-numeric: tabular-nums;
+}
+
+/* ── §13  Form controls — one size system, not two ─────────────────────── */
 .admin-filters {
   display: flex;
   align-items: center;
-  gap: 10px;
+  gap: var(--sp-3);
   flex-wrap: wrap;
-  margin-bottom: 16px;
 }
 
-.admin-input {
-  height: 36px;
-  padding: 0 12px;
-  border: 1px solid var(--admin-border);
-  border-radius: 6px;
-  font-size: 13.5px;
-  font-family: var(--admin-font);
-  background: var(--admin-surface);
-  color: var(--admin-text);
-  outline: none;
-  transition: border-color 150ms;
-  min-width: 200px;
-}
-
-.admin-input:focus { border-color: var(--admin-accent); }
-
+.admin-input,
+.admin-form-input,
+.admin-form-textarea,
+.admin-form-select,
 .admin-select {
   height: 36px;
-  padding: 0 10px;
+  padding: 0 var(--sp-3);
   border: 1px solid var(--admin-border);
-  border-radius: 6px;
-  font-size: 13px;
+  border-radius: var(--r-md);
+  font-size: var(--fs-sm);
   font-family: var(--admin-font);
   background: var(--admin-surface);
   color: var(--admin-text);
   outline: none;
-  cursor: pointer;
-  appearance: none;
-  padding-right: 28px;
-  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='6'%3E%3Cpath d='M0 0l5 6 5-6z' fill='%236B7280'/%3E%3C/svg%3E");
-  background-repeat: no-repeat;
-  background-position: right 10px center;
+  transition: border-color var(--dur-2) var(--ease-standard),
+              box-shadow var(--dur-2) var(--ease-standard);
+}
+.admin-input { min-width: 200px; }
+.admin-form-input,
+.admin-form-textarea,
+.admin-form-select { width: 100%; }
+
+/* In dark a field reads as a field because it is sunken, not raised. */
+:root[data-theme="dark"] .admin-input,
+:root[data-theme="dark"] .admin-form-input,
+:root[data-theme="dark"] .admin-form-textarea,
+:root[data-theme="dark"] .admin-form-select,
+:root[data-theme="dark"] .admin-select { background: var(--admin-surface-sunken); }
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) .admin-input,
+  :root:not([data-theme="light"]) .admin-form-input,
+  :root:not([data-theme="light"]) .admin-form-textarea,
+  :root:not([data-theme="light"]) .admin-form-select,
+  :root:not([data-theme="light"]) .admin-select { background: var(--admin-surface-sunken); }
 }
 
-/* Buttons */
+/* A 1px colour shift is not a focus signal at 13px. */
+.admin-input:focus,
+.admin-form-input:focus,
+.admin-form-textarea:focus,
+.admin-form-select:focus,
+.admin-select:focus {
+  border-color: var(--admin-accent);
+  box-shadow: 0 0 0 3px rgba(201, 163, 91, .18);
+}
+
+.admin-form-textarea {
+  height: auto;
+  min-height: 92px;
+  padding: var(--sp-2) var(--sp-3);
+  line-height: var(--lh-base);
+  resize: vertical;
+  font-family: inherit;
+}
+
+/* Both select classes get the caret; .admin-form-select previously rendered
+   raw OS chrome because it had no appearance:none at all. */
+.admin-select,
+.admin-form-select {
+  cursor: pointer;
+  appearance: none;
+  -webkit-appearance: none;
+  padding-right: var(--sp-8);
+  background-image: var(--select-caret);
+  background-repeat: no-repeat;
+  background-position: right var(--sp-3) center;
+  background-size: 14px;
+}
+
+.admin-label,
+.admin-field-label {
+  font-size: var(--fs-xs);
+  font-weight: var(--fw-semibold);
+  color: var(--admin-text);
+}
+
+.admin-checkbox {
+  width: 16px;
+  height: 16px;
+  accent-color: var(--admin-accent);
+  cursor: pointer;
+  flex-shrink: 0;
+}
+
+/* ── §14  Buttons ──────────────────────────────────────────────────────── */
 .admin-btn {
   display: inline-flex;
   align-items: center;
-  gap: 6px;
+  justify-content: center;
+  gap: var(--sp-2);
   height: 36px;
-  padding: 0 14px;
-  border-radius: 6px;
-  font-size: 13px;
-  font-weight: 600;
+  padding: 0 var(--sp-4);
+  border-radius: var(--r-md);
+  font-size: var(--fs-sm);
+  font-weight: var(--fw-semibold);
   font-family: var(--admin-font);
   cursor: pointer;
-  border: none;
-  transition: background 150ms, transform 80ms;
+  border: 1px solid transparent;
   text-decoration: none;
   white-space: nowrap;
+  transition: background var(--dur-2) var(--ease-standard),
+              border-color var(--dur-2) var(--ease-standard),
+              color var(--dur-2) var(--ease-standard),
+              transform var(--dur-1) var(--ease-standard);
 }
+.admin-btn:active { transform: scale(.98); }
+.admin-btn:disabled { opacity: .55; cursor: default; transform: none; }
 
-.admin-btn:active { transform: scale(0.98); }
+/* The size scale that replaces ~20 inline height/padding/fontSize overrides */
+.admin-btn-lg { height: 42px; padding: 0 var(--sp-5); font-size: var(--fs-base); }
+.admin-btn-sm { height: 30px; padding: 0 var(--sp-3); font-size: var(--fs-xs); }
+.admin-btn-xs { height: 26px; padding: 0 var(--sp-2); font-size: var(--fs-xs); }
+.admin-btn-icon { padding: 0; width: 36px; }
+.admin-btn-icon.admin-btn-sm { width: 30px; }
+.admin-btn-icon.admin-btn-xs { width: 26px; }
 
 .admin-btn-primary {
   background: var(--admin-accent);
-  color: #1A1A1A;
+  color: var(--admin-on-accent);
 }
-
-.admin-btn-primary:hover { background: #b8922e; }
+.admin-btn-primary:hover:not(:disabled) { background: var(--admin-accent-hover); }
 
 .admin-btn-secondary {
   background: transparent;
   color: var(--admin-text);
-  border: 1px solid var(--admin-border);
+  border-color: var(--admin-border);
+}
+.admin-btn-secondary:hover:not(:disabled) {
+  background: var(--admin-surface-hover);
+  border-color: var(--admin-border-strong);
 }
 
-.admin-btn-secondary:hover { background: var(--admin-bg); }
+/* The tertiary that was missing — every quiet button used to be a bordered
+   secondary, which is why toolbars looked like fences. */
+.admin-btn-ghost {
+  background: transparent;
+  color: var(--admin-text-dim);
+  border-color: transparent;
+}
+.admin-btn-ghost:hover:not(:disabled) {
+  background: var(--admin-surface-hover);
+  color: var(--admin-text);
+}
 
+/* Danger is quiet in a row and loud only in a confirm dialog, where the user
+   must feel the weight. A delete button should not shout from a table. */
 .admin-btn-danger {
-  background: #FEE2E2;
-  color: #DC2626;
+  background: transparent;
+  color: var(--st-neg-ink);
+  border-color: transparent;
 }
+.admin-btn-danger:hover:not(:disabled) { background: var(--st-neg-bg); }
 
-.admin-btn-danger:hover { background: #FECACA; }
+.admin-btn-danger-solid {
+  background: var(--hue-neg);
+  color: #FFFFFF;
+  border-color: transparent;
+}
+.admin-btn-danger-solid:hover:not(:disabled) { background: #DC2626; }
 
-/* Status badges */
+/* ── §15  Status pills ─────────────────────────────────────────────────── */
+/* Tint + same-hue border + hue ink. Translucent tints compose on any surface,
+   so one declaration serves light and dark. Class names are unchanged: they
+   are computed from database values in five maps across three files. */
 .admin-badge {
-  display: inline-block;
-  padding: 3px 9px;
-  border-radius: 20px;
-  font-size: 11.5px;
-  font-weight: 600;
-  letter-spacing: 0.04em;
+  display: inline-flex;
+  align-items: center;
+  gap: var(--sp-1);
+  padding: 2px var(--sp-2);
+  border: 1px solid transparent;
+  border-radius: var(--r-full);
+  font-size: var(--fs-2xs);
+  font-weight: var(--fw-semibold);
+  line-height: 18px;
+  letter-spacing: 0;
   white-space: nowrap;
 }
+.admin-badge::before {
+  content: "";
+  width: 6px;
+  height: 6px;
+  border-radius: var(--r-full);
+  background: currentColor;
+  flex-shrink: 0;
+}
 
-.admin-badge-blue   { background: #DBEAFE; color: #1D4ED8; }
-.admin-badge-orange { background: #FEF3C7; color: #B45309; }
-.admin-badge-purple { background: #EDE9FE; color: #7C3AED; }
-.admin-badge-green  { background: #D1FAE5; color: #065F46; }
-.admin-badge-red    { background: #FEE2E2; color: #DC2626; }
-.admin-badge-gray   { background: #F3F4F6; color: #6B7280; }
-.admin-badge-gold   { background: #FBF3E4; color: #C9A35B; }
+.admin-badge-blue   { background: var(--st-info-bg);    border-color: var(--st-info-line);    color: var(--st-info-ink); }
+.admin-badge-orange { background: var(--st-warn-bg);    border-color: var(--st-warn-line);    color: var(--st-warn-ink); }
+.admin-badge-purple { background: var(--st-alt-bg);     border-color: var(--st-alt-line);     color: var(--st-alt-ink); }
+.admin-badge-green  { background: var(--st-pos-bg);     border-color: var(--st-pos-line);     color: var(--st-pos-ink); }
+.admin-badge-red    { background: var(--st-neg-bg);     border-color: var(--st-neg-line);     color: var(--st-neg-ink); }
+.admin-badge-gray   { background: var(--st-neutral-bg); border-color: var(--st-neutral-line); color: var(--st-neutral-ink); }
+.admin-badge-gold   { background: var(--admin-accent-soft); border-color: var(--admin-accent-line); color: var(--admin-accent-ink); }
 
 /* Detail layout */
 .admin-detail-grid {
