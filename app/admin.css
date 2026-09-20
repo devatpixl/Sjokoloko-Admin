@@ -980,12 +980,6 @@
 .admin-back:hover { color: var(--admin-text); }
 
 /* Empty state */
-.admin-empty {
-  padding: 48px 24px;
-  text-align: center;
-  color: var(--admin-text-dim);
-  font-size: 14px;
-}
 
 /* Form */
 .admin-form {
@@ -1384,66 +1378,6 @@
 }
 
 /* ── Dashboard ── */
-.admin-dashboard-grid {
-  display: grid;
-  grid-template-columns: 1.2fr 1fr;
-  gap: 24px;
-  margin-bottom: 28px;
-}
-
-@media (max-width: 1024px) {
-  .admin-dashboard-grid {
-    grid-template-columns: 1fr;
-  }
-}
-
-.admin-dashboard-bars {
-  display: flex;
-  align-items: flex-end;
-  justify-content: stretch;
-  gap: 6px;
-  height: 140px;
-  padding-top: 8px;
-}
-
-.admin-dashboard-bar-col {
-  flex: 1;
-  min-width: 0;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  height: 100%;
-}
-
-.admin-dashboard-bar-track {
-  flex: 1;
-  width: 100%;
-  max-width: 36px;
-  margin: 0 auto;
-  display: flex;
-  align-items: flex-end;
-  background: var(--admin-bg);
-  border-radius: 6px 6px 2px 2px;
-  overflow: hidden;
-  min-height: 80px;
-}
-
-.admin-dashboard-bar-fill {
-  width: 100%;
-  background: linear-gradient(180deg, var(--gold-300) 0%, var(--gold-500) 100%);
-  border-radius: 4px 4px 0 0;
-  transition: height 0.4s ease;
-}
-
-.admin-dashboard-bar-label {
-  font-size: 10px;
-  font-weight: 600;
-  color: var(--admin-text-dim);
-  margin-top: 8px;
-  text-transform: uppercase;
-  letter-spacing: 0.04em;
-  white-space: nowrap;
-}
 
 .admin-quick-actions {
   display: grid;
@@ -1906,7 +1840,6 @@
 
 @media (max-width: 900px) {
 
-
   .login-input,
   .login-btn {
     height: 48px;
@@ -2281,7 +2214,6 @@
   .admin-bell.has-new .admin-bell-count { display: inline-flex; }
 }
 
-
 /* ── §20  Print ────────────────────────────────────────────────────────────
    A dark-mode user printing a label would otherwise get light-grey ink on
    white paper, on labels whose type sizes are fixed by EU 1169/2011. Force
@@ -2307,7 +2239,6 @@
     background: #fff !important;
   }
 }
-
 
 /* ── Theme toggle ──────────────────────────────────────────────────────── */
 .admin-theme-toggle {
@@ -2344,7 +2275,6 @@
 :root[data-theme="dark"] .admin-theme-toggle .i-sun  { display: block; }
 :root[data-theme="light"] .admin-theme-toggle .i-moon { display: block; }
 :root[data-theme="light"] .admin-theme-toggle .i-sun  { display: none; }
-
 
 /* ── §16  Login ────────────────────────────────────────────────────────────
    This page renders outside .admin-shell, so until the tokens moved to :root
