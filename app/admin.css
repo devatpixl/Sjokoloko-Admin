@@ -17,21 +17,25 @@
 
 /* ── §1  Primitives — raw values, never flip with theme ────────────────── */
 :root {
+  /* Warm neutrals, derived from the storefront's own ink and cream ramps.
+     The panel used Tailwind's cool greys on a chocolate brand: gold on
+     blue-grey reads corporate dashboard, gold on paper reads confectioner.
+     Every step here carries a little of the brand's brown. */
   --n-0:   #FFFFFF;
-  --n-50:  #FAFBFC;
-  --n-100: #F4F6F8;
-  --n-150: #EBEEF2;
-  --n-200: #E1E5EA;
-  --n-300: #CBD2DA;
-  --n-400: #8B93A1;
-  --n-500: #6B7280;
-  --n-700: #2E353F;
-  --n-800: #1E242D;
-  --n-850: #171B21;
-  --n-900: #0E1117;
-  --n-950: #0A0D12;
+  --n-50:  #FDFBF7;            /* warm white — card on paper                 */
+  --n-100: #F6F1E8;            /* paper: the page ground                     */
+  --n-150: #EFE8DB;
+  --n-200: #E4DACA;            /* hairline                                   */
+  --n-300: #CDBEA6;
+  --n-400: #9C8B76;
+  --n-500: #6F6154;            /* secondary ink — warm, not slate            */
+  --n-700: #3A2A20;            /* storefront ink-500                         */
+  --n-800: #2E1F17;            /* storefront ink-600                         */
+  --n-850: #241811;            /* storefront ink-700 — primary ink           */
+  --n-900: #1A110C;            /* storefront ink-800 — the dark ground       */
+  --n-950: #0E0906;            /* storefront ink-900 — warm near-black       */
 
-  --char-900: #1A1A1A;          /* brand charcoal — sidebar, toast slab      */
+  --char-900: #1A110C;          /* espresso: sidebar, toast slab             */
 
   --gold-700: #8A6E33;          /* gold that passes as TEXT on light (4.75:1) */
   --gold-600: #B8922E;
@@ -40,26 +44,29 @@
   --gold-300: #E8C47A;
   --gold-50:  #FBF3E4;
 
-  --hue-pos:  #10B981;
-  --hue-warn: #F59E0B;
-  --hue-neg:  #EF4444;
-  --hue-info: #3B82F6;
-  --hue-alt:  #8B5CF6;
+  /* Status hues come from the storefront's own palette, not from a generic
+     UI ramp. A blue "Bekreftet" pill on a cream-and-gold page is the loudest
+     remaining reminder that this was a template. */
+  --hue-pos:  #8A9A5B;          /* pistache                                  */
+  --hue-warn: #D89A3E;          /* ochre                                     */
+  --hue-neg:  #B55434;          /* rose                                      */
+  --hue-info: #8F6E33;          /* accent-deep — the gold's serious register */
+  --hue-alt:  #6B2418;          /* oxblood                                   */
 
   /* Dark palette, declared once here and merely aliased by the two dark
      blocks below, so the duplicated selector carries no colour decisions. */
-  --d-bg: #0E1117;
-  --d-surface: #161A21;
-  --d-raised: #1D222A;
-  --d-sunken: #12161C;
-  --d-hover: #1C212A;
-  --d-border: #262C36;
-  --d-border-subtle: #1E242D;
-  --d-border-strong: #333B47;
-  --d-text: #E8EBEF;            /* never pure white — it vibrates on near-black */
-  --d-dim: #9AA3B0;
-  --d-mute: #6C7683;
-  --d-sidebar: #0A0D12;         /* the sidebar is always the darkest plane     */
+  --d-bg: #16100C;              /* espresso, not blue-black                    */
+  --d-surface: #1F1610;
+  --d-raised: #291D15;
+  --d-sunken: #120D09;
+  --d-hover: #2A1E16;
+  --d-border: #38281D;          /* storefront's warm-brown divider             */
+  --d-border-subtle: #2A1E16;
+  --d-border-strong: #4A372A;
+  --d-text: #FAEFE9;            /* the storefront's parchment                  */
+  --d-dim: #C9B48A;             /* cream-400                                   */
+  --d-mute: #9E8868;            /* cream-500                                   */
+  --d-sidebar: #0E0906;         /* the sidebar is always the darkest plane     */
 
   /* ── Scales — theme-invariant ── */
   --sp-1: 4px;   --sp-2: 8px;   --sp-3: 12px;  --sp-4: 16px;
@@ -113,7 +120,7 @@
   --admin-surface-hover: var(--n-50);
   --admin-overlay: rgba(10, 13, 18, .5);
 
-  --admin-text: #1A1A2E;
+  --admin-text: var(--n-850);
   --admin-text-dim: var(--n-500);
   --admin-text-mute: var(--n-400);
   --admin-on-accent: var(--char-900);     /* ink that sits ON gold          */
@@ -141,21 +148,21 @@
   --sb-edge: transparent;                 /* dark mode draws a real edge     */
 
   /* Status — tints are translucent so one set composes on any surface */
-  --st-pos-bg: rgba(16, 185, 129, .12);
-  --st-pos-line: rgba(16, 185, 129, .28);
-  --st-pos-ink: #047857;
-  --st-warn-bg: rgba(245, 158, 11, .14);
-  --st-warn-line: rgba(245, 158, 11, .30);
-  --st-warn-ink: #B45309;
-  --st-neg-bg: rgba(239, 68, 68, .12);
-  --st-neg-line: rgba(239, 68, 68, .28);
-  --st-neg-ink: #B91C1C;
-  --st-info-bg: rgba(59, 130, 246, .12);
-  --st-info-line: rgba(59, 130, 246, .28);
-  --st-info-ink: #1D4ED8;
-  --st-alt-bg: rgba(139, 92, 246, .12);
-  --st-alt-line: rgba(139, 92, 246, .28);
-  --st-alt-ink: #6D28D9;
+  --st-pos-bg: rgba(138, 154, 91, .16);
+  --st-pos-line: rgba(138, 154, 91, .34);
+  --st-pos-ink: #55632F;
+  --st-warn-bg: rgba(216, 154, 62, .16);
+  --st-warn-line: rgba(216, 154, 62, .34);
+  --st-warn-ink: #8A5A16;
+  --st-neg-bg: rgba(181, 84, 52, .14);
+  --st-neg-line: rgba(181, 84, 52, .32);
+  --st-neg-ink: #8C3A22;
+  --st-info-bg: rgba(143, 110, 51, .14);
+  --st-info-line: rgba(143, 110, 51, .32);
+  --st-info-ink: #6E5325;
+  --st-alt-bg: rgba(107, 36, 24, .12);
+  --st-alt-line: rgba(107, 36, 24, .30);
+  --st-alt-ink: #6B2418;
   --st-neutral-bg: var(--n-150);
   --st-neutral-line: var(--n-200);
   --st-neutral-ink: var(--n-500);
@@ -201,11 +208,11 @@
     --sb-active-wash: rgba(201, 163, 91, .20);
     --sb-edge: var(--d-border);
 
-    --st-pos-ink: #34D399;
-    --st-warn-ink: #FBBF24;
-    --st-neg-ink: #F87171;
-    --st-info-ink: #60A5FA;
-    --st-alt-ink: #A78BFA;
+    --st-pos-ink: #AEBE85;
+    --st-warn-ink: #E9B76B;
+    --st-neg-ink: #D9805F;
+    --st-info-ink: #C9A35B;
+    --st-alt-ink: #C4705C;
     --st-neutral-bg: rgba(255, 255, 255, .06);
     --st-neutral-line: rgba(255, 255, 255, .12);
     --st-neutral-ink: var(--d-dim);
@@ -250,11 +257,11 @@
   --sb-active-wash: rgba(201, 163, 91, .20);
   --sb-edge: var(--d-border);
 
-  --st-pos-ink: #34D399;
-  --st-warn-ink: #FBBF24;
-  --st-neg-ink: #F87171;
-  --st-info-ink: #60A5FA;
-  --st-alt-ink: #A78BFA;
+  --st-pos-ink: #AEBE85;
+  --st-warn-ink: #E9B76B;
+  --st-neg-ink: #D9805F;
+  --st-info-ink: #C9A35B;
+  --st-alt-ink: #C4705C;
   --st-neutral-bg: rgba(255, 255, 255, .06);
   --st-neutral-line: rgba(255, 255, 255, .12);
   --st-neutral-ink: var(--d-dim);
@@ -513,7 +520,7 @@
 }
 
 .admin-main {
-  padding: var(--sp-6);
+  padding: var(--sp-8) var(--sp-8) var(--sp-16);
   flex: 1;
   width: 100%;
   max-width: 1560px;
@@ -631,8 +638,13 @@
 .admin-stats-grid {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
-  gap: var(--sp-4);
-  margin-bottom: var(--sp-5);
+  gap: 0;
+  margin-bottom: var(--sp-8);
+  background: var(--admin-surface);
+  border: 1px solid var(--admin-border);
+  border-radius: var(--r-lg);
+  overflow: hidden;
+  box-shadow: var(--sh-inset-top);
 }
 /* Named column counts replace the inline gridTemplateColumns overrides that
    the mobile breakpoint previously had to defeat with !important. */
@@ -640,13 +652,14 @@
 .admin-stats-grid.cols-3 { grid-template-columns: repeat(3, 1fr); }
 .admin-stats-grid.cols-2 { grid-template-columns: repeat(2, 1fr); }
 
+/* Cells of one band, divided by a hairline rather than separated by a gap.
+   Four bordered boxes read as four unrelated facts; one band reads as a
+   summary, which is what it is. */
 .admin-stat-card {
-  background: var(--admin-surface);
-  border: 1px solid var(--admin-border);
-  border-radius: var(--r-lg);
-  padding: var(--sp-4) var(--gutter);
-  box-shadow: var(--sh-inset-top);
+  padding: var(--sp-5) var(--gutter);
+  border-left: 1px solid var(--admin-border-subtle);
 }
+.admin-stat-card:first-child { border-left: 0; }
 
 .admin-stat-label {
   font-size: var(--fs-2xs);
@@ -688,7 +701,15 @@
   width: 100%;
   border-collapse: collapse;
   font-size: var(--fs-sm);
+  /* auto, not fixed: columns take the room their content needs and the last
+     one absorbs the slack, instead of every column stretching to an equal
+     share and leaving lakes of space between four-character values. */
+  table-layout: auto;
 }
+
+/* The actions column takes only what it needs and pins to the right edge. */
+.admin-table th.t-actions,
+.admin-table td.t-actions { width: 1%; }
 
 .admin-table th {
   position: sticky;
