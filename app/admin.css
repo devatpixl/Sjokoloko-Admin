@@ -181,57 +181,10 @@
   --select-caret: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%236B7280' stroke-width='2'%3E%3Cpath d='M6 9l6 6 6-6'/%3E%3C/svg%3E");
 }
 
-/* ══ §3  DARK ══ The next two blocks are aliases of --d-*; edit together. ══ */
-@media (prefers-color-scheme: dark) {
-  :root:not([data-theme="light"]) {
-    color-scheme: dark;
-
-    --admin-bg: var(--d-bg);
-    --admin-surface: var(--d-surface);
-    --admin-surface-raised: var(--d-raised);
-    --admin-surface-sunken: var(--d-sunken);
-    --admin-surface-hover: var(--d-hover);
-    --admin-overlay: rgba(0, 0, 0, .62);
-
-    --admin-text: var(--d-text);
-    --admin-text-dim: var(--d-dim);
-    --admin-text-mute: var(--d-mute);
-
-    --admin-border: var(--d-border);
-    --admin-border-subtle: var(--d-border-subtle);
-    --admin-border-strong: var(--d-border-strong);
-
-    --admin-accent-ink: var(--gold-400);
-    --admin-accent-soft: rgba(201, 163, 91, .14);
-
-    --admin-sidebar: var(--d-sidebar);
-    --sb-active-wash: rgba(201, 163, 91, .20);
-    --sb-edge: var(--d-border);
-
-    --st-pos-ink: #AEBE85;
-    --st-warn-ink: #E9B76B;
-    --st-neg-ink: #D9805F;
-    --st-info-ink: #C9A35B;
-    --st-alt-ink: #C4705C;
-    --st-neutral-bg: rgba(255, 255, 255, .06);
-    --st-neutral-line: rgba(255, 255, 255, .12);
-    --st-neutral-ink: var(--d-dim);
-
-    --sh-sm: 0 1px 2px rgba(0, 0, 0, .4);
-    --sh-md: 0 4px 12px rgba(0, 0, 0, .45);
-    --sh-lg: 0 12px 32px rgba(0, 0, 0, .55);
-    --sh-drawer: 4px 0 24px rgba(0, 0, 0, .6);
-    --sh-inset-top: inset 0 1px 0 rgba(255, 255, 255, .04);
-
-    --skel-a: var(--d-sunken);
-    --skel-b: var(--d-hover);
-
-    --toast-bg: var(--d-raised);
-    --toast-ink: var(--d-text);
-    --select-caret: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%239AA3B0' stroke-width='2'%3E%3Cpath d='M6 9l6 6 6-6'/%3E%3C/svg%3E");
-  }
-}
-
+/* ══ §3  DARK — the default ══════════════════════════════════════════════
+   Dark is what the server renders, so this is the theme almost everyone sees;
+   :root above holds the light values that [data-theme="light"] falls back to.
+   Every value here aliases --d-*, so the palette lives in exactly one place. */
 :root[data-theme="dark"] {
   color-scheme: dark;
 
@@ -816,13 +769,6 @@
 :root[data-theme="dark"] .admin-form-textarea,
 :root[data-theme="dark"] .admin-form-select,
 :root[data-theme="dark"] .admin-select { background: var(--admin-surface-sunken); }
-@media (prefers-color-scheme: dark) {
-  :root:not([data-theme="light"]) .admin-input,
-  :root:not([data-theme="light"]) .admin-form-input,
-  :root:not([data-theme="light"]) .admin-form-textarea,
-  :root:not([data-theme="light"]) .admin-form-select,
-  :root:not([data-theme="light"]) .admin-select { background: var(--admin-surface-sunken); }
-}
 
 /* A 1px colour shift is not a focus signal at 13px. */
 .admin-input:focus,
@@ -2349,10 +2295,7 @@
    stylesheet themes from, so it can never disagree with the palette. */
 .admin-theme-toggle .i-sun  { display: none; }
 .admin-theme-toggle .i-moon { display: block; }
-@media (prefers-color-scheme: dark) {
-  :root:not([data-theme="light"]) .admin-theme-toggle .i-moon { display: none; }
-  :root:not([data-theme="light"]) .admin-theme-toggle .i-sun  { display: block; }
-}
+
 :root[data-theme="dark"] .admin-theme-toggle .i-moon { display: none; }
 :root[data-theme="dark"] .admin-theme-toggle .i-sun  { display: block; }
 :root[data-theme="light"] .admin-theme-toggle .i-moon { display: block; }
@@ -2426,7 +2369,6 @@
   .login-btn { height: 48px; font-size: var(--fs-md); }
 }
 
-
 /* The brand mark, set in the display face like every other title. */
 .admin-sidebar-mark {
   font-family: var(--admin-display);
@@ -2446,7 +2388,6 @@
   margin-bottom: var(--sp-2);
   padding: 0 var(--sp-2);
 }
-
 
 /* ── Document pages ────────────────────────────────────────────────────────
    A detail page is a record, not a dashboard. Giving it an eyebrow, a real

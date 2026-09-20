@@ -4,10 +4,10 @@
  * Light/dark switch for the admin panel.
  *
  * Deliberately holds no React state: the `data-theme` attribute on <html> IS
- * the state, written here and read by the stylesheet. That avoids a
- * server/client mismatch on first paint — the value is already on the element
- * before React hydrates, put there by the bootstrap script in app/layout.tsx —
- * and it keeps this component out of the app's data-fetching surface entirely.
+ * the state, written here and read by the stylesheet. The server renders it
+ * as "dark", so the value is on the element before React hydrates and there
+ * is no mismatch on first paint — and it keeps this component out of the
+ * app's data-fetching surface entirely.
  *
  * Both icons ship in the DOM and CSS picks which one shows, so toggling costs
  * no re-render. `aria-pressed` would need state to be truthful, so the button
@@ -16,10 +16,8 @@
 export default function ThemeToggle() {
   function toggle() {
     const el = document.documentElement
-    const current =
-      el.dataset.theme ||
-      (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light')
-    const next = current === 'dark' ? 'light' : 'dark'
+    // The server always renders data-theme, so there is nothing to infer.
+    const next = el.dataset.theme === 'light' ? 'dark' : 'light'
     el.dataset.theme = next
     try {
       localStorage.setItem('sl-admin-theme', next)
