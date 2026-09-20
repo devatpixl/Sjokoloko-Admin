@@ -226,32 +226,20 @@ export default function AdminOrderDetailPage() {
                           </div>
                         )}
                         {slots.length > 0 && (
-                          <ul style={{
-                            margin: '6px 0 0 0',
-                            padding: '0 0 0 16px',
-                            color: 'var(--admin-text-dim)',
-                            fontSize: 12,
-                            fontWeight: 400,
-                            listStyle: 'disc',
-                          }}>
+                          <div className="admin-chips">
                             {slots.map(s => (
-                              <li key={s.name}>{s.qty}× {s.name}</li>
+                              <span key={s.name} className="admin-chip">
+                                <span className="admin-chip-qty">{s.qty}×</span> {s.name}
+                              </span>
                             ))}
-                          </ul>
+                          </div>
                         )}
                         {slots.length === 0 && productFlavors.length > 0 && (
-                          <ul style={{
-                            margin: '6px 0 0 0',
-                            padding: '0 0 0 16px',
-                            color: 'var(--admin-text-dim)',
-                            fontSize: 12,
-                            fontWeight: 400,
-                            listStyle: 'disc',
-                          }}>
+                          <div className="admin-chips">
                             {productFlavors.map((f, j) => (
-                              <li key={j}>{f}</li>
+                              <span key={j} className="admin-chip">{f}</span>
                             ))}
-                          </ul>
+                          </div>
                         )}
                       </td>
                       <td className="t-dim" data-label="Variant">
@@ -435,24 +423,36 @@ export default function AdminOrderDetailPage() {
             <div className="admin-card-header">
               <div className="admin-card-title">Betaling</div>
             </div>
-            <div className="admin-card-body stack">
-              <div>
-                <div className="admin-field-label">Betalingsstatus</div>
-                <div style={{ marginTop: 5 }}>
-                  <span className={`admin-badge ${paymentBadge(order.payment_status).className}`}>
-                    {paymentBadge(order.payment_status).text}
-                  </span>
+            <div className="admin-card-body stack-lg">
+              <div className="row-between">
+                <span className={`admin-badge ${paymentBadge(order.payment_status).className}`}>
+                  {paymentBadge(order.payment_status).text}
+                </span>
+                <span className="admin-field-label">{order.payment_method}</span>
+              </div>
+
+              {/* A receipt, not five more label/value pairs: the lines above
+                  the rule are the working, the line below it is the answer. */}
+              <dl className="admin-receipt">
+                <div className="admin-receipt-line">
+                  <dt>Delsum</dt>
+                  <dd>{formatNOK(order.subtotal)}</dd>
                 </div>
-              </div>
-              <Field label="Betalingsmetode" value={order.payment_method} />
-              <Field label="Delsum" value={formatNOK(order.subtotal)} />
-              {parseFloat(order.discount_amount ?? '0') > 0 && (
-                <Field label="Rabatt" value={`− ${formatNOK(order.discount_amount)}${order.coupon_code ? ` (${order.coupon_code})` : ''}`} />
-              )}
-              <Field label="Frakt" value={formatNOK(order.shipping)} />
-              <div style={{ borderTop: '1px solid var(--admin-border)', paddingTop: 12 }}>
-                <Field label="Totalt" value={formatNOK(order.total)} />
-              </div>
+                {parseFloat(order.discount_amount ?? '0') > 0 && (
+                  <div className="admin-receipt-line">
+                    <dt>Rabatt{order.coupon_code ? ` · ${order.coupon_code}` : ''}</dt>
+                    <dd>− {formatNOK(order.discount_amount)}</dd>
+                  </div>
+                )}
+                <div className="admin-receipt-line">
+                  <dt>Frakt</dt>
+                  <dd>{formatNOK(order.shipping)}</dd>
+                </div>
+                <div className="admin-receipt-line admin-receipt-total">
+                  <dt>Totalt</dt>
+                  <dd>{formatNOK(order.total)}</dd>
+                </div>
+              </dl>
             </div>
           </div>
 
@@ -509,7 +509,9 @@ function Field({ label, value, mono }: { label: string; value: string; mono?: bo
   return (
     <div>
       <div className="admin-field-label">{label}</div>
-      <div className={`admin-field-value${mono ? ' mono' : ''}`}>{value || '—'}</div>
+      <div className={`admin-field-value${mono ? ' mono' : ''}${value ? '' : ' is-empty'}`}>
+        {value || '—'}
+      </div>
     </div>
   )
 }

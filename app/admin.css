@@ -679,9 +679,12 @@
   table-layout: auto;
 }
 
-/* The actions column takes only what it needs and pins to the right edge. */
+/* .t-actions is used both for the empty trailing actions column and for real
+   number columns like Pris, so it must never be narrowed — width:1% squeezed
+   "kr 261" onto two lines. Nowrap alone gets the same tight column without
+   breaking the cells that actually hold a value. */
 .admin-table th.t-actions,
-.admin-table td.t-actions { width: 1%; }
+.admin-table td.t-actions { white-space: nowrap; }
 
 .admin-table th {
   position: sticky;
@@ -807,8 +810,7 @@
   background-size: 14px;
 }
 
-.admin-label,
-.admin-field-label {
+.admin-label {
   font-size: var(--fs-xs);
   font-weight: var(--fw-semibold);
   color: var(--admin-text);
@@ -965,18 +967,29 @@
   align-items: start;
 }
 
+/* Deliberately quiet and sentence-case. This pattern repeats seventeen times
+   on the order page alone; as bold uppercase it competed with its own values
+   and turned the page into stripes. */
 .admin-field-label {
-  font-size: 11px;
-  font-weight: 700;
-  text-transform: uppercase;
-  letter-spacing: 0.1em;
-  color: var(--admin-text-dim);
-  margin-bottom: 4px;
+  font-size: var(--fs-xs);
+  font-weight: var(--fw-regular);
+  letter-spacing: 0;
+  text-transform: none;
+  color: var(--admin-text-mute);
+  margin-bottom: 1px;
 }
 
 .admin-field-value {
-  font-size: 14px;
+  font-size: var(--fs-base);
+  font-weight: var(--fw-medium);
   color: var(--admin-text);
+  line-height: var(--lh-snug);
+}
+
+/* A placeholder should look like an absence, not like data. */
+.admin-field-value.is-empty {
+  color: var(--admin-text-mute);
+  font-weight: var(--fw-regular);
 }
 
 .admin-field-value.dim { color: var(--admin-text-dim); }
@@ -2572,4 +2585,71 @@
   gap: var(--sp-1);
   min-height: 212px;
   text-align: center;
+}
+
+
+/* ── Receipt ───────────────────────────────────────────────────────────────
+   Money reads as a receipt, not as five more label/value pairs: the lines
+   above the rule are working, the line below it is the answer. */
+.admin-receipt { display: grid; gap: var(--sp-2); }
+
+.admin-receipt-line {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: var(--sp-4);
+  font-size: var(--fs-sm);
+}
+.admin-receipt-line dt { color: var(--admin-text-dim); }
+.admin-receipt-line dd {
+  margin: 0;
+  font-variant-numeric: tabular-nums;
+  color: var(--admin-text);
+}
+
+.admin-receipt-total {
+  margin-top: var(--sp-2);
+  padding-top: var(--sp-3);
+  border-top: 1px solid var(--admin-border);
+  align-items: baseline;
+}
+.admin-receipt-total dt {
+  font-weight: var(--fw-semibold);
+  color: var(--admin-text);
+}
+.admin-receipt-total dd {
+  font-family: var(--admin-display);
+  font-size: var(--fs-lg);
+  font-weight: 400;
+  font-variation-settings: "opsz" 24, "SOFT" 50;
+  font-variant-numeric: tabular-nums;
+}
+
+/* ── Flavour chips ─────────────────────────────────────────────────────────
+   The contents of a box are the most human thing on an order line, so they
+   read as the physical chocolates they describe rather than as a bullet list.
+   Still a single element child of the <td>, so the mobile table transform
+   treats the cell exactly as it did before. */
+.admin-chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--sp-1);
+  margin-top: var(--sp-2);
+}
+.admin-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--sp-1);
+  padding: 2px var(--sp-2);
+  border: 1px solid var(--admin-border);
+  border-radius: var(--r-full);
+  background: var(--admin-surface-sunken);
+  font-size: var(--fs-2xs);
+  color: var(--admin-text-dim);
+  white-space: nowrap;
+}
+.admin-chip-qty {
+  font-variant-numeric: tabular-nums;
+  font-weight: var(--fw-semibold);
+  color: var(--admin-text);
 }
