@@ -1,11 +1,23 @@
 import type { Metadata } from 'next'
-import { Inter, Geist_Mono } from 'next/font/google'
+import { Fraunces, Manrope, Geist_Mono } from 'next/font/google'
 import './admin.css'
 
-// 700 is loaded because the design system uses it for page titles, stat values,
-// table headers and badges. Without it the browser synthesises a faux bold,
-// which is a large part of why the panel used to read hand-made.
-const inter = Inter({
+// The same three faces the storefront loads. The admin used to wear Inter,
+// which is why it read like a generic dashboard rather than part of this
+// brand — Fraunces at 300 with these axes is the voice customers already see.
+const fraunces = Fraunces({
+  subsets: ['latin'],
+  axes: ['opsz', 'SOFT'],
+  weight: 'variable',
+  style: ['normal', 'italic'],
+  variable: '--font-admin-display',
+  display: 'swap',
+})
+
+// Manrope carries everything that has to stay legible at 13px: table data,
+// labels, buttons. Fraunces is for display only — a light serif at data sizes
+// is a readability problem, not a flourish.
+const manrope = Manrope({
   subsets: ['latin'],
   weight: ['400', '500', '600', '700'],
   variable: '--font-admin',
@@ -33,7 +45,7 @@ const THEME_BOOTSTRAP = `(function(){try{var t=localStorage.getItem('sl-admin-th
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
-    <html lang="no" className={`${inter.variable} ${mono.variable}`} suppressHydrationWarning>
+    <html lang="no" className={`${manrope.variable} ${fraunces.variable} ${mono.variable}`} suppressHydrationWarning>
       <head>
         {/* Tells the browser to render native controls — checkboxes, date
             pickers, select popups, scrollbars — in the matching scheme. CSS

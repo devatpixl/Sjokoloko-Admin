@@ -65,9 +65,10 @@
   --sp-1: 4px;   --sp-2: 8px;   --sp-3: 12px;  --sp-4: 16px;
   --sp-5: 20px;  --sp-6: 24px;  --sp-8: 32px;  --sp-10: 40px;
   --sp-12: 48px; --sp-16: 64px;
-  --gutter: 20px;               /* THE card gutter: title, body and cells all
+  --gutter: 22px;               /* THE card gutter: title, body and cells all
                                    share it, so the left edge never breaks    */
-  --cell-y: 12px;
+  --cell-y: 16px;               /* taller rows — space reads as considered,
+                                   crowding reads as a spreadsheet           */
 
   --r-xs: 4px;  --r-sm: 6px;  --r-md: 8px;
   --r-lg: 12px; --r-xl: 16px; --r-full: 999px;
@@ -88,8 +89,17 @@
   --sidebar-w: 248px;
   --topbar-h: 56px;
 
-  --admin-font: var(--font-admin, 'Inter', system-ui, sans-serif);
+  --admin-font: var(--font-admin, 'Manrope', system-ui, sans-serif);
+  --admin-display: var(--font-admin-display, 'Fraunces', Georgia, serif);
   --admin-mono: var(--font-admin-mono, ui-monospace, monospace);
+
+  /* Display sizes. The panel had no real hierarchy — a 20px title against
+     13px body is not a difference, it is a rounding error. */
+  --fs-d1: 34px;   /* page title            */
+  --fs-d2: 30px;   /* stat value            */
+  --fs-d3: 22px;   /* section / brand mark  */
+  /* Matches the storefront's display treatment exactly */
+  --display-axes: "opsz" 144, "SOFT" 50;
 }
 
 /* ── §2  Semantic tokens — LIGHT ───────────────────────────────────────── */
@@ -327,15 +337,21 @@
 
 .admin-sidebar-logo {
   padding: var(--sp-6) var(--sp-5) var(--sp-5);
+  display: grid;
+  gap: var(--sp-2);
   border-bottom: 1px solid var(--sb-line);
   color: var(--sb-ink);
-  font-size: var(--fs-md);
-  font-weight: var(--fw-bold);
-  letter-spacing: var(--tr-tight);
+  font-family: var(--admin-display);
+  font-size: var(--fs-d3);
+  font-weight: 300;
+  font-variation-settings: var(--display-axes);
+  letter-spacing: -0.01em;
+  line-height: 1;
 }
 
 .admin-sidebar-logo span {
   display: block;
+  font-family: var(--admin-font);
   font-size: var(--fs-2xs);
   font-weight: var(--fw-semibold);
   letter-spacing: var(--tr-caps-loose);
@@ -538,17 +554,19 @@
   justify-content: space-between;
   gap: var(--sp-4);
   flex-wrap: wrap;
-  padding-bottom: var(--sp-4);
-  margin-bottom: var(--sp-5);
+  padding-bottom: var(--sp-5);
+  margin-bottom: var(--sp-8);
   border-bottom: 1px solid var(--admin-border-subtle);
 }
 
 .admin-page-title {
-  font-size: var(--fs-lg);
-  font-weight: var(--fw-bold);
-  letter-spacing: var(--tr-tight);
+  font-family: var(--admin-display);
+  font-size: var(--fs-d1);
+  font-weight: 300;
+  font-variation-settings: var(--display-axes);
+  letter-spacing: -0.015em;
+  line-height: 0.98;
   color: var(--admin-text);
-  line-height: var(--lh-tight);
 }
 
 .admin-page-subtitle {
@@ -579,8 +597,11 @@
 }
 
 .admin-card-title {
-  font-size: var(--fs-base);
-  font-weight: var(--fw-semibold);
+  font-family: var(--admin-display);
+  font-size: var(--fs-md);
+  font-weight: 400;
+  font-variation-settings: "opsz" 24, "SOFT" 50;
+  letter-spacing: -0.005em;
   color: var(--admin-text);
 }
 
@@ -636,15 +657,17 @@
 }
 
 .admin-stat-value {
-  font-size: var(--fs-xl);
-  font-weight: var(--fw-bold);
-  letter-spacing: -0.03em;
+  font-family: var(--admin-display);
+  font-size: var(--fs-d2);
+  font-weight: 300;
+  font-variation-settings: var(--display-axes);
+  letter-spacing: -0.01em;
   /* A row of figures that does not align optically is the whole failure mode
      of a stat row. */
   font-variant-numeric: tabular-nums;
   color: var(--admin-text);
-  margin-top: var(--sp-1);
-  line-height: var(--lh-tight);
+  margin-top: var(--sp-2);
+  line-height: 1;
 }
 
 /* The one gold number on the page. */
@@ -689,6 +712,14 @@
   padding: var(--cell-y) var(--gutter);
   border-bottom: 1px solid var(--admin-border-subtle);
   vertical-align: middle;
+  color: var(--admin-text);
+}
+
+/* The first cell of every row is its title, so it carries the weight and the
+   rest of the row stays quiet. Without this a row is seven equal things and
+   the eye has nowhere to land. */
+.admin-table tbody td:first-child {
+  font-weight: var(--fw-semibold);
   color: var(--admin-text);
 }
 
@@ -2318,14 +2349,18 @@
 }
 
 .login-brand {
-  font-size: var(--fs-lg);
-  font-weight: var(--fw-bold);
-  letter-spacing: var(--tr-tight);
+  font-family: var(--admin-display);
+  font-size: 30px;
+  font-weight: 300;
+  font-variation-settings: var(--display-axes);
+  letter-spacing: -0.015em;
+  line-height: 1;
   color: var(--admin-text);
   margin-bottom: var(--sp-6);
 }
 .login-brand span {
   display: block;
+  font-family: var(--admin-font);
   font-size: var(--fs-xs);
   font-weight: var(--fw-semibold);
   letter-spacing: var(--tr-caps-loose);
