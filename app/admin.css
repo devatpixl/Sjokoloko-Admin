@@ -1,4 +1,269 @@
-/* ── Admin shell reset ── */
+/* ═══════════════════════════════════════════════════════════════════════
+   SJOKOLOKO ADMIN — DESIGN SYSTEM
+
+   Order is load-bearing: tokens -> theme -> base -> shell -> primitives ->
+   components -> responsive -> print. The responsive block stays last so it
+   wins on specificity alone, without !important.
+
+   Two rules that are not style preferences:
+
+   1. Never add or remove a child element inside a <td>. The mobile table
+      transform keys off `td:has(> div|ul|ol)` — changing a cell's child
+      structure silently changes its layout on phones, with no error.
+   2. Never set `color` on `body`. The label printer portals its output
+      outside .admin-shell; if body carried the theme ink, a dark-mode user
+      would print grey text on white onto legally-sized food labels.
+   ═══════════════════════════════════════════════════════════════════════ */
+
+/* ── §1  Primitives — raw values, never flip with theme ────────────────── */
+:root {
+  --n-0:   #FFFFFF;
+  --n-50:  #FAFBFC;
+  --n-100: #F4F6F8;
+  --n-150: #EBEEF2;
+  --n-200: #E1E5EA;
+  --n-300: #CBD2DA;
+  --n-400: #8B93A1;
+  --n-500: #6B7280;
+  --n-700: #2E353F;
+  --n-800: #1E242D;
+  --n-850: #171B21;
+  --n-900: #0E1117;
+  --n-950: #0A0D12;
+
+  --char-900: #1A1A1A;          /* brand charcoal — sidebar, toast slab      */
+
+  --gold-700: #8A6E33;          /* gold that passes as TEXT on light (4.75:1) */
+  --gold-600: #B8922E;
+  --gold-500: #C9A35B;          /* the brand gold — fills, rails, rings       */
+  --gold-400: #DDBC80;          /* gold as text on dark                       */
+  --gold-300: #E8C47A;
+  --gold-50:  #FBF3E4;
+
+  --hue-pos:  #10B981;
+  --hue-warn: #F59E0B;
+  --hue-neg:  #EF4444;
+  --hue-info: #3B82F6;
+  --hue-alt:  #8B5CF6;
+
+  /* Dark palette, declared once here and merely aliased by the two dark
+     blocks below, so the duplicated selector carries no colour decisions. */
+  --d-bg: #0E1117;
+  --d-surface: #161A21;
+  --d-raised: #1D222A;
+  --d-sunken: #12161C;
+  --d-hover: #1C212A;
+  --d-border: #262C36;
+  --d-border-subtle: #1E242D;
+  --d-border-strong: #333B47;
+  --d-text: #E8EBEF;            /* never pure white — it vibrates on near-black */
+  --d-dim: #9AA3B0;
+  --d-mute: #6C7683;
+  --d-sidebar: #0A0D12;         /* the sidebar is always the darkest plane     */
+
+  /* ── Scales — theme-invariant ── */
+  --sp-1: 4px;   --sp-2: 8px;   --sp-3: 12px;  --sp-4: 16px;
+  --sp-5: 20px;  --sp-6: 24px;  --sp-8: 32px;  --sp-10: 40px;
+  --sp-12: 48px; --sp-16: 64px;
+  --gutter: 20px;               /* THE card gutter: title, body and cells all
+                                   share it, so the left edge never breaks    */
+  --cell-y: 12px;
+
+  --r-xs: 4px;  --r-sm: 6px;  --r-md: 8px;
+  --r-lg: 12px; --r-xl: 16px; --r-full: 999px;
+
+  --fs-3xs: 10px; --fs-2xs: 11px; --fs-xs: 12px; --fs-sm: 13px;
+  --fs-base: 14px; --fs-md: 16px; --fs-lg: 20px; --fs-xl: 28px;
+  --lh-tight: 1.2; --lh-snug: 1.35; --lh-base: 1.5; --lh-relaxed: 1.65;
+  --fw-regular: 400; --fw-medium: 500; --fw-semibold: 600; --fw-bold: 700;
+  --tr-tight: -0.02em; --tr-wide: 0.06em; --tr-caps: 0.1em; --tr-caps-loose: 0.16em;
+
+  --dur-1: 90ms; --dur-2: 150ms; --dur-3: 220ms; --dur-4: 280ms;
+  --ease-out: cubic-bezier(.22, 1, .36, 1);
+  --ease-standard: cubic-bezier(.2, 0, 0, 1);
+
+  --z-sticky: 10; --z-topbar: 30; --z-scrim: 55; --z-drawer: 60;
+  --z-drawer-close: 61; --z-popover: 80; --z-toast: 100; --z-dialog: 200;
+
+  --sidebar-w: 248px;
+  --topbar-h: 56px;
+
+  --admin-font: var(--font-admin, 'Inter', system-ui, sans-serif);
+  --admin-mono: var(--font-admin-mono, ui-monospace, monospace);
+}
+
+/* ── §2  Semantic tokens — LIGHT ───────────────────────────────────────── */
+:root {
+  color-scheme: light;
+
+  --admin-bg: var(--n-100);
+  --admin-surface: var(--n-0);
+  --admin-surface-raised: var(--n-0);     /* dialogs, popovers              */
+  --admin-surface-sunken: var(--n-50);    /* table head, input wells        */
+  --admin-surface-hover: var(--n-50);
+  --admin-overlay: rgba(10, 13, 18, .5);
+
+  --admin-text: #1A1A2E;
+  --admin-text-dim: var(--n-500);
+  --admin-text-mute: var(--n-400);
+  --admin-on-accent: var(--char-900);     /* ink that sits ON gold          */
+  --admin-inverse: var(--n-0);
+
+  --admin-border: var(--n-200);           /* outer hairline                 */
+  --admin-border-subtle: var(--n-150);    /* inner dividers                 */
+  --admin-border-strong: var(--n-300);    /* hover / emphasis               */
+  --admin-ring: var(--gold-500);
+
+  --admin-accent: var(--gold-500);        /* fills, rails, rings — NOT text  */
+  --admin-accent-ink: var(--gold-700);    /* gold as TEXT on light: 4.75:1   */
+  --admin-accent-hover: var(--gold-600);
+  --admin-accent-soft: var(--gold-50);
+  --admin-accent-line: rgba(201, 163, 91, .32);
+
+  /* Sidebar island — one set of names, two very different palettes */
+  --admin-sidebar: var(--char-900);
+  --sb-ink: rgba(255, 255, 255, .92);
+  --sb-ink-dim: rgba(255, 255, 255, .58);
+  --sb-ink-mute: rgba(255, 255, 255, .42);
+  --sb-hover: rgba(255, 255, 255, .06);
+  --sb-line: rgba(255, 255, 255, .10);
+  --sb-active-wash: rgba(201, 163, 91, .15);
+  --sb-edge: transparent;                 /* dark mode draws a real edge     */
+
+  /* Status — tints are translucent so one set composes on any surface */
+  --st-pos-bg: rgba(16, 185, 129, .12);
+  --st-pos-line: rgba(16, 185, 129, .28);
+  --st-pos-ink: #047857;
+  --st-warn-bg: rgba(245, 158, 11, .14);
+  --st-warn-line: rgba(245, 158, 11, .30);
+  --st-warn-ink: #B45309;
+  --st-neg-bg: rgba(239, 68, 68, .12);
+  --st-neg-line: rgba(239, 68, 68, .28);
+  --st-neg-ink: #B91C1C;
+  --st-info-bg: rgba(59, 130, 246, .12);
+  --st-info-line: rgba(59, 130, 246, .28);
+  --st-info-ink: #1D4ED8;
+  --st-alt-bg: rgba(139, 92, 246, .12);
+  --st-alt-line: rgba(139, 92, 246, .28);
+  --st-alt-ink: #6D28D9;
+  --st-neutral-bg: var(--n-150);
+  --st-neutral-line: var(--n-200);
+  --st-neutral-ink: var(--n-500);
+
+  --sh-sm: 0 1px 2px rgba(16, 24, 40, .05);
+  --sh-md: 0 4px 12px rgba(16, 24, 40, .08);
+  --sh-lg: 0 12px 32px rgba(16, 24, 40, .14);
+  --sh-drawer: 4px 0 24px rgba(16, 24, 40, .18);
+  --sh-inset-top: none;                   /* dark-only: lifts a card off the void */
+
+  --skel-a: var(--n-100);
+  --skel-b: #E8ECF0;
+
+  --toast-bg: var(--char-900);
+  --toast-ink: var(--n-0);
+  --select-caret: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%236B7280' stroke-width='2'%3E%3Cpath d='M6 9l6 6 6-6'/%3E%3C/svg%3E");
+}
+
+/* ══ §3  DARK ══ The next two blocks are aliases of --d-*; edit together. ══ */
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    color-scheme: dark;
+
+    --admin-bg: var(--d-bg);
+    --admin-surface: var(--d-surface);
+    --admin-surface-raised: var(--d-raised);
+    --admin-surface-sunken: var(--d-sunken);
+    --admin-surface-hover: var(--d-hover);
+    --admin-overlay: rgba(0, 0, 0, .62);
+
+    --admin-text: var(--d-text);
+    --admin-text-dim: var(--d-dim);
+    --admin-text-mute: var(--d-mute);
+
+    --admin-border: var(--d-border);
+    --admin-border-subtle: var(--d-border-subtle);
+    --admin-border-strong: var(--d-border-strong);
+
+    --admin-accent-ink: var(--gold-400);
+    --admin-accent-soft: rgba(201, 163, 91, .14);
+
+    --admin-sidebar: var(--d-sidebar);
+    --sb-active-wash: rgba(201, 163, 91, .20);
+    --sb-edge: var(--d-border);
+
+    --st-pos-ink: #34D399;
+    --st-warn-ink: #FBBF24;
+    --st-neg-ink: #F87171;
+    --st-info-ink: #60A5FA;
+    --st-alt-ink: #A78BFA;
+    --st-neutral-bg: rgba(255, 255, 255, .06);
+    --st-neutral-line: rgba(255, 255, 255, .12);
+    --st-neutral-ink: var(--d-dim);
+
+    --sh-sm: 0 1px 2px rgba(0, 0, 0, .4);
+    --sh-md: 0 4px 12px rgba(0, 0, 0, .45);
+    --sh-lg: 0 12px 32px rgba(0, 0, 0, .55);
+    --sh-drawer: 4px 0 24px rgba(0, 0, 0, .6);
+    --sh-inset-top: inset 0 1px 0 rgba(255, 255, 255, .04);
+
+    --skel-a: var(--d-sunken);
+    --skel-b: var(--d-hover);
+
+    --toast-bg: var(--d-raised);
+    --toast-ink: var(--d-text);
+    --select-caret: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%239AA3B0' stroke-width='2'%3E%3Cpath d='M6 9l6 6 6-6'/%3E%3C/svg%3E");
+  }
+}
+
+:root[data-theme="dark"] {
+  color-scheme: dark;
+
+  --admin-bg: var(--d-bg);
+  --admin-surface: var(--d-surface);
+  --admin-surface-raised: var(--d-raised);
+  --admin-surface-sunken: var(--d-sunken);
+  --admin-surface-hover: var(--d-hover);
+  --admin-overlay: rgba(0, 0, 0, .62);
+
+  --admin-text: var(--d-text);
+  --admin-text-dim: var(--d-dim);
+  --admin-text-mute: var(--d-mute);
+
+  --admin-border: var(--d-border);
+  --admin-border-subtle: var(--d-border-subtle);
+  --admin-border-strong: var(--d-border-strong);
+
+  --admin-accent-ink: var(--gold-400);
+  --admin-accent-soft: rgba(201, 163, 91, .14);
+
+  --admin-sidebar: var(--d-sidebar);
+  --sb-active-wash: rgba(201, 163, 91, .20);
+  --sb-edge: var(--d-border);
+
+  --st-pos-ink: #34D399;
+  --st-warn-ink: #FBBF24;
+  --st-neg-ink: #F87171;
+  --st-info-ink: #60A5FA;
+  --st-alt-ink: #A78BFA;
+  --st-neutral-bg: rgba(255, 255, 255, .06);
+  --st-neutral-line: rgba(255, 255, 255, .12);
+  --st-neutral-ink: var(--d-dim);
+
+  --sh-sm: 0 1px 2px rgba(0, 0, 0, .4);
+  --sh-md: 0 4px 12px rgba(0, 0, 0, .45);
+  --sh-lg: 0 12px 32px rgba(0, 0, 0, .55);
+  --sh-drawer: 4px 0 24px rgba(0, 0, 0, .6);
+  --sh-inset-top: inset 0 1px 0 rgba(255, 255, 255, .04);
+
+  --skel-a: var(--d-sunken);
+  --skel-b: var(--d-hover);
+
+  --toast-bg: var(--d-raised);
+  --toast-ink: var(--d-text);
+  --select-caret: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%239AA3B0' stroke-width='2'%3E%3Cpath d='M6 9l6 6 6-6'/%3E%3C/svg%3E");
+}
+
+/* ── §5  Base ──────────────────────────────────────────────────────────── */
 
 /* Form controls were content-box, so width:100% plus padding overflowed the
    column they sit in. Only the controls are switched, to leave the rest of
@@ -10,30 +275,36 @@
   box-sizing: border-box;
 }
 
-.admin-shell {
-  --admin-bg: #F4F6F8;
-  --admin-sidebar: #1A1A1A;
-  --admin-surface: #FFFFFF;
-  --admin-border: #E1E5EA;
-  --admin-text: #1A1A2E;
-  --admin-text-dim: #6B7280;
-  --admin-accent: #C9A35B;
-  --admin-accent-soft: #FBF3E4;
-  --admin-font: var(--font-admin, 'Inter', system-ui, sans-serif);
-  --admin-mono: var(--font-admin-mono, ui-monospace, monospace);
+/* There was no focus style anywhere in this file. Buttons showed nothing at
+   all; inputs only shifted a 1px border, which is not a signal at 13px. */
+:focus-visible {
+  outline: 2px solid var(--admin-ring);
+  outline-offset: 2px;
+  border-radius: var(--r-xs);
+}
 
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: .01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: .01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
+
+.admin-shell {
   display: flex;
   min-height: 100vh;
   background: var(--admin-bg);
   font-family: var(--admin-font);
   color: var(--admin-text);
-  /* Override dark editorial globals */
-  --background: var(--admin-bg);
-  --foreground: var(--admin-text);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
 }
 
 /* Sidebar */
 .admin-sidebar {
+  border-right: 1px solid var(--sb-edge);
   width: 240px;
   flex-shrink: 0;
   background: var(--admin-sidebar);
@@ -47,7 +318,7 @@
 
 .admin-sidebar-logo {
   padding: 24px 20px 20px;
-  border-bottom: 1px solid rgba(255,255,255,0.08);
+  border-bottom: 1px solid var(--sb-line);
   color: #FFFFFF;
 }
 
@@ -75,7 +346,7 @@
   font-weight: 600;
   letter-spacing: 0.14em;
   text-transform: uppercase;
-  color: rgba(255,255,255,0.3);
+  color: var(--sb-ink-mute);
   padding: 8px 8px 4px;
 }
 
@@ -85,7 +356,7 @@
   gap: 10px;
   padding: 9px 10px;
   border-radius: 6px;
-  color: rgba(255,255,255,0.65);
+  color: var(--sb-ink-dim);
   font-size: 13.5px;
   font-weight: 500;
   text-decoration: none;
@@ -94,7 +365,7 @@
 }
 
 .admin-nav-link:hover {
-  background: rgba(255,255,255,0.07);
+  background: var(--sb-hover);
   color: #FFFFFF;
 }
 
@@ -116,13 +387,13 @@
 
 .admin-nav-divider {
   height: 1px;
-  background: rgba(255,255,255,0.07);
+  background: var(--sb-hover);
   margin: 8px 12px;
 }
 
 .admin-sidebar-footer {
   padding: 16px 12px;
-  border-top: 1px solid rgba(255,255,255,0.08);
+  border-top: 1px solid var(--sb-line);
 }
 
 .admin-sidebar-footer a {
@@ -130,14 +401,14 @@
   align-items: center;
   gap: 8px;
   font-size: 12px;
-  color: rgba(255,255,255,0.4);
+  color: var(--sb-ink-mute);
   text-decoration: none;
   padding: 6px 8px;
   border-radius: 4px;
   transition: color 150ms;
 }
 
-.admin-sidebar-footer a:hover { color: rgba(255,255,255,0.7); }
+.admin-sidebar-footer a:hover { color: var(--sb-ink); }
 
 /* Body */
 .admin-body {
@@ -585,8 +856,9 @@ table.admin-table {
   display: flex;
   align-items: center;
   gap: 10px;
-  background: #1A1A1A;
-  color: #fff;
+  background: var(--toast-bg);
+  color: var(--toast-ink);
+  box-shadow: var(--sh-lg);
   padding: 12px 18px 12px 14px;
   border-radius: 8px;
   font-size: 13.5px;
@@ -812,7 +1084,7 @@ table.admin-table {
 
 /* Skeleton loader */
 .admin-skeleton {
-  background: linear-gradient(90deg, #F4F6F8 0%, #E8ECF0 50%, #F4F6F8 100%);
+  background: linear-gradient(90deg, var(--skel-a) 0%, var(--skel-b) 50%, var(--skel-a) 100%);
   background-size: 200% 100%;
   animation: skeleton-pulse 1.4s ease-in-out infinite;
   border-radius: 4px;
@@ -1468,9 +1740,13 @@ table.admin-table {
 /* The shop is dark, so the preview is too — otherwise the pale dots lie */
 .flavor-preview { margin-top: 18px; }
 
+/* Pinned in BOTH themes on purpose: this previews the dark storefront, so
+   if it followed the admin theme it would stop predicting what the customer
+   actually sees. Same reason lib/flavor-palette.ts is frozen. */
 .flavor-preview-stage {
   background: #1A120B;
   border: 1px solid #2C2117;
+  color-scheme: dark;
   border-radius: 10px;
   padding: 16px;
 }
@@ -1768,3 +2044,67 @@ table.admin-table {
   .admin-bell-label { display: none; }
   .admin-bell.has-new .admin-bell-count { display: inline-flex; }
 }
+
+
+/* ── §20  Print ────────────────────────────────────────────────────────────
+   A dark-mode user printing a label would otherwise get light-grey ink on
+   white paper, on labels whose type sizes are fixed by EU 1169/2011. Force
+   the light palette for print and pin the label itself to true black.
+   Deliberately scoped to :root and .label-print-wrap only — labels/page.tsx
+   injects its own styled-jsx print rules AFTER this sheet, and anything here
+   targeting `body > *` would collide with them. */
+@media print {
+  :root {
+    color-scheme: light;
+    --admin-bg: #FFFFFF;
+    --admin-surface: #FFFFFF;
+    --admin-surface-raised: #FFFFFF;
+    --admin-surface-sunken: #FFFFFF;
+    --admin-text: #000000;
+    --admin-text-dim: #333333;
+    --admin-border: #CCCCCC;
+    --admin-border-subtle: #DDDDDD;
+  }
+  .label-print-wrap,
+  .label-print-wrap * {
+    color: #000 !important;
+    background: #fff !important;
+  }
+}
+
+
+/* ── Theme toggle ──────────────────────────────────────────────────────── */
+.admin-theme-toggle {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 30px;
+  height: 30px;
+  border: 1px solid var(--admin-border);
+  border-radius: var(--r-md);
+  background: var(--admin-surface);
+  color: var(--admin-text-dim);
+  cursor: pointer;
+  transition: color var(--dur-2) var(--ease-standard),
+              border-color var(--dur-2) var(--ease-standard),
+              background var(--dur-2) var(--ease-standard);
+}
+.admin-theme-toggle:hover {
+  color: var(--admin-text);
+  border-color: var(--admin-border-strong);
+  background: var(--admin-surface-hover);
+}
+
+/* The icon shows what you will GET, not what you have — it is an action
+   button, so it advertises its result. Driven by the same attribute the
+   stylesheet themes from, so it can never disagree with the palette. */
+.admin-theme-toggle .i-sun  { display: none; }
+.admin-theme-toggle .i-moon { display: block; }
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) .admin-theme-toggle .i-moon { display: none; }
+  :root:not([data-theme="light"]) .admin-theme-toggle .i-sun  { display: block; }
+}
+:root[data-theme="dark"] .admin-theme-toggle .i-moon { display: none; }
+:root[data-theme="dark"] .admin-theme-toggle .i-sun  { display: block; }
+:root[data-theme="light"] .admin-theme-toggle .i-moon { display: block; }
+:root[data-theme="light"] .admin-theme-toggle .i-sun  { display: none; }
