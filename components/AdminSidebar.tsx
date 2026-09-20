@@ -12,7 +12,7 @@ const NAV = [
       { href: '/orders', label: 'Bestillinger', shortcut: 'g o', icon: <IconOrders />, badgeKey: null },
       { href: '/products', label: 'Produkter', shortcut: 'g p', icon: <IconProducts />, badgeKey: null },
       { href: '/flavors', label: 'Smaker', shortcut: 'g f', icon: <IconFlavors />, badgeKey: null },
-      { href: '/customers', label: 'Kunder', shortcut: 'g c', icon: <IconCustomers />, badgeKey: null },
+      { href: '/customers', label: 'Kunder', shortcut: 'g c', icon: <IconCustomers />, badgeKey: 'new_customers' as const },
     ],
   },
   {
@@ -65,7 +65,15 @@ export default function AdminSidebar() {
     }
     load()
     const id = setInterval(load, 30_000)
-    return () => { alive = false; clearInterval(id) }
+    // A badge dismissed elsewhere in the panel has to vanish at once. Waiting
+    // for the next poll leaves the old count on screen for up to 30s, which
+    // reads as "the button didn't work" and invites a second press.
+    window.addEventListener('admin:stats-changed', load)
+    return () => {
+      alive = false
+      clearInterval(id)
+      window.removeEventListener('admin:stats-changed', load)
+    }
   }, [pathname])
 
   // Keyboard shortcuts: g o → orders, etc.

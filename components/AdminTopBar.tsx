@@ -1,4 +1,5 @@
 import { auth, signOut } from '@/auth'
+import NotificationBell from './NotificationBell'
 
 export default async function AdminTopBar() {
   const session = await auth()
@@ -8,6 +9,7 @@ export default async function AdminTopBar() {
     <div className="admin-topbar">
       <div className="admin-topbar-title" />
       <div style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
+        <NotificationBell />
         <span className="admin-topbar-badge">{name}</span>
         <form
           action={async () => {

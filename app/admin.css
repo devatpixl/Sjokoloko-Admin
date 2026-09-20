@@ -1584,3 +1584,187 @@ table.admin-table {
   border-style: dashed;
   opacity: 0.85;
 }
+
+/* ── Notification bell ──────────────────────────────────────────────────
+   The top-bar counterpart to the sidebar badges. It replaced the per-signup
+   e-mail to ops, so the panel lists what happened rather than only how many.
+   Nothing here clears on open — dismissal is the explicit button at the foot. */
+.admin-bell {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 30px;
+  height: 30px;
+  border: 1px solid var(--admin-border);
+  border-radius: 6px;
+  background: var(--admin-surface);
+  color: var(--admin-text-dim);
+  cursor: pointer;
+}
+.admin-bell:hover { color: var(--admin-text); border-color: #CBD2DA; }
+
+/* With something waiting it stops being an icon and says so in words. Red
+   rather than gold: the sidebar already uses red for unread counts, and this
+   has to win attention against a header full of gold. */
+.admin-bell.has-new {
+  width: auto;
+  gap: 7px;
+  padding: 0 11px;
+  background: #FEF2F2;
+  border-color: #FECACA;
+  color: #DC2626;
+}
+.admin-bell.has-new:hover { background: #FEE2E2; border-color: #FCA5A5; color: #B91C1C; }
+
+.admin-bell-label {
+  font-size: 12px;
+  font-weight: 600;
+  white-space: nowrap;
+}
+
+/* When the words are on screen the floating bubble is just the same number
+   twice, so it only appears once the label is gone. */
+.admin-bell.has-new .admin-bell-count { display: none; }
+
+.admin-bell-count {
+  position: absolute;
+  top: -5px;
+  right: -5px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 16px;
+  height: 16px;
+  padding: 0 4px;
+  background: #DC2626;
+  color: #fff;
+  border: 2px solid var(--admin-surface);
+  border-radius: 10px;
+  font-size: 10px;
+  font-weight: 700;
+  line-height: 1;
+}
+
+.admin-bell-panel {
+  position: absolute;
+  top: 38px;
+  right: 0;
+  width: 340px;
+  max-width: calc(100vw - 32px);
+  background: var(--admin-surface);
+  border: 1px solid var(--admin-border);
+  border-radius: 10px;
+  box-shadow: 0 12px 32px rgba(26,26,46,0.14);
+  overflow: hidden;
+  z-index: 80;
+}
+
+.admin-bell-panel-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 11px 14px;
+  border-bottom: 1px solid var(--admin-border);
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: var(--admin-text);
+}
+.admin-bell-panel-count {
+  font-size: 11px;
+  font-weight: 600;
+  text-transform: none;
+  letter-spacing: 0;
+  background: var(--admin-accent-soft);
+  color: var(--admin-accent);
+  padding: 2px 8px;
+  border-radius: 20px;
+}
+
+.admin-bell-empty {
+  padding: 26px 14px;
+  text-align: center;
+  font-size: 13px;
+  color: var(--admin-text-dim);
+}
+
+.admin-bell-list { max-height: 360px; overflow-y: auto; }
+
+.admin-bell-item {
+  display: flex;
+  align-items: flex-start;
+  gap: 9px;
+  width: 100%;
+  padding: 11px 14px;
+  border: 0;
+  border-bottom: 1px solid var(--admin-border);
+  background: transparent;
+  text-align: left;
+  cursor: pointer;
+  font: inherit;
+}
+.admin-bell-item:last-child { border-bottom: 0; }
+.admin-bell-item:hover { background: var(--admin-bg); }
+
+.admin-bell-item-dot {
+  width: 7px;
+  height: 7px;
+  margin-top: 5px;
+  border-radius: 50%;
+  background: var(--admin-accent);
+  flex-shrink: 0;
+}
+.admin-bell-item-title {
+  display: block;
+  font-size: 12px;
+  color: var(--admin-text-dim);
+}
+.admin-bell-item-sub {
+  display: block;
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--admin-text);
+}
+.admin-bell-item-meta {
+  display: block;
+  font-size: 12px;
+  color: var(--admin-text-dim);
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.admin-bell-item-time {
+  flex-shrink: 0;
+  font-size: 11px;
+  color: var(--admin-text-dim);
+  white-space: nowrap;
+}
+
+.admin-bell-clear {
+  width: 100%;
+  padding: 11px 14px;
+  border: 0;
+  border-top: 1px solid var(--admin-border);
+  background: var(--admin-bg);
+  color: var(--admin-text);
+  font: inherit;
+  font-size: 12px;
+  font-weight: 600;
+  cursor: pointer;
+}
+.admin-bell-clear:hover:not(:disabled) { background: #EBEEF2; }
+.admin-bell-clear:disabled { opacity: 0.6; cursor: default; }
+
+/* Narrow headers have no room for the words — fall back to the icon and its
+   count bubble so the notification is still visible on a phone. */
+@media (max-width: 720px) {
+  .admin-bell.has-new {
+    width: 30px;
+    padding: 0;
+    gap: 0;
+  }
+  .admin-bell-label { display: none; }
+  .admin-bell.has-new .admin-bell-count { display: inline-flex; }
+}

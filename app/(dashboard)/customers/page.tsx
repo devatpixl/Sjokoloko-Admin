@@ -1,6 +1,7 @@
 import { adminGetUsers } from '@/lib/api/admin'
 import CustomersFilter from './_filter'
 import CustomerRowActions from './_row-actions'
+import MarkSeenButton from './_mark-seen-button'
 
 function formatDate(iso: string) {
   return new Date(iso).toLocaleDateString('nb-NO', {
@@ -16,13 +17,23 @@ export default async function AdminCustomersPage({
   const params = await searchParams
   const users = await adminGetUsers({ search: params.search })
 
+  // Mirrors the badge in the sidebar, which counts registered customers only —
+  // guest-checkout rows are not signups and must not inflate the number.
+  const newCount = users.filter(
+    (u: any) => u.user_type === 'registered' && !u.is_seen,
+  ).length
+
   return (
     <>
       <div className="admin-page-header">
         <div>
           <div className="admin-page-title">Kunder</div>
-          <div className="admin-page-subtitle">{users.length} registrerte</div>
+          <div className="admin-page-subtitle">
+            {users.length} registrerte
+            {newCount > 0 && ` · ${newCount} ny${newCount === 1 ? '' : 'e'}`}
+          </div>
         </div>
+        <MarkSeenButton count={newCount} />
       </div>
 
       <div className="admin-card">
@@ -67,7 +78,14 @@ export default async function AdminCustomersPage({
               )}
               {users.map((user: any) => (
                 <tr key={user.id}>
-                  <td data-label="Navn" style={{ fontWeight: 500 }}>{user.name}</td>
+                  <td data-label="Navn" style={{ fontWeight: 500 }}>
+                    {user.name}
+                    {user.user_type === 'registered' && !user.is_seen && (
+                      <span className="admin-badge admin-badge-gold" style={{ marginLeft: 8 }}>
+                        Ny
+                      </span>
+                    )}
+                  </td>
                   <td data-label="E-post" style={{ color: 'var(--admin-text-dim)', fontSize: 13 }}>{user.email}</td>
                   <td data-label="Registrert" style={{ color: 'var(--admin-text-dim)', fontSize: 13 }}>{formatDate(user.created_at)}</td>
                   <td data-label="Bestillinger" style={{ fontFamily: 'var(--admin-mono)', fontSize: 13 }}>
