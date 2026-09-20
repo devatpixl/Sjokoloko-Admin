@@ -1577,6 +1577,15 @@
   /* Stats: two up, and beat the inline repeat(4, 1fr) the pages set */
   .admin-stats-grid {
     grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  /* The .cols-N modifiers are two classes, so they outrank a bare
+     .admin-stats-grid here — media queries add no specificity of their own.
+     Listing them is how this wins without reaching for !important. */
+  .admin-stats-grid.cols-4,
+  .admin-stats-grid.cols-3,
+  .admin-stats-grid.cols-2 {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
     gap: 10px;
     margin-bottom: 18px;
   }
@@ -1589,6 +1598,12 @@
   .admin-detail-grid,
   .admin-field-row,
   .admin-split {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .admin-stats-grid.cols-4,
+  .admin-stats-grid.cols-3,
+  .admin-stats-grid.cols-2 {
     grid-template-columns: minmax(0, 1fr);
     gap: 16px;
   }
