@@ -1,5 +1,6 @@
 import Link from 'next/link'
 import { adminGetStats, adminGetOrders } from '@/lib/api/admin'
+import { RevenueArea, StatusBreakdown } from '@/components/DashboardCharts'
 
 export const metadata = { title: 'Dashboard — Sjokoloko Admin' }
 
@@ -27,16 +28,51 @@ export default async function DashboardPage() {
     /* API utilgjengelig */
   }
 
-  // The two charts that used to sit here ran on hardcoded numbers behind an
-  // "Eksempeldata" pill. Real recent orders answer the same question — what is
-  // happening right now — without inventing anything, and without needing an
-  // endpoint that does not exist.
-  let recentOrders: any[] = []
+  // Everything below is aggregated from this one list. The charts that used to
+  // sit here ran on hardcoded arrays behind an "Eksempeldata" pill — not
+  // because the numbers were unavailable, but because nobody had done the
+  // aggregation. No new endpoint, no backend change.
+  let orders: any[] = []
   try {
-    recentOrders = ((await adminGetOrders({})) as any[]).slice(0, 6)
+    orders = (await adminGetOrders({})) as any[]
   } catch {
     /* API utilgjengelig */
   }
+
+  const recentOrders = orders.slice(0, 6)
+
+  // ── Revenue, last 14 days ──
+  // CAPTURED only: an order that was abandoned in Vipps is not revenue, and a
+  // chart that counts it is telling the shop it earned money it never got.
+  const DAYS = 14
+  const today = new Date()
+  today.setHours(0, 0, 0, 0)
+
+  const buckets = new Map<string, number>()
+  const labels: { key: string; label: string }[] = []
+  for (let i = DAYS - 1; i >= 0; i--) {
+    const d = new Date(today)
+    d.setDate(d.getDate() - i)
+    const key = `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, '0')}-${String(d.getDate()).padStart(2, '0')}`
+    buckets.set(key, 0)
+    labels.push({ key, label: `${d.getDate()}.${d.getMonth() + 1}` })
+  }
+
+  for (const o of orders) {
+    if (o.payment_status !== 'CAPTURED') continue
+    const key = String(o.created_at).slice(0, 10)
+    if (buckets.has(key)) buckets.set(key, (buckets.get(key) ?? 0) + Number(o.total ?? 0))
+  }
+
+  const revenuePoints = labels.map(l => ({ ...l, value: buckets.get(l.key) ?? 0 }))
+
+  // ── Orders by status, in pipeline order rather than by size ──
+  const STATUS_ORDER = ['Mottatt', 'Bekreftet', 'Pakkes', 'Sendt', 'Levert']
+  const counts = new Map<string, number>()
+  for (const o of orders) counts.set(o.status, (counts.get(o.status) ?? 0) + 1)
+  const statusRows = STATUS_ORDER
+    .filter(s => (counts.get(s) ?? 0) > 0)
+    .map(s => ({ status: s, count: counts.get(s) ?? 0 }))
 
   const storefrontUrl = process.env.NEXT_PUBLIC_STOREFRONT_URL ?? 'http://localhost:3000'
 
@@ -66,6 +102,19 @@ export default async function DashboardPage() {
           <div className="admin-stat-label">Venteliste</div>
           <div className="admin-stat-value">{stats.waitlist}</div>
         </div>
+      </div>
+
+      <div className="chart-grid-2">
+        <RevenueArea
+          points={revenuePoints}
+          title="Omsetning siste 14 dager"
+          note="Kun betalte ordrer — avbrutte og ubetalte teller ikke som omsetning."
+        />
+        <StatusBreakdown
+          rows={statusRows}
+          title="Bestillinger etter status"
+          note={`${orders.length} bestillinger totalt.`}
+        />
       </div>
 
       <div className="admin-card">

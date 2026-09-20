@@ -2449,3 +2449,127 @@
   border-color: var(--admin-border-subtle);
   box-shadow: none;
 }
+
+/* ── Charts ────────────────────────────────────────────────────────────────
+   Plain SVG, no library. The panel ships zero UI dependencies and a chart
+   package would be the easiest place to quietly break that rule — these cost
+   nothing in the bundle and theme themselves from the same tokens. */
+.chart-grid-2 {
+  display: grid;
+  grid-template-columns: 1.35fr 1fr;
+  gap: var(--sp-5);
+  margin-bottom: var(--sp-5);
+}
+
+.chart-card { margin-bottom: 0; display: flex; flex-direction: column; }
+.chart-card .admin-card-body { flex: 1; }
+
+.chart-body { padding: var(--sp-5) var(--gutter) var(--sp-3); }
+
+.chart-svg {
+  display: block;
+  width: 100%;
+  height: 168px;
+  overflow: visible;
+}
+
+.chart-grid {
+  stroke: var(--admin-border-subtle);
+  stroke-width: 1;
+  stroke-dasharray: 2 4;
+}
+
+.chart-line {
+  stroke: var(--admin-accent);
+  stroke-width: 2;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+.chart-peak {
+  fill: var(--admin-surface);
+  stroke: var(--admin-accent);
+  stroke-width: 2;
+}
+
+/* Every other tick is dimmed rather than removed: the rhythm of fourteen
+   marks is part of how the axis reads as a fortnight. */
+.chart-axis {
+  display: flex;
+  justify-content: space-between;
+  margin-top: var(--sp-3);
+  font-size: var(--fs-3xs);
+  font-variant-numeric: tabular-nums;
+  color: var(--admin-text-mute);
+}
+.chart-axis .is-muted { opacity: .45; }
+
+.chart-note {
+  font-size: var(--fs-xs);
+  color: var(--admin-text-dim);
+}
+
+/* ── Status mix ── */
+.chart-stack {
+  display: flex;
+  height: 10px;
+  border-radius: var(--r-full);
+  overflow: hidden;
+  background: var(--admin-surface-sunken);
+  margin-bottom: var(--sp-5);
+}
+.chart-stack-seg { display: block; height: 100%; }
+
+.chart-legend {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: grid;
+  gap: var(--sp-3);
+}
+.chart-legend li {
+  display: flex;
+  align-items: center;
+  gap: var(--sp-3);
+  font-size: var(--fs-sm);
+}
+.chart-legend-label { flex: 1; color: var(--admin-text); }
+.chart-legend-value {
+  font-variant-numeric: tabular-nums;
+  font-weight: var(--fw-semibold);
+}
+.chart-legend-pct {
+  font-variant-numeric: tabular-nums;
+  font-size: var(--fs-xs);
+  color: var(--admin-text-mute);
+  min-width: 34px;
+  text-align: right;
+}
+
+.chart-dot {
+  width: 9px;
+  height: 9px;
+  border-radius: var(--r-full);
+  flex-shrink: 0;
+}
+
+/* Shared tones, so a segment and its legend dot can never disagree. */
+.tone-gold    { background: var(--admin-accent); }
+.tone-info    { background: var(--hue-info); }
+.tone-warn    { background: var(--hue-warn); }
+.tone-alt     { background: var(--hue-alt); }
+.tone-pos     { background: var(--hue-pos); }
+.tone-neutral { background: var(--admin-border-strong); }
+
+@media (max-width: 1100px) {
+  .chart-grid-2 { grid-template-columns: minmax(0, 1fr); }
+}
+
+.chart-empty {
+  display: grid;
+  align-content: center;
+  justify-items: center;
+  gap: var(--sp-1);
+  min-height: 212px;
+  text-align: center;
+}
