@@ -92,7 +92,7 @@ export default function AdminEditFlavorPage() {
         </button>
       </div>
 
-      <div className="admin-card" style={{ maxWidth: 640 }}>
+      <div className="admin-card" style={{ maxWidth: 760 }}>
         <div className="admin-card-header">
           <div className="admin-card-title">Smaksdetaljer</div>
         </div>
@@ -107,13 +107,13 @@ export default function AdminEditFlavorPage() {
                 </div>
               </div>
               <div className="admin-form-group">
-                <label className="admin-label">Navn *</label>
+                <label className="admin-label">Navn<span className="req">*</span></label>
                 <input name="name" required defaultValue={truffle.name} className="admin-form-input" />
               </div>
             </div>
 
             <div className="admin-form-group">
-              <label className="admin-label">Farge (hex) *</label>
+              <label className="admin-label">Farge (hex)<span className="req">*</span></label>
               <div style={{ display: 'flex', gap: 8, alignItems: 'center' }}>
                 <input name="color" required pattern="#[0-9A-Fa-f]{6}" defaultValue={truffle.color} className="admin-form-input" style={{ flex: 1 }} />
                 <span style={{ width: 32, height: 32, borderRadius: '50%', background: truffle.color, border: '1px solid var(--admin-border)' }} />
@@ -132,7 +132,7 @@ export default function AdminEditFlavorPage() {
 
             {error && <div className="admin-alert admin-alert-error">{error}</div>}
 
-            <div className="row">
+            <div className="admin-form-actions">
               <button type="submit" disabled={pending} className="admin-btn admin-btn-primary">
                 {pending ? 'Lagrer…' : 'Lagre endringer'}
               </button>

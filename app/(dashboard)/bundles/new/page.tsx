@@ -85,14 +85,14 @@ export default function AdminNewBundlePage() {
         <div className="admin-page-title">Nytt tilbud</div>
       </div>
 
-      <div className="admin-card" style={{ maxWidth: 720 }}>
+      <div className="admin-card" style={{ maxWidth: 980 }}>
         <div className="admin-card-header">
           <div className="admin-card-title">Detaljer</div>
         </div>
         <div className="admin-card-body">
           <form onSubmit={handleSubmit} className="admin-form">
             <div className="admin-form-group">
-              <label className="admin-label">Navn *</label>
+              <label className="admin-label">Navn<span className="req">*</span></label>
               <input name="name" required className="admin-form-input" placeholder="3-pakning Vanlig (16 biter)" />
             </div>
             <div className="admin-form-group">
@@ -101,7 +101,7 @@ export default function AdminNewBundlePage() {
             </div>
 
             <div className="admin-form-group">
-              <label className="admin-label">Hvilke produkter matcher? *</label>
+              <label className="admin-label">Hvilke produkter matcher?<span className="req">*</span></label>
               <div style={{ display: 'flex', gap: 16, marginBottom: 12 }}>
                 <label style={{ display: 'flex', alignItems: 'center', gap: 6, fontSize: 13 }}>
                   <input type="radio" name="match_mode" checked={matchMode === 'group'} onChange={() => setMatchMode('group')} />
@@ -137,11 +137,11 @@ export default function AdminNewBundlePage() {
 
             <div className="admin-field-row">
               <div className="admin-form-group">
-                <label className="admin-label">Antall som kreves *</label>
+                <label className="admin-label">Antall som kreves<span className="req">*</span></label>
                 <input name="required_quantity" type="number" min="1" defaultValue="3" required className="admin-form-input" />
               </div>
               <div className="admin-form-group">
-                <label className="admin-label">Pakkepris (NOK) *</label>
+                <label className="admin-label">Pakkepris (NOK)<span className="req">*</span></label>
                 <input name="bundle_price" type="number" step="0.01" min="0" required className="admin-form-input" placeholder="949" />
               </div>
             </div>
@@ -169,7 +169,7 @@ export default function AdminNewBundlePage() {
 
             {error && <div className="admin-alert admin-alert-error">{error}</div>}
 
-            <div className="row">
+            <div className="admin-form-actions">
               <button type="submit" disabled={pending} className="admin-btn admin-btn-primary">
                 {pending ? 'Lagrer…' : 'Opprett'}
               </button>

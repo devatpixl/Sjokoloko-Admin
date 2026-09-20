@@ -115,10 +115,10 @@ export default function AdminEditProductPage() {
             <div className="admin-card-title">Produktdetaljer</div>
           </div>
           <div className="admin-card-body">
-            <form onSubmit={handleSubmit} className="admin-form" style={{ maxWidth: '100%' }}>
+            <form onSubmit={handleSubmit} className="admin-form">
               <div className="admin-field-row">
                 <div className="admin-form-group">
-                  <label className="admin-label">Navn *</label>
+                  <label className="admin-label">Navn<span className="req">*</span></label>
                   <input name="name" required defaultValue={product.name} className="admin-form-input" />
                 </div>
                 <div className="admin-form-group">
@@ -232,7 +232,7 @@ export default function AdminEditProductPage() {
                 når du lagrer, ser kundene det innen ett minutt.
               </div>
 
-              <div className="row">
+              <div className="admin-form-actions">
                 <button type="submit" disabled={isPending} className="admin-btn admin-btn-primary">
                   {isPending ? 'Lagrer…' : 'Lagre endringer'}
                 </button>

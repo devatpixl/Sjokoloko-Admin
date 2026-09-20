@@ -120,7 +120,7 @@ export default function AdminEditBundlePage() {
         <div className="admin-page-title">{bundle.name}</div>
       </div>
 
-      <div className="admin-card" style={{ maxWidth: 720 }}>
+      <div className="admin-card" style={{ maxWidth: 980 }}>
         <div className="admin-card-body">
           <form onSubmit={handleSubmit} className="admin-form">
             <div className="admin-form-group">
@@ -197,7 +197,7 @@ export default function AdminEditBundlePage() {
 
             {error && <div className="admin-alert admin-alert-error">{error}</div>}
 
-            <div className="row">
+            <div className="admin-form-actions">
               <button type="submit" disabled={pending} className="admin-btn admin-btn-primary">
                 {pending ? 'Lagrer…' : 'Lagre'}
               </button>

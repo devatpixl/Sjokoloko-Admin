@@ -810,12 +810,6 @@
   background-size: 14px;
 }
 
-.admin-label {
-  font-size: var(--fs-xs);
-  font-weight: var(--fw-semibold);
-  color: var(--admin-text);
-}
-
 .admin-checkbox {
   width: 16px;
   height: 16px;
@@ -962,8 +956,8 @@
 
 .admin-field-row {
   display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 16px;
+  grid-template-columns: repeat(auto-fit, minmax(230px, 1fr));
+  gap: var(--sp-4) var(--sp-5);
   align-items: start;
 }
 
@@ -1014,49 +1008,30 @@
 /* Form */
 .admin-form {
   display: grid;
-  gap: 20px;
-  max-width: 640px;
+  gap: var(--sp-5);
+  /* Was capped at 640 while its card was capped at 720, so the fields never
+     filled their own container. The page decides the measure now. */
+  max-width: none;
 }
 
 .admin-form-group {
   display: grid;
-  gap: 6px;
+  gap: var(--sp-2);
   align-content: start;
 }
 
 .admin-label {
-  font-size: 13px;
-  font-weight: 600;
+  font-size: var(--fs-sm);
+  font-weight: var(--fw-medium);
   color: var(--admin-text);
 }
-
-.admin-form-input,
-.admin-form-textarea,
-.admin-form-select {
-  padding: 9px 12px;
-  border: 1px solid var(--admin-border);
-  border-radius: 6px;
-  font-size: 13.5px;
-  font-family: var(--admin-font);
-  background: var(--admin-surface);
-  color: var(--admin-text);
-  outline: none;
-  transition: border-color 150ms;
-  width: 100%;
-}
-
-.admin-form-input:focus,
-.admin-form-textarea:focus,
-.admin-form-select:focus { border-color: var(--admin-accent); }
-
-.admin-form-textarea { resize: vertical; min-height: 100px; }
 
 /* Checkbox */
 .admin-checkbox-row {
   display: flex;
   align-items: center;
   gap: 10px;
-  font-size: 13.5px;
+  font-size: var(--fs-sm);
 }
 
 /* Toast / inline alert */
@@ -1398,13 +1373,6 @@
   font-size: 13px;
   font-weight: 600;
   color: var(--admin-text);
-}
-
-.admin-checkbox {
-  width: 16px;
-  height: 16px;
-  cursor: pointer;
-  accent-color: var(--admin-accent);
 }
 
 /* ── Dashboard ── */
@@ -1872,25 +1840,8 @@
   .admin-shell img { max-width: 100%; height: auto; }
 }
 
-/* ── Login screen ──
-   This page sits outside .admin-shell and is styled inline, so it needs its
-   own rules: the inputs were content-box and overflowed the card, and 13.5px
-   text makes iOS Safari zoom in the moment you tap a field. */
-.login-input,
-.login-btn {
-  box-sizing: border-box;
-  width: 100%;
-  font-family: var(--font-admin, 'Inter', system-ui, sans-serif);
-}
-
-@media (max-width: 900px) {
-
-  .login-input,
-  .login-btn {
-    height: 48px;
-    font-size: 16px;
-  }
-}
+/* The old login patch lived here; the page is built on tokens now, so only
+   the iOS zoom guard remains and it sits with the rest of §16. */
 
 /* ── Smaksnoter + variant editors ── */
 .flavor-line {
@@ -2653,3 +2604,62 @@
   font-weight: var(--fw-semibold);
   color: var(--admin-text);
 }
+
+
+/* ── Forms ─────────────────────────────────────────────────────────────────
+   A required field should say so without shouting; the asterisk in the label
+   text was doing the work of punctuation. */
+.admin-label .req {
+  color: var(--admin-accent-ink);
+  font-weight: var(--fw-semibold);
+  margin-left: 2px;
+}
+
+/* Sections, so a fourteen-field form reads as four decisions rather than one
+   undifferentiated list. */
+.admin-form-section {
+  display: grid;
+  gap: var(--sp-4);
+  padding-top: var(--sp-5);
+  border-top: 1px solid var(--admin-border-subtle);
+}
+.admin-form-section:first-child {
+  padding-top: 0;
+  border-top: 0;
+}
+
+.admin-form-section-title {
+  font-family: var(--admin-display);
+  font-size: var(--fs-base);
+  font-weight: 400;
+  font-variation-settings: "opsz" 24, "SOFT" 50;
+  color: var(--admin-text);
+}
+.admin-form-section-title span {
+  display: block;
+  font-family: var(--admin-font);
+  font-size: var(--fs-xs);
+  color: var(--admin-text-dim);
+  margin-top: 2px;
+}
+
+/* The action row stays inside the <form> — a submit button outside its form
+   submits nothing — but reads as the card's footer. Sticky so a long product
+   form never makes you scroll back down to save. */
+.admin-form-actions {
+  position: sticky;
+  bottom: 0;
+  display: flex;
+  align-items: center;
+  gap: var(--sp-3);
+  margin: var(--sp-2) calc(var(--gutter) * -1) calc(var(--gutter) * -1);
+  padding: var(--sp-4) var(--gutter);
+  border-top: 1px solid var(--admin-border);
+  background: color-mix(in srgb, var(--admin-surface) 92%, transparent);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+}
+@supports not (backdrop-filter: blur(1px)) {
+  .admin-form-actions { background: var(--admin-surface); }
+}
+.admin-form-actions .admin-hint { margin-left: auto; }

@@ -65,26 +65,26 @@ export default function AdminNewProductPage() {
         <div className="admin-page-title">Nytt produkt</div>
       </div>
 
-      <div className="admin-card" style={{ maxWidth: 720 }}>
+      <div className="admin-card" style={{ maxWidth: 980 }}>
         <div className="admin-card-header">
           <div className="admin-card-title">Produktdetaljer</div>
         </div>
         <div className="admin-card-body">
-          <form onSubmit={handleSubmit} className="admin-form" style={{ maxWidth: '100%' }}>
+          <form onSubmit={handleSubmit} className="admin-form">
             <div className="admin-field-row">
               <div className="admin-form-group">
-                <label className="admin-label">Navn *</label>
+                <label className="admin-label">Navn<span className="req">*</span></label>
                 <input name="name" required className="admin-form-input" placeholder="Liten sjokoladeboks — Klassisk" />
               </div>
               <div className="admin-form-group">
-                <label className="admin-label">Slug *</label>
+                <label className="admin-label">Slug<span className="req">*</span></label>
                 <input name="slug" required className="admin-form-input" placeholder="liten-sjokoladeboks-klassisk" />
               </div>
             </div>
 
             <div className="admin-field-row">
               <div className="admin-form-group">
-                <label className="admin-label">Kategori *</label>
+                <label className="admin-label">Kategori<span className="req">*</span></label>
                 <select name="category" required className="admin-form-select">
                   {CATEGORIES.map(c => (
                     <option key={c.value} value={c.value}>{c.label}</option>
@@ -99,7 +99,7 @@ export default function AdminNewProductPage() {
 
             <div className="admin-field-row">
               <div className="admin-form-group">
-                <label className="admin-label">Pris (NOK) *</label>
+                <label className="admin-label">Pris (NOK)<span className="req">*</span></label>
                 <input name="price" type="number" step="0.01" required className="admin-form-input" placeholder="249.00" />
               </div>
               <div className="admin-form-group">
@@ -170,7 +170,7 @@ export default function AdminNewProductPage() {
               når du lagrer, ser kundene det innen ett minutt.
             </div>
 
-            <div className="row">
+            <div className="admin-form-actions">
               <button
                 type="submit"
                 disabled={isPending}

@@ -91,7 +91,7 @@ export default function AdminEditCouponPage() {
         <div className="admin-page-subtitle">Brukt {coupon.times_used} {coupon.max_uses ? `/ ${coupon.max_uses}` : ''} ganger</div>
       </div>
 
-      <div className="admin-card" style={{ maxWidth: 720 }}>
+      <div className="admin-card" style={{ maxWidth: 980 }}>
         <div className="admin-card-body">
           <form onSubmit={handleSubmit} className="admin-form">
             <div className="admin-field-row">
@@ -149,7 +149,7 @@ export default function AdminEditCouponPage() {
 
             {error && <div className="admin-alert admin-alert-error">{error}</div>}
 
-            <div className="row">
+            <div className="admin-form-actions">
               <button type="submit" disabled={pending} className="admin-btn admin-btn-primary">
                 {pending ? 'Lagrer…' : 'Lagre'}
               </button>

@@ -58,7 +58,7 @@ export default function AdminNewCouponPage() {
         <div className="admin-page-title">Ny rabattkode</div>
       </div>
 
-      <div className="admin-card" style={{ maxWidth: 720 }}>
+      <div className="admin-card" style={{ maxWidth: 980 }}>
         <div className="admin-card-header">
           <div className="admin-card-title">Detaljer</div>
         </div>
@@ -66,14 +66,14 @@ export default function AdminNewCouponPage() {
           <form onSubmit={handleSubmit} className="admin-form">
             <div className="admin-field-row">
               <div className="admin-form-group">
-                <label className="admin-label">Kode *</label>
+                <label className="admin-label">Kode<span className="req">*</span></label>
                 <input name="code" required maxLength={40} className="admin-form-input" placeholder="VELKOMMEN10" style={{ textTransform: 'uppercase' }} />
                 <div className="admin-hint">
                   Det kunden skriver i kassen. Lagres alltid i versaler.
                 </div>
               </div>
               <div className="admin-form-group">
-                <label className="admin-label">Type *</label>
+                <label className="admin-label">Type<span className="req">*</span></label>
                 <select name="kind" value={kind} onChange={e => setKind(e.target.value as any)} className="admin-form-input">
                   <option value="percent">Prosent (%)</option>
                   <option value="fixed">Fast beløp (NOK)</option>
@@ -137,7 +137,7 @@ export default function AdminNewCouponPage() {
 
             {error && <div className="admin-alert admin-alert-error">{error}</div>}
 
-            <div className="row">
+            <div className="admin-form-actions">
               <button type="submit" disabled={pending} className="admin-btn admin-btn-primary">
                 {pending ? 'Lagrer…' : 'Opprett'}
               </button>

@@ -54,7 +54,7 @@ export default function AdminNewFlavorPage() {
         <div className="admin-page-title">Ny smak</div>
       </div>
 
-      <div className="admin-card" style={{ maxWidth: 640 }}>
+      <div className="admin-card" style={{ maxWidth: 760 }}>
         <div className="admin-card-header">
           <div className="admin-card-title">Smaksdetaljer</div>
         </div>
@@ -62,20 +62,20 @@ export default function AdminNewFlavorPage() {
           <form onSubmit={handleSubmit} className="admin-form">
             <div className="admin-field-row">
               <div className="admin-form-group">
-                <label className="admin-label">ID *</label>
+                <label className="admin-label">ID<span className="req">*</span></label>
                 <input name="id" required maxLength={10} className="admin-form-input" placeholder="pis" />
                 <div className="admin-hint">
                   Kort kode (max 10 tegn). Brukes som referanse i bygge-din-egen.
                 </div>
               </div>
               <div className="admin-form-group">
-                <label className="admin-label">Navn *</label>
+                <label className="admin-label">Navn<span className="req">*</span></label>
                 <input name="name" required className="admin-form-input" placeholder="Pistasj" />
               </div>
             </div>
 
             <div className="admin-form-group">
-              <label className="admin-label">Farge (hex) *</label>
+              <label className="admin-label">Farge (hex)<span className="req">*</span></label>
               <input name="color" required pattern="#[0-9A-Fa-f]{6}" className="admin-form-input" placeholder="#8A9A5B" />
               <div className="admin-hint">
                 Hex-kode (#RRGGBB). Brukes til prikken i bygg-din-eske.
@@ -94,7 +94,7 @@ export default function AdminNewFlavorPage() {
 
             {error && <div className="admin-alert admin-alert-error">{error}</div>}
 
-            <div className="row">
+            <div className="admin-form-actions">
               <button type="submit" disabled={pending} className="admin-btn admin-btn-primary">
                 {pending ? 'Lagrer…' : 'Opprett smak'}
               </button>
