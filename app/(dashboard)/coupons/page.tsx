@@ -112,7 +112,7 @@ export default function AdminCouponsPage() {
             </thead>
             <tbody>
               {coupons === null && (
-                <tr><td colSpan={8} style={{ padding: 16 }}>Laster…</td></tr>
+                <tr><td className="admin-card-body" colSpan={8}>Laster…</td></tr>
               )}
               {coupons && coupons.length === 0 && (
                 <tr><td colSpan={8} style={{ padding: 16, color: 'var(--admin-text-dim)' }}>Ingen rabattkoder ennå.</td></tr>
@@ -121,11 +121,11 @@ export default function AdminCouponsPage() {
                 <tr key={c.id} style={{ opacity: c.is_active ? 1 : 0.55 }}>
                   <td data-label="Kode" style={{ fontFamily: 'var(--admin-mono)', fontWeight: 600 }}>{c.code}</td>
                   <td data-label="Type">{kindLabel(c.kind)}</td>
-                  <td data-label="Verdi" style={{ fontFamily: 'var(--admin-mono)', fontSize: 13 }}>{formatValue(c)}</td>
-                  <td data-label="Min. delsum" style={{ fontFamily: 'var(--admin-mono)', fontSize: 13 }}>
+                  <td className="mono" data-label="Verdi">{formatValue(c)}</td>
+                  <td className="mono" data-label="Min. delsum">
                     {parseFloat(c.min_subtotal) > 0 ? `kr ${parseFloat(c.min_subtotal).toFixed(0)}` : '—'}
                   </td>
-                  <td data-label="Brukt" style={{ fontFamily: 'var(--admin-mono)', fontSize: 13 }}>
+                  <td className="mono" data-label="Brukt">
                     {c.times_used}{c.max_uses ? ` / ${c.max_uses}` : ''}
                   </td>
                   <td className="t-dim" data-label="Gyldig">
@@ -139,7 +139,7 @@ export default function AdminCouponsPage() {
                     </span>
                   </td>
                   <td className="t-actions" data-label="">
-                    <div style={{ display: 'inline-flex', gap: 6 }}>
+                    <div className="row-sm">
                       <button
                         onClick={() => toggleActive(c)}
                         disabled={pending === c.id}

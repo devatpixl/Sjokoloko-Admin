@@ -38,7 +38,7 @@ export default function CustomerRowActions({ id, name, orderCount }: Props) {
 
   return (
     <>
-      <div style={{ display: 'flex', gap: 6, justifyContent: 'flex-end' }}>
+      <div className="row-end">
         <Link
           href={`/customers/${id}`}
           className="admin-btn admin-btn-secondary admin-btn-xs"

@@ -41,7 +41,7 @@ export default function AdminEditCouponPage() {
   }, [params.id])
 
   if (!coupon) {
-    return <div style={{ padding: 24 }}>Laster…</div>
+    return <div className="admin-card-body">Laster…</div>
   }
 
   async function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
@@ -92,7 +92,7 @@ export default function AdminEditCouponPage() {
       </div>
 
       <div className="admin-card" style={{ maxWidth: 720 }}>
-        <div style={{ padding: 24 }}>
+        <div className="admin-card-body">
           <form onSubmit={handleSubmit} className="admin-form">
             <div className="admin-field-row">
               <div className="admin-form-group">
@@ -149,7 +149,7 @@ export default function AdminEditCouponPage() {
 
             {error && <div className="admin-alert admin-alert-error">{error}</div>}
 
-            <div style={{ display: 'flex', gap: 10 }}>
+            <div className="row">
               <button type="submit" disabled={pending} className="admin-btn admin-btn-primary">
                 {pending ? 'Lagrer…' : 'Lagre'}
               </button>

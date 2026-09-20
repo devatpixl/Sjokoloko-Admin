@@ -88,7 +88,7 @@ export default async function AdminCustomersPage({
                   </td>
                   <td className="t-dim" data-label="E-post">{user.email}</td>
                   <td className="t-dim" data-label="Registrert">{formatDate(user.created_at)}</td>
-                  <td data-label="Bestillinger" style={{ fontFamily: 'var(--admin-mono)', fontSize: 13 }}>
+                  <td className="mono" data-label="Bestillinger">
                     {user.order_count ?? 0}
                   </td>
                   <td data-label="Venteliste">

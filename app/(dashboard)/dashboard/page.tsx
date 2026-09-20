@@ -1,6 +1,5 @@
 import Link from 'next/link'
-import { adminGetStats } from '@/lib/api/admin'
-import { DashboardRevenueBars, DashboardStatusBars } from '@/components/DashboardCharts'
+import { adminGetStats, adminGetOrders } from '@/lib/api/admin'
 
 export const metadata = { title: 'Dashboard — Sjokoloko Admin' }
 
@@ -8,34 +7,17 @@ function formatNOK(val: string | number) {
   return `kr ${Number(val).toLocaleString('nb-NO', { minimumFractionDigits: 0 })}`
 }
 
-/** Faste tall for visning — bytt til ekte `adminGetOrders` + aggregering når du vil. */
-const FAKE_DAILY_REVENUE = [
-  850, 1200, 0, 2100, 1340, 2980, 1650, 920, 2450, 1880, 720, 3420, 1990, 2760,
-]
-
-function buildFakeRevenuePoints() {
-  const out: { key: string; label: string; value: number }[] = []
-  for (let i = 13; i >= 0; i--) {
-    const d = new Date()
-    d.setHours(0, 0, 0, 0)
-    d.setDate(d.getDate() - i)
-    const key = d.toISOString().slice(0, 10)
-    const [, m, day] = key.split('-')
-    out.push({
-      key,
-      label: `${Number(day)}.${Number(m)}`,
-      value: FAKE_DAILY_REVENUE[13 - i] ?? 0,
-    })
-  }
-  return out
+function formatDate(iso: string) {
+  return new Date(iso).toLocaleDateString('nb-NO', { day: '2-digit', month: 'short' })
 }
 
-const FAKE_STATUS_ROWS = [
-  { status: 'Levert', count: 28 },
-  { status: 'Bekreftet', count: 14 },
-  { status: 'Sendt', count: 9 },
-  { status: 'Pakkes', count: 6 },
-]
+const STATUS_BADGE: Record<string, string> = {
+  Mottatt: 'admin-badge-gold',
+  Bekreftet: 'admin-badge-blue',
+  Pakkes: 'admin-badge-orange',
+  Sendt: 'admin-badge-purple',
+  Levert: 'admin-badge-green',
+}
 
 export default async function DashboardPage() {
   let stats = { orders: 0, users: 0, revenue: 0, waitlist: 0, unread_contact: 0 }
@@ -45,8 +27,17 @@ export default async function DashboardPage() {
     /* API utilgjengelig */
   }
 
-  const revenuePoints = buildFakeRevenuePoints()
-  const statusRows = FAKE_STATUS_ROWS
+  // The two charts that used to sit here ran on hardcoded numbers behind an
+  // "Eksempeldata" pill. Real recent orders answer the same question — what is
+  // happening right now — without inventing anything, and without needing an
+  // endpoint that does not exist.
+  let recentOrders: any[] = []
+  try {
+    recentOrders = ((await adminGetOrders({})) as any[]).slice(0, 6)
+  } catch {
+    /* API utilgjengelig */
+  }
+
   const storefrontUrl = process.env.NEXT_PUBLIC_STOREFRONT_URL ?? 'http://localhost:3000'
 
   return (
@@ -77,20 +68,58 @@ export default async function DashboardPage() {
         </div>
       </div>
 
-      <div className="admin-dashboard-grid">
-        <DashboardRevenueBars
-          points={revenuePoints}
-          title="Omsetning siste 14 dager"
-          isDemo
-        />
-        <DashboardStatusBars rows={statusRows} title="Bestillinger etter status" isDemo />
+      <div className="admin-card">
+        <div className="admin-card-header">
+          <div className="admin-card-title">Siste bestillinger</div>
+          <Link href="/orders" className="admin-btn admin-btn-ghost admin-btn-sm">
+            Se alle
+          </Link>
+        </div>
+        <div className="admin-table-wrap">
+          <table className="admin-table">
+            <thead>
+              <tr>
+                <th>Ordrenr.</th>
+                <th>Dato</th>
+                <th>Kunde</th>
+                <th>Total</th>
+                <th>Status</th>
+              </tr>
+            </thead>
+            <tbody>
+              {recentOrders.length === 0 && (
+                <tr>
+                  <td colSpan={5}>
+                    <div className="admin-empty-state">
+                      <div className="admin-empty-state-title">Ingen bestillinger enda</div>
+                      <div className="admin-empty-state-hint">Bestillinger fra nettstedet vises her.</div>
+                    </div>
+                  </td>
+                </tr>
+              )}
+              {recentOrders.map((order: any) => (
+                <tr key={order.order_number}>
+                  <td className="mono" data-label="Ordrenr.">{order.order_number}</td>
+                  <td className="t-dim" data-label="Dato">{formatDate(order.created_at)}</td>
+                  <td data-label="Kunde">{order.customer_name}</td>
+                  <td className="t-bold" data-label="Total">{formatNOK(order.total)}</td>
+                  <td data-label="Status">
+                    <span className={`admin-badge ${STATUS_BADGE[order.status] ?? 'admin-badge-gray'}`}>
+                      {order.status}
+                    </span>
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
       </div>
 
-      <div className="admin-card" style={{ marginBottom: 28 }}>
+      <div className="admin-card">
         <div className="admin-card-header">
           <div className="admin-card-title">Hurtighandlinger</div>
         </div>
-        <div style={{ padding: 20 }}>
+        <div className="admin-card-body">
           <div className="admin-quick-actions">
             <Link href="/orders" className="admin-quick-action">
               <span className="admin-quick-action-icon" aria-hidden>

@@ -73,7 +73,7 @@ export default function AdminEditFlavorPage() {
   }
 
   if (!truffle) {
-    return <div style={{ padding: 24 }}>Laster…</div>
+    return <div className="admin-card-body">Laster…</div>
   }
 
   return (
@@ -96,7 +96,7 @@ export default function AdminEditFlavorPage() {
         <div className="admin-card-header">
           <div className="admin-card-title">Smaksdetaljer</div>
         </div>
-        <div style={{ padding: 24 }}>
+        <div className="admin-card-body">
           <form onSubmit={handleSubmit} className="admin-form">
             <div className="admin-field-row">
               <div className="admin-form-group">
@@ -132,7 +132,7 @@ export default function AdminEditFlavorPage() {
 
             {error && <div className="admin-alert admin-alert-error">{error}</div>}
 
-            <div style={{ display: 'flex', gap: 10 }}>
+            <div className="row">
               <button type="submit" disabled={pending} className="admin-btn admin-btn-primary">
                 {pending ? 'Lagrer…' : 'Lagre endringer'}
               </button>

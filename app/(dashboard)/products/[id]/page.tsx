@@ -114,7 +114,7 @@ export default function AdminEditProductPage() {
           <div className="admin-card-header">
             <div className="admin-card-title">Produktdetaljer</div>
           </div>
-          <div style={{ padding: 24 }}>
+          <div className="admin-card-body">
             <form onSubmit={handleSubmit} className="admin-form" style={{ maxWidth: '100%' }}>
               <div className="admin-field-row">
                 <div className="admin-form-group">
@@ -232,7 +232,7 @@ export default function AdminEditProductPage() {
                 når du lagrer, ser kundene det innen ett minutt.
               </div>
 
-              <div style={{ display: 'flex', gap: 10 }}>
+              <div className="row">
                 <button type="submit" disabled={isPending} className="admin-btn admin-btn-primary">
                   {isPending ? 'Lagrer…' : 'Lagre endringer'}
                 </button>
@@ -246,7 +246,7 @@ export default function AdminEditProductPage() {
           <div className="admin-card-header">
             <div className="admin-card-title">Forhåndsvisning</div>
           </div>
-          <div style={{ padding: 16 }}>
+          <div className="admin-card-body">
             {product.image_url ? (
               <img
                 src={product.image_url}
@@ -287,7 +287,7 @@ export default function AdminEditProductPage() {
 function ProductDetailSkeleton() {
   return (
     <div className="admin-split">
-      <div className="admin-card" style={{ padding: 24 }}>
+      <div className="admin-card admin-card-body">
         <div className="admin-skeleton" style={{ height: 36, width: '40%', marginBottom: 24 }} />
         {[...Array(6)].map((_, i) => (
           <div key={i} style={{ marginBottom: 16 }}>
@@ -296,7 +296,7 @@ function ProductDetailSkeleton() {
           </div>
         ))}
       </div>
-      <div className="admin-card" style={{ padding: 16 }}>
+      <div className="admin-card admin-card-body">
         <div className="admin-skeleton" style={{ aspectRatio: '1', marginBottom: 12 }} />
         <div className="admin-skeleton" style={{ height: 16, marginBottom: 6 }} />
         <div className="admin-skeleton" style={{ height: 14, width: '60%' }} />

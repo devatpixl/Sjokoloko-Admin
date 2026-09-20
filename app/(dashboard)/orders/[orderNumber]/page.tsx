@@ -195,7 +195,7 @@ export default function AdminOrderDetailPage() {
       )}
 
       <div className="admin-detail-grid">
-        <div style={{ display: 'grid', gap: 20 }}>
+        <div className="stack-lg">
           <div className="admin-card">
             <div className="admin-card-header">
               <div className="admin-card-title">Varer ({order.items?.length})</div>
@@ -267,7 +267,7 @@ export default function AdminOrderDetailPage() {
                     <td className="t-dim" colSpan={3}>
                       Tilbud: {b.name}
                     </td>
-                    <td data-label="" style={{ textAlign: 'right', color: 'var(--admin-text-dim)' }}>
+                    <td className="t-actions t-dim" data-label="">
                       − {formatNOK(b.discount)}
                     </td>
                   </tr>
@@ -278,7 +278,7 @@ export default function AdminOrderDetailPage() {
                       Rabattkode ({order.coupon_code})
                       {order.coupon_free_shipping && ' · fri frakt'}
                     </td>
-                    <td data-label="" style={{ textAlign: 'right', color: 'var(--admin-text-dim)' }}>
+                    <td className="t-actions t-dim" data-label="">
                       {parseFloat(order.discount_amount) > 0 ? `− ${formatNOK(order.discount_amount)}` : '—'}
                     </td>
                   </tr>
@@ -404,12 +404,12 @@ export default function AdminOrderDetailPage() {
           </div>
         </div>
 
-        <div style={{ display: 'grid', gap: 20 }}>
+        <div className="stack-lg">
           <div className="admin-card">
             <div className="admin-card-header">
               <div className="admin-card-title">Oppdater status</div>
             </div>
-            <div style={{ padding: 20, display: 'grid', gap: 12 }}>
+            <div className="admin-card-body stack">
               <select
                 value={status}
                 onChange={e => setStatus(e.target.value)}
@@ -434,7 +434,7 @@ export default function AdminOrderDetailPage() {
             <div className="admin-card-header">
               <div className="admin-card-title">Betaling</div>
             </div>
-            <div style={{ padding: 20, display: 'grid', gap: 12 }}>
+            <div className="admin-card-body stack">
               <div>
                 <div className="admin-field-label">Betalingsstatus</div>
                 <div style={{ marginTop: 5 }}>
@@ -460,7 +460,7 @@ export default function AdminOrderDetailPage() {
               <div className="admin-card-header">
                 <div className="admin-card-title">Kunde</div>
               </div>
-              <div style={{ padding: 20 }}>
+              <div className="admin-card-body">
                 <div className="t-strong">{order.customer_name}</div>
                 <div style={{ fontSize: 13, color: 'var(--admin-text-dim)', marginTop: 4 }}>{order.shipping_address?.email ?? ''}</div>
                 <Link
@@ -518,15 +518,15 @@ function OrderDetailSkeleton() {
     <div>
       <div className="admin-skeleton" style={{ height: 24, width: 200, marginBottom: 24 }} />
       <div className="admin-detail-grid">
-        <div style={{ display: 'grid', gap: 20 }}>
-          <div className="admin-card" style={{ padding: 24 }}>
+        <div className="stack-lg">
+          <div className="admin-card admin-card-body">
             <div className="admin-skeleton" style={{ height: 18, width: '40%', marginBottom: 16 }} />
             {[...Array(3)].map((_, i) => (
               <div key={i} className="admin-skeleton" style={{ height: 28, marginBottom: 8 }} />
             ))}
           </div>
         </div>
-        <div className="admin-card" style={{ padding: 20 }}>
+        <div className="admin-card admin-card-body">
           <div className="admin-skeleton" style={{ height: 18, width: '60%', marginBottom: 16 }} />
           {[...Array(3)].map((_, i) => (
             <div key={i} className="admin-skeleton" style={{ height: 28, marginBottom: 8 }} />

@@ -92,7 +92,7 @@ export default function AdminFlavorsPage() {
             </thead>
             <tbody>
               {truffles === null && (
-                <tr><td colSpan={6} style={{ padding: 16 }}>Laster…</td></tr>
+                <tr><td className="admin-card-body" colSpan={6}>Laster…</td></tr>
               )}
               {truffles && truffles.length === 0 && (
                 <tr><td colSpan={6} style={{ padding: 16, color: 'var(--admin-text-dim)' }}>Ingen smaker.</td></tr>
@@ -118,7 +118,7 @@ export default function AdminFlavorsPage() {
                     </span>
                   </td>
                   <td className="t-actions" data-label="">
-                    <div style={{ display: 'inline-flex', gap: 6 }}>
+                    <div className="row-sm">
                       <button
                         onClick={() => toggleActive(t)}
                         disabled={pending === t.id}

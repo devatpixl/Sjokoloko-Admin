@@ -69,7 +69,7 @@ export default function AdminNewProductPage() {
         <div className="admin-card-header">
           <div className="admin-card-title">Produktdetaljer</div>
         </div>
-        <div style={{ padding: 24 }}>
+        <div className="admin-card-body">
           <form onSubmit={handleSubmit} className="admin-form" style={{ maxWidth: '100%' }}>
             <div className="admin-field-row">
               <div className="admin-form-group">
@@ -170,7 +170,7 @@ export default function AdminNewProductPage() {
               når du lagrer, ser kundene det innen ett minutt.
             </div>
 
-            <div style={{ display: 'flex', gap: 10 }}>
+            <div className="row">
               <button
                 type="submit"
                 disabled={isPending}

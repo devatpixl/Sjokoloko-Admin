@@ -91,12 +91,12 @@ export default function AdminCustomerDetailPage() {
       <div>
         <div className="admin-skeleton" style={{ height: 24, width: 200, marginBottom: 24 }} />
         <div className="admin-split">
-          <div className="admin-card" style={{ padding: 24 }}>
+          <div className="admin-card admin-card-body">
             <div className="admin-skeleton" style={{ height: 40, marginBottom: 12 }} />
             <div className="admin-skeleton" style={{ height: 40, marginBottom: 12 }} />
             <div className="admin-skeleton" style={{ height: 40 }} />
           </div>
-          <div className="admin-card" style={{ padding: 20 }}>
+          <div className="admin-card admin-card-body">
             <div className="admin-skeleton" style={{ height: 200 }} />
           </div>
         </div>
@@ -188,12 +188,12 @@ export default function AdminCustomerDetailPage() {
         </div>
 
         {/* Profile editor */}
-        <div style={{ display: 'grid', gap: 20 }}>
+        <div className="stack-lg">
           <div className="admin-card">
             <div className="admin-card-header">
               <div className="admin-card-title">Rediger profil</div>
             </div>
-            <div style={{ padding: 20, display: 'grid', gap: 14 }}>
+            <div className="admin-card-body stack">
               <div className="admin-form-group">
                 <label className="admin-label">Navn</label>
                 <input value={name} onChange={e => setName(e.target.value)} className="admin-form-input" />
@@ -229,7 +229,7 @@ export default function AdminCustomerDetailPage() {
             <div className="admin-card-header">
               <div className="admin-card-title">Konto</div>
             </div>
-            <div style={{ padding: 20, display: 'grid', gap: 12 }}>
+            <div className="admin-card-body stack">
               <Field label="Registrert" value={formatDate(user.created_at)} />
               <Field label="Bestillinger" value={String(orders.length)} />
               <Field label="Egendefinerte bokser" value={String(user.custom_box_count ?? 0)} />

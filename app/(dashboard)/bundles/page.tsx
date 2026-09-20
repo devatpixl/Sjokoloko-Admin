@@ -99,7 +99,7 @@ export default function AdminBundlesPage() {
             </thead>
             <tbody>
               {bundles === null && (
-                <tr><td colSpan={7} style={{ padding: 16 }}>Laster…</td></tr>
+                <tr><td className="admin-card-body" colSpan={7}>Laster…</td></tr>
               )}
               {bundles && bundles.length === 0 && (
                 <tr><td colSpan={7} style={{ padding: 16, color: 'var(--admin-text-dim)' }}>Ingen tilbud ennå.</td></tr>
@@ -112,11 +112,11 @@ export default function AdminBundlesPage() {
                       <div className="t-dim">{b.description}</div>
                     )}
                   </td>
-                  <td data-label="Variantgruppe" style={{ fontFamily: 'var(--admin-mono)', fontSize: 13 }}>
+                  <td className="mono" data-label="Variantgruppe">
                     {b.variant_group || `${b.products.length} produkt(er)`}
                   </td>
                   <td data-label="Antall">{b.required_quantity}</td>
-                  <td data-label="Pakkepris" style={{ fontFamily: 'var(--admin-mono)', fontSize: 13 }}>
+                  <td className="mono" data-label="Pakkepris">
                     kr {parseFloat(b.bundle_price).toFixed(0)}
                   </td>
                   <td data-label="Fri frakt">
@@ -132,7 +132,7 @@ export default function AdminBundlesPage() {
                     </span>
                   </td>
                   <td className="t-actions" data-label="">
-                    <div style={{ display: 'inline-flex', gap: 6 }}>
+                    <div className="row-sm">
                       <button
                         onClick={() => toggleActive(b)}
                         disabled={pending === b.id}

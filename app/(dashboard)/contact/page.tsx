@@ -199,7 +199,7 @@ export default function AdminContactPage() {
                       </span>
                     </td>
                     <td className="t-actions" data-label="" onClick={e => e.stopPropagation()}>
-                      <div style={{ display: 'flex', gap: 6, justifyContent: 'flex-end' }}>
+                      <div className="row-end">
                         {!entry.is_read && (
                           <button
                             onClick={() => markRead(entry.id)}

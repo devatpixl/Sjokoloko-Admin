@@ -39,79 +39,46 @@ function LoginForm() {
   }
 
   return (
-    <div style={{
-      minHeight: '100dvh',
-      background: '#F4F6F8',
-      padding: 16,
-      display: 'flex',
-      alignItems: 'center',
-      justifyContent: 'center',
-      fontFamily: 'Inter, system-ui, sans-serif',
-    }}>
-      <div className="login-card" style={{
-        background: '#fff',
-        border: '1px solid #E1E5EA',
-        borderRadius: 12,
-        padding: '40px 36px',
-        width: '100%',
-        maxWidth: 380,
-      }}>
-        <div style={{ marginBottom: 28 }}>
-          <div style={{ fontSize: 20, fontWeight: 700, letterSpacing: '-0.02em', color: '#1A1A2E' }}>
-            Sjokoloko
-          </div>
-          <div style={{ fontSize: 12, fontWeight: 600, letterSpacing: '0.14em', textTransform: 'uppercase', color: '#6B7280', marginTop: 2 }}>
-            Admin
-          </div>
+    <div className="login-page">
+      <div className="login-card">
+        <div className="login-brand">
+          Sjokoloko
+          <span>Admin</span>
         </div>
 
-        <form onSubmit={handleSubmit} style={{ display: 'grid', gap: 14 }}>
-          <div style={{ display: 'grid', gap: 5 }}>
-            <label style={{ fontSize: 12, fontWeight: 600, color: '#1A1A2E' }}>E-post</label>
+        <form onSubmit={handleSubmit} className="login-form">
+          <div className="login-field">
+            <label className="admin-label" htmlFor="login-email">E-post</label>
             <input
+              id="login-email"
               name="email"
               type="email"
               required
               autoFocus
               defaultValue="dev@pixlmedia.no"
               onFocus={() => setError('')}
-              className="login-input"
-              style={{
-                height: 38, padding: '0 12px', border: '1px solid #E1E5EA',
-                borderRadius: 6, fontSize: 13.5, outline: 'none', width: '100%',
-              }}
+              className="login-input admin-form-input"
             />
           </div>
-          <div style={{ display: 'grid', gap: 5 }}>
-            <label style={{ fontSize: 12, fontWeight: 600, color: '#1A1A2E' }}>Passord</label>
+
+          <div className="login-field">
+            <label className="admin-label" htmlFor="login-password">Passord</label>
             <input
+              id="login-password"
               name="password"
               type="password"
               required
               onFocus={() => setError('')}
-              className="login-input"
-              style={{
-                height: 38, padding: '0 12px', border: '1px solid #E1E5EA',
-                borderRadius: 6, fontSize: 13.5, outline: 'none', width: '100%',
-              }}
+              className="login-input admin-form-input"
             />
           </div>
 
-          {error && (
-            <div style={{ background: '#FEE2E2', color: '#DC2626', padding: '8px 12px', borderRadius: 6, fontSize: 13 }}>
-              {error}
-            </div>
-          )}
+          {error && <div className="login-error">{error}</div>}
 
           <button
             type="submit"
             disabled={isPending}
-            className="login-btn"
-            style={{
-              height: 38, background: '#C9A35B', color: '#1A1A1A', border: 'none',
-              borderRadius: 6, fontWeight: 600, fontSize: 13.5, cursor: 'pointer',
-              marginTop: 4, opacity: isPending ? 0.7 : 1,
-            }}
+            className="login-btn admin-btn admin-btn-primary admin-btn-lg"
           >
             {isPending ? 'Logger inn…' : 'Logg inn'}
           </button>

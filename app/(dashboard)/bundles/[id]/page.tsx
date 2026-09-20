@@ -64,7 +64,7 @@ export default function AdminEditBundlePage() {
   }, [params.id])
 
   if (!bundle) {
-    return <div style={{ padding: 24 }}>Laster…</div>
+    return <div className="admin-card-body">Laster…</div>
   }
 
   function toggleProduct(id: number) {
@@ -121,7 +121,7 @@ export default function AdminEditBundlePage() {
       </div>
 
       <div className="admin-card" style={{ maxWidth: 720 }}>
-        <div style={{ padding: 24 }}>
+        <div className="admin-card-body">
           <form onSubmit={handleSubmit} className="admin-form">
             <div className="admin-form-group">
               <label className="admin-label">Navn</label>
@@ -197,7 +197,7 @@ export default function AdminEditBundlePage() {
 
             {error && <div className="admin-alert admin-alert-error">{error}</div>}
 
-            <div style={{ display: 'flex', gap: 10 }}>
+            <div className="row">
               <button type="submit" disabled={pending} className="admin-btn admin-btn-primary">
                 {pending ? 'Lagrer…' : 'Lagre'}
               </button>

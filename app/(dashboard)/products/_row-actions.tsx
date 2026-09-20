@@ -29,7 +29,7 @@ export default function ProductRowActions({ id, name }: { id: number; name: stri
 
   return (
     <>
-      <div style={{ display: 'flex', gap: 6, justifyContent: 'flex-end' }}>
+      <div className="row-end">
         <Link
           href={`/products/${id}`}
           className="admin-btn admin-btn-secondary admin-btn-xs"

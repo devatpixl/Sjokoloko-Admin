@@ -1043,8 +1043,8 @@
   font-weight: 500;
 }
 
-.admin-alert-success { background: #D1FAE5; color: #065F46; }
-.admin-alert-error   { background: #FEE2E2; color: #DC2626; }
+.admin-alert-success { background: var(--st-pos-bg); border-color: var(--st-pos-line); color: var(--st-pos-ink); }
+.admin-alert-error   { background: var(--st-neg-bg); border-color: var(--st-neg-line); color: var(--st-neg-ink); }
 
 /* ─── Sidebar badge ─── */
 .admin-nav-badge {
@@ -1054,8 +1054,8 @@
   min-width: 18px;
   height: 18px;
   padding: 0 6px;
-  background: #DC2626;
-  color: #fff;
+  background: var(--hue-neg);
+  color: #FFFFFF;
   border-radius: 9px;
   font-size: 10.5px;
   font-weight: 700;
@@ -1066,12 +1066,12 @@
 .admin-kbd {
   display: inline-block;
   padding: 1px 5px;
-  background: rgba(255,255,255,0.08);
-  border: 1px solid rgba(255,255,255,0.12);
+  background: var(--sb-hover);
+  border: 1px solid var(--sb-line);
   border-radius: 3px;
   font-family: var(--admin-mono);
   font-size: 10px;
-  color: rgba(255,255,255,0.7);
+  color: var(--sb-ink-dim);
   font-weight: 500;
 }
 
@@ -1098,7 +1098,7 @@
   border-radius: 8px;
   font-size: 13.5px;
   font-weight: 500;
-  box-shadow: 0 6px 24px rgba(0,0,0,0.18), 0 1px 3px rgba(0,0,0,0.06);
+  box-shadow: var(--sh-lg);
   pointer-events: auto;
   min-width: 240px;
   max-width: 380px;
@@ -1121,15 +1121,16 @@
   font-weight: 700;
   flex-shrink: 0;
 }
-.toast-success .toast-icon { background: #10B981; color: #fff; }
-.toast-error   .toast-icon { background: #EF4444; color: #fff; }
+.toast-success .toast-icon { background: var(--hue-pos); color: #FFFFFF; }
+.toast-error   .toast-icon { background: var(--hue-neg); color: #FFFFFF; }
 .toast-info    .toast-icon { background: var(--admin-accent); color: #1A1A1A; }
 
 /* ─── Confirm dialog ─── */
 .confirm-backdrop {
   position: fixed;
   inset: 0;
-  background: rgba(15, 19, 26, 0.45);
+  background: var(--admin-overlay);
+  backdrop-filter: blur(2px);
   display: flex;
   align-items: center;
   justify-content: center;
@@ -1143,12 +1144,12 @@
 }
 
 .confirm-dialog {
-  background: #fff;
+  background: var(--admin-surface-raised);
   border-radius: 12px;
   padding: 28px;
   max-width: 420px;
   width: 92vw;
-  box-shadow: 0 24px 48px rgba(0,0,0,0.18);
+  box-shadow: var(--sh-lg);
   animation: confirm-pop 200ms cubic-bezier(0.22, 1, 0.36, 1);
 }
 
@@ -1182,7 +1183,7 @@
   border: 2px dashed var(--admin-border);
   border-radius: 10px;
   padding: 28px;
-  background: #FAFBFC;
+  background: var(--admin-surface-sunken);
   cursor: pointer;
   transition: border-color 150ms, background 150ms;
   text-align: center;
@@ -1190,7 +1191,7 @@
 
 .dropzone:hover {
   border-color: var(--admin-accent);
-  background: #fff;
+  background: var(--admin-surface-raised);
 }
 
 .dropzone-dragging {
@@ -1224,7 +1225,7 @@
 
 .dropzone-has-preview {
   padding: 0;
-  background: #fff;
+  background: var(--admin-surface-raised);
   border-style: solid;
 }
 
@@ -1247,8 +1248,8 @@
   width: 28px;
   height: 28px;
   border-radius: 50%;
-  background: rgba(26, 26, 46, 0.85);
-  color: #fff;
+  background: rgba(26, 26, 46, .85);
+  color: #FFFFFF;
   border: none;
   cursor: pointer;
   font-size: 13px;
@@ -1257,15 +1258,15 @@
   justify-content: center;
 }
 
-.dropzone-clear:hover { background: #DC2626; }
+.dropzone-clear:hover { background: var(--hue-neg); }
 
 .dropzone-filename {
   position: absolute;
   bottom: 8px;
   left: 8px;
   right: 8px;
-  background: rgba(0,0,0,0.6);
-  color: #fff;
+  background: rgba(0, 0, 0, .6);
+  color: #FFFFFF;
   font-size: 11px;
   padding: 4px 8px;
   border-radius: 4px;
@@ -1301,9 +1302,9 @@
 }
 
 .admin-row-delete:hover {
-  background: #FEE2E2;
-  color: #DC2626;
-  border-color: #FECACA;
+  background: var(--st-neg-bg);
+  color: var(--st-neg-ink);
+  border-color: var(--st-neg-line);
 }
 
 /* Row gold left-border on hover */
@@ -1429,7 +1430,7 @@
 
 .admin-dashboard-bar-fill {
   width: 100%;
-  background: linear-gradient(180deg, #E8C47A 0%, #C9A35B 100%);
+  background: linear-gradient(180deg, var(--gold-300) 0%, var(--gold-500) 100%);
   border-radius: 4px 4px 0 0;
   transition: height 0.4s ease;
 }
@@ -1465,7 +1466,7 @@
 
 .admin-quick-action:hover {
   border-color: var(--admin-accent);
-  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.06);
+  box-shadow: var(--sh-md);
 }
 
 .admin-quick-action-icon {
@@ -1554,7 +1555,7 @@
 
   .nav-open .admin-sidebar {
     transform: translateX(0);
-    box-shadow: 0 0 60px rgba(0, 0, 0, 0.5);
+    box-shadow: var(--sh-drawer);
   }
 
   .admin-scrim {
@@ -1641,7 +1642,7 @@
 
   /* Stats: two up, and beat the inline repeat(4, 1fr) the pages set */
   .admin-stats-grid {
-    grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
     gap: 10px;
     margin-bottom: 18px;
   }
@@ -1654,7 +1655,7 @@
   .admin-detail-grid,
   .admin-field-row,
   .admin-split {
-    grid-template-columns: minmax(0, 1fr) !important;
+    grid-template-columns: minmax(0, 1fr);
     gap: 16px;
   }
 
@@ -1702,16 +1703,16 @@
   /* Row and toolbar buttons carry inline desktop heights (28-30px), which is
      below the 44px a finger needs, so the breakpoint has to outrank them. */
   .admin-btn {
-    height: 44px !important;
+    height: 44px;
     min-height: 44px;
-    padding: 0 16px !important;
-    font-size: 14px !important;
+    padding: 0 16px;
+    font-size: 14px;
   }
 
   .admin-row-delete,
   .dropzone-clear {
-    width: 44px !important;
-    height: 44px !important;
+    width: 44px;
+    height: 44px;
   }
 
   .admin-checkbox {
@@ -1904,12 +1905,12 @@
 }
 
 @media (max-width: 900px) {
-  .login-card { padding: 28px 20px !important; }
+
 
   .login-input,
   .login-btn {
-    height: 48px !important;
-    font-size: 16px !important;
+    height: 48px;
+    font-size: 16px;
   }
 }
 
@@ -1960,15 +1961,15 @@
 }
 
 .flavor-line-btn-danger:hover:not(:disabled) {
-  background: #FEE2E2;
-  border-color: #FECACA;
-  color: #DC2626;
+  background: var(--st-neg-bg);
+  border-color: var(--st-neg-line);
+  color: var(--st-neg-ink);
 }
 
 .flavor-line-warn {
   grid-column: 2 / -1;
   font-size: 11px;
-  color: #B45309;
+  color: var(--st-warn-ink);
   margin-top: -2px;
 }
 
@@ -2113,7 +2114,7 @@
   color: var(--admin-text-dim);
   cursor: pointer;
 }
-.admin-bell:hover { color: var(--admin-text); border-color: #CBD2DA; }
+.admin-bell:hover { color: var(--admin-text); border-color: var(--admin-border-strong); background: var(--admin-surface-hover); }
 
 /* With something waiting it stops being an icon and says so in words. Red
    rather than gold: the sidebar already uses red for unread counts, and this
@@ -2122,11 +2123,11 @@
   width: auto;
   gap: 7px;
   padding: 0 11px;
-  background: #FEF2F2;
-  border-color: #FECACA;
-  color: #DC2626;
+  background: var(--st-neg-bg);
+  border-color: var(--st-neg-line);
+  color: var(--st-neg-ink);
 }
-.admin-bell.has-new:hover { background: #FEE2E2; border-color: #FCA5A5; color: #B91C1C; }
+.admin-bell.has-new:hover { background: var(--st-neg-bg); border-color: var(--st-neg-ink); filter: brightness(1.05); }
 
 .admin-bell-label {
   font-size: 12px;
@@ -2148,8 +2149,8 @@
   min-width: 16px;
   height: 16px;
   padding: 0 4px;
-  background: #DC2626;
-  color: #fff;
+  background: var(--hue-neg);
+  color: #FFFFFF;
   border: 2px solid var(--admin-surface);
   border-radius: 10px;
   font-size: 10px;
@@ -2265,7 +2266,7 @@
   font-weight: 600;
   cursor: pointer;
 }
-.admin-bell-clear:hover:not(:disabled) { background: #EBEEF2; }
+.admin-bell-clear:hover:not(:disabled) { background: var(--admin-surface-hover); }
 .admin-bell-clear:disabled { opacity: 0.6; cursor: default; }
 
 /* Narrow headers have no room for the words — fall back to the icon and its
@@ -2343,3 +2344,68 @@
 :root[data-theme="dark"] .admin-theme-toggle .i-sun  { display: block; }
 :root[data-theme="light"] .admin-theme-toggle .i-moon { display: block; }
 :root[data-theme="light"] .admin-theme-toggle .i-sun  { display: none; }
+
+
+/* ── §16  Login ────────────────────────────────────────────────────────────
+   This page renders outside .admin-shell, so until the tokens moved to :root
+   it inherited nothing and duplicated seven hex values inline — including the
+   font, which meant it never used the self-hosted Inter at all. */
+.login-page {
+  min-height: 100dvh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: var(--sp-4);
+  background: var(--admin-bg);
+  font-family: var(--admin-font);
+  color: var(--admin-text);
+  -webkit-font-smoothing: antialiased;
+}
+
+.login-card {
+  width: 100%;
+  max-width: 380px;
+  background: var(--admin-surface);
+  border: 1px solid var(--admin-border);
+  border-radius: var(--r-xl);
+  padding: var(--sp-10) var(--sp-8);
+  box-shadow: var(--sh-md);
+}
+
+.login-brand {
+  font-size: var(--fs-lg);
+  font-weight: var(--fw-bold);
+  letter-spacing: var(--tr-tight);
+  color: var(--admin-text);
+  margin-bottom: var(--sp-6);
+}
+.login-brand span {
+  display: block;
+  font-size: var(--fs-xs);
+  font-weight: var(--fw-semibold);
+  letter-spacing: var(--tr-caps-loose);
+  text-transform: uppercase;
+  color: var(--admin-text-mute);
+  margin-top: 2px;
+}
+
+.login-form { display: grid; gap: var(--sp-4); }
+.login-field { display: grid; gap: var(--sp-2); }
+
+.login-error {
+  background: var(--st-neg-bg);
+  border: 1px solid var(--st-neg-line);
+  color: var(--st-neg-ink);
+  padding: var(--sp-2) var(--sp-3);
+  border-radius: var(--r-md);
+  font-size: var(--fs-sm);
+}
+
+.login-btn { width: 100%; margin-top: var(--sp-1); }
+
+@media (max-width: 900px) {
+  .login-card { padding: var(--sp-8) var(--sp-5); }
+  /* >=16px stops iOS Safari zooming the page on focus */
+  .login-input { font-size: var(--fs-md); height: 48px; }
+  .login-btn { height: 48px; font-size: var(--fs-md); }
+}
