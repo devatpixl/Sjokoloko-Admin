@@ -93,7 +93,7 @@
   --z-sticky: 10; --z-topbar: 30; --z-scrim: 55; --z-drawer: 60;
   --z-drawer-close: 61; --z-popover: 80; --z-toast: 100; --z-dialog: 200;
 
-  --sidebar-w: 248px;
+  --sidebar-w: 264px;
   --topbar-h: 56px;
 
   --admin-font: var(--font-admin, 'Manrope', system-ui, sans-serif);
@@ -368,47 +368,62 @@
 }
 
 .admin-sidebar-nav {
-  padding: var(--sp-4) 0;
+  padding: var(--sp-6) 0;
   flex: 1;
 }
 
-.admin-nav-section { padding: 0 var(--sp-3) var(--sp-2); }
+.admin-nav-section { padding: 0 var(--sp-4) var(--sp-6); }
 
 .admin-nav-section-label {
-  font-size: var(--fs-2xs);
+  font-size: var(--fs-3xs);
   font-weight: var(--fw-semibold);
-  letter-spacing: var(--tr-caps);
+  letter-spacing: var(--tr-caps-loose);
   text-transform: uppercase;
   color: var(--sb-ink-mute);
-  padding: var(--sp-2) var(--sp-2) var(--sp-1);
+  padding: 0 0 var(--sp-3) var(--sp-4);
 }
 
+/* No icons. With eleven items in three named sections, type and spacing
+   carry the nav perfectly well, and dropping the glyphs is what turns a rail
+   of buttons into something that reads as authored. The g+key shortcuts and
+   the footer legend cover the power users who scanned by icon. */
 .admin-nav-link {
   position: relative;
   display: flex;
   align-items: center;
   gap: var(--sp-3);
-  height: 34px;
-  padding: 0 var(--sp-3);
-  border-radius: var(--r-md);
+  min-height: 32px;
+  padding: var(--sp-2) 0 var(--sp-2) var(--sp-4);
   color: var(--sb-ink-dim);
-  font-size: var(--fs-sm);
-  font-weight: var(--fw-medium);
+  font-size: var(--fs-base);
+  font-weight: var(--fw-regular);
+  letter-spacing: -0.005em;
   text-decoration: none;
-  margin-bottom: 2px;
-  transition: background var(--dur-2) var(--ease-standard),
-              color var(--dur-2) var(--ease-standard);
+  /* The rule lives on the item, so the active marker replaces it rather than
+     sitting beside it — one line per item, never two. */
+  box-shadow: inset 2px 0 0 transparent;
+  transition: color var(--dur-2) var(--ease-standard),
+              box-shadow var(--dur-2) var(--ease-standard),
+              padding-left var(--dur-2) var(--ease-out);
 }
+
+.admin-nav-link-label { flex: 1; }
 
 /* One signal per event: hover lifts the background only, it does not also
    change the ink. Two signals for one event reads as noise. */
-.admin-nav-link:hover { background: var(--sb-hover); color: var(--sb-ink); }
+/* No background wash on hover: at this size a colour shift is the quieter,
+   more confident signal, and the small indent gives it the physicality the
+   fill used to provide. */
+.admin-nav-link:hover {
+  color: var(--sb-ink);
+  padding-left: var(--sp-5);
+}
 
 /* Active is a rail plus white ink, not gold ink. Gold on a gold wash passes
    contrast but reads muddy; a crisp rail is the more expensive signal. */
 .admin-nav-link.active {
-  background: var(--sb-active-wash);
   color: var(--sb-ink);
+  font-weight: var(--fw-medium);
   box-shadow: inset 2px 0 0 var(--admin-accent);
 }
 
@@ -2409,4 +2424,74 @@
   /* >=16px stops iOS Safari zooming the page on focus */
   .login-input { font-size: var(--fs-md); height: 48px; }
   .login-btn { height: 48px; font-size: var(--fs-md); }
+}
+
+
+/* The brand mark, set in the display face like every other title. */
+.admin-sidebar-mark {
+  font-family: var(--admin-display);
+  font-size: var(--fs-d3);
+  font-weight: 300;
+  font-variation-settings: var(--display-axes);
+  letter-spacing: -0.01em;
+  line-height: 1;
+  color: var(--sb-ink);
+}
+
+.admin-sidebar-legend-label {
+  font-size: var(--fs-3xs);
+  letter-spacing: var(--tr-caps);
+  text-transform: uppercase;
+  color: var(--sb-ink-mute);
+  margin-bottom: var(--sp-2);
+  padding: 0 var(--sp-2);
+}
+
+
+/* ── Document pages ────────────────────────────────────────────────────────
+   A detail page is a record, not a dashboard. Giving it an eyebrow, a real
+   title and a standfirst turns nine equal cards into something with a top. */
+.admin-doc-eyebrow {
+  font-size: var(--fs-3xs);
+  font-weight: var(--fw-semibold);
+  letter-spacing: var(--tr-caps-loose);
+  text-transform: uppercase;
+  color: var(--admin-text-mute);
+  margin-bottom: var(--sp-2);
+}
+
+/* The order number is an identifier, so it stays monospaced — but at display
+   size, tracked out, so it reads as a title rather than a code in a cell. */
+.admin-doc-number {
+  font-family: var(--admin-mono);
+  font-size: var(--fs-d2);
+  font-weight: var(--fw-regular);
+  letter-spacing: -0.01em;
+  font-variation-settings: normal;
+}
+
+/* A figure that belongs to its card header — the total beside "Varer (3)". */
+.admin-card-figure {
+  font-family: var(--admin-display);
+  font-size: var(--fs-md);
+  font-weight: 400;
+  font-variation-settings: "opsz" 24, "SOFT" 50;
+  font-variant-numeric: tabular-nums;
+  color: var(--admin-text);
+}
+
+/* Status at document scale, for the one badge that is a headline. */
+.admin-badge-lg {
+  padding: var(--sp-1) var(--sp-3);
+  font-size: var(--fs-sm);
+  line-height: 22px;
+}
+.admin-badge-lg::before { width: 7px; height: 7px; }
+
+/* Aside columns read as margin notes: quieter ground, no heavy chrome. */
+.admin-detail-grid > aside .admin-card,
+.admin-split > aside .admin-card {
+  background: transparent;
+  border-color: var(--admin-border-subtle);
+  box-shadow: none;
 }

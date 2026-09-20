@@ -8,27 +8,27 @@ const NAV = [
   {
     label: 'Butikk',
     items: [
-      { href: '/dashboard', label: 'Dashboard', shortcut: 'g d', icon: <IconDashboard />, badgeKey: null },
-      { href: '/orders', label: 'Bestillinger', shortcut: 'g o', icon: <IconOrders />, badgeKey: null },
-      { href: '/products', label: 'Produkter', shortcut: 'g p', icon: <IconProducts />, badgeKey: null },
-      { href: '/flavors', label: 'Smaker', shortcut: 'g f', icon: <IconFlavors />, badgeKey: null },
-      { href: '/customers', label: 'Kunder', shortcut: 'g c', icon: <IconCustomers />, badgeKey: 'new_customers' as const },
+      { href: '/dashboard', label: 'Dashboard', shortcut: 'g d', badgeKey: null },
+      { href: '/orders', label: 'Bestillinger', shortcut: 'g o', badgeKey: null },
+      { href: '/products', label: 'Produkter', shortcut: 'g p', badgeKey: null },
+      { href: '/flavors', label: 'Smaker', shortcut: 'g f', badgeKey: null },
+      { href: '/customers', label: 'Kunder', shortcut: 'g c', badgeKey: 'new_customers' as const },
     ],
   },
   {
     label: 'Markedsføring',
     items: [
-      { href: '/coupons', label: 'Rabattkoder', shortcut: 'g r', icon: <IconCoupons />, badgeKey: null },
-      { href: '/bundles', label: 'Tilbud / pakker', shortcut: 'g t', icon: <IconBundles />, badgeKey: null },
+      { href: '/coupons', label: 'Rabattkoder', shortcut: 'g r', badgeKey: null },
+      { href: '/bundles', label: 'Tilbud / pakker', shortcut: 'g t', badgeKey: null },
     ],
   },
   {
     label: 'Innhold',
     items: [
-      { href: '/loyalty', label: 'Kundeklubb', shortcut: 'g m', icon: <IconWaitlist />, badgeKey: null },
-      { href: '/waitlist', label: 'Venteliste', shortcut: 'g w', icon: <IconWaitlist />, badgeKey: 'waitlist' as const },
-      { href: '/contact', label: 'Kontakt', shortcut: 'g k', icon: <IconContact />, badgeKey: 'unread_contact' as const },
-      { href: '/labels', label: 'Etiketter', shortcut: 'g e', icon: <IconContact />, badgeKey: null },
+      { href: '/loyalty', label: 'Kundeklubb', shortcut: 'g m', badgeKey: null },
+      { href: '/waitlist', label: 'Venteliste', shortcut: 'g w', badgeKey: 'waitlist' as const },
+      { href: '/contact', label: 'Kontakt', shortcut: 'g k', badgeKey: 'unread_contact' as const },
+      { href: '/labels', label: 'Etiketter', shortcut: 'g e', badgeKey: null },
     ],
   },
 ]
@@ -111,9 +111,7 @@ export default function AdminSidebar() {
   return (
     <aside className="admin-sidebar">
       <div className="admin-sidebar-logo">
-        <div style={{ fontSize: 17, fontWeight: 700, letterSpacing: '-0.02em', color: '#FFF' }}>
-          Sjokoloko
-        </div>
+        <div className="admin-sidebar-mark">Sjokoloko</div>
         <span>Admin</span>
       </div>
 
@@ -134,8 +132,7 @@ export default function AdminSidebar() {
                   className={`admin-nav-link${active ? ' active' : ''}`}
                   title={`Hurtigtast: ${item.shortcut}`}
                 >
-                  {item.icon}
-                  <span style={{ flex: 1 }}>{item.label}</span>
+                  <span className="admin-nav-link-label">{item.label}</span>
                   {badge > 0 && (
                     <span className="admin-nav-badge">{badge}</span>
                   )}
@@ -147,7 +144,7 @@ export default function AdminSidebar() {
       </nav>
 
       <div className="admin-sidebar-footer">
-        <div style={{ fontSize: 10, color: 'rgba(255,255,255,0.3)', marginBottom: 8, letterSpacing: '0.1em', textTransform: 'uppercase', padding: '0 8px' }}>
+        <div className="admin-sidebar-legend-label">
           Hurtigtaster
         </div>
         <div style={{ fontSize: 11, color: 'rgba(255,255,255,0.4)', padding: '0 8px 12px', lineHeight: 1.7 }}>
@@ -167,86 +164,11 @@ export default function AdminSidebar() {
   )
 }
 
-function IconDashboard() {
-  return (
-    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8">
-      <rect x="3" y="3" width="7" height="9" rx="1" />
-      <rect x="14" y="3" width="7" height="5" rx="1" />
-      <rect x="14" y="12" width="7" height="9" rx="1" />
-      <rect x="3" y="16" width="7" height="5" rx="1" />
-    </svg>
-  )
-}
 
-function IconOrders() {
-  return (
-    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8">
-      <path d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z" />
-    </svg>
-  )
-}
 
-function IconProducts() {
-  return (
-    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8">
-      <rect x="2" y="7" width="20" height="14" rx="2" />
-      <path d="M16 7V5a2 2 0 00-2-2h-4a2 2 0 00-2 2v2" />
-    </svg>
-  )
-}
 
-function IconFlavors() {
-  return (
-    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8">
-      <circle cx="7" cy="9" r="3.5" />
-      <circle cx="15" cy="9" r="3.5" />
-      <circle cx="11" cy="16" r="3.5" />
-    </svg>
-  )
-}
 
-function IconCustomers() {
-  return (
-    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8">
-      <circle cx="9" cy="7" r="4" />
-      <path d="M3 21v-2a4 4 0 014-4h4a4 4 0 014 4v2" />
-      <path d="M16 3.13a4 4 0 010 7.75M21 21v-2a4 4 0 00-3-3.87" />
-    </svg>
-  )
-}
 
-function IconWaitlist() {
-  return (
-    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8">
-      <path d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2" />
-      <rect x="9" y="3" width="6" height="4" rx="1" />
-      <path d="M9 12h6M9 16h4" />
-    </svg>
-  )
-}
 
-function IconContact() {
-  return (
-    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8">
-      <path d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
-    </svg>
-  )
-}
 
-function IconCoupons() {
-  return (
-    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8">
-      <path d="M21 11V8a2 2 0 00-2-2H5a2 2 0 00-2 2v3a2 2 0 010 4v3a2 2 0 002 2h14a2 2 0 002-2v-3a2 2 0 010-4z" />
-      <path d="M9 9v.01M9 15v.01M15 9l-6 6" strokeLinecap="round" />
-    </svg>
-  )
-}
 
-function IconBundles() {
-  return (
-    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8">
-      <path d="M12 2l9 4.9v10.2L12 22 3 17.1V6.9L12 2z" />
-      <path d="M12 22V12M3 6.9l9 5.1 9-5.1" />
-    </svg>
-  )
-}

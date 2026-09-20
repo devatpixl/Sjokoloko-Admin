@@ -161,13 +161,14 @@ export default function AdminOrderDetailPage() {
 
       <div className="admin-page-header">
         <div>
-          <div className="admin-page-title" style={{ fontFamily: 'var(--admin-mono)', letterSpacing: '0' }}>
-            {order.order_number}
+          <div className="admin-doc-eyebrow">Bestilling</div>
+          <div className="admin-page-title admin-doc-number">{order.order_number}</div>
+          <div className="admin-page-subtitle">
+            {formatDate(order.created_at)} · {order.customer_name}
           </div>
-          <div className="admin-page-subtitle">{formatDate(order.created_at)}</div>
         </div>
-        <div style={{ display: 'flex', gap: 10, alignItems: 'center' }}>
-          <span className={`admin-badge ${statusBadge(order.status)}`} style={{ fontSize: 13 }}>
+        <div className="row">
+          <span className={`admin-badge admin-badge-lg ${statusBadge(order.status)}`}>
             {order.status}
           </span>
           <button
@@ -199,7 +200,7 @@ export default function AdminOrderDetailPage() {
           <div className="admin-card">
             <div className="admin-card-header">
               <div className="admin-card-title">Varer ({order.items?.length})</div>
-              <div style={{ fontWeight: 700, fontSize: 15 }}>{formatNOK(order.total)}</div>
+              <div className="admin-card-figure">{formatNOK(order.total)}</div>
             </div>
             <table className="admin-table">
               <thead>
