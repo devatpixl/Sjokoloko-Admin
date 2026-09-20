@@ -111,7 +111,17 @@ export default function AdminSidebar() {
   return (
     <aside className="admin-sidebar">
       <div className="admin-sidebar-logo">
-        <div className="admin-sidebar-mark">Sjokoloko</div>
+        {/* The mark already carries the wordmark, so there is no text name
+            beside it — two wordmarks would be one too many. Plain <img>: the
+            app never imports next/image and next.config only whitelists the
+            API host for remote images. */}
+        <img
+          src="/sjokoloco-mark.png"
+          alt="Sjoko Loco"
+          className="admin-sidebar-mark"
+          width={389}
+          height={320}
+        />
         <span>Admin</span>
       </div>
 

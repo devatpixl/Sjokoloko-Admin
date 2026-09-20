@@ -296,9 +296,10 @@
 }
 
 .admin-sidebar-logo {
-  padding: var(--sp-6) var(--sp-5) var(--sp-5);
+  padding: var(--sp-6) var(--sp-5) var(--sp-5) var(--sp-8);
   display: grid;
-  gap: var(--sp-2);
+  justify-items: start;
+  gap: var(--sp-3);
   border-bottom: 1px solid var(--sb-line);
   color: var(--sb-ink);
   font-family: var(--admin-display);
@@ -309,10 +310,13 @@
   line-height: 1;
 }
 
+/* Set on the mark's own left edge, tracked wide so it reads as a label under
+   the logo rather than as a second word in it. */
 .admin-sidebar-logo span {
   display: block;
   font-family: var(--admin-font);
-  font-size: var(--fs-2xs);
+  padding-left: 2px;
+  font-size: var(--fs-3xs);
   font-weight: var(--fw-semibold);
   letter-spacing: var(--tr-caps-loose);
   text-transform: uppercase;
@@ -2369,15 +2373,24 @@
   .login-btn { height: 48px; font-size: var(--fs-md); }
 }
 
-/* The brand mark, set in the display face like every other title. */
+/* The brand mark.
+
+   The file is cropped to its ink — the original carried uneven transparent
+   padding (L37 T31 R24 B59 of 450x410), which would have hung it off-centre
+   in its own box no matter what padding was set here.
+
+   Height, not width, is the control: it is a round mark, so matching its cap
+   height to the nav rhythm is what makes it sit rather than float. The left
+   edge lines up with the nav labels (section padding 16 + link padding 16),
+   so one vertical runs from the mark down through every item. */
 .admin-sidebar-mark {
-  font-family: var(--admin-display);
-  font-size: var(--fs-d3);
-  font-weight: 300;
-  font-variation-settings: var(--display-axes);
-  letter-spacing: -0.01em;
-  line-height: 1;
-  color: var(--sb-ink);
+  display: block;
+  /* 58, not 46: the wordmark sits inside the ring, so the mark has to be big
+     enough to read "Sjoko Loco" — below about 54 it degrades into a gold
+     smudge and stops doing a logo's job. */
+  height: 58px;
+  width: auto;
+  margin-left: -3px;   /* optical: the ring's stroke reads lighter than type */
 }
 
 .admin-sidebar-legend-label {
