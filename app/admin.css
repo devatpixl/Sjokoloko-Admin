@@ -238,10 +238,19 @@
 /* Form controls were content-box, so width:100% plus padding overflowed the
    column they sit in. Only the controls are switched, to leave the rest of
    the desktop layout exactly as it was. */
-.admin-shell input,
-.admin-shell select,
-.admin-shell textarea,
-.admin-shell button {
+/* Originally this covered only form controls, which left every other element
+   combining width:100% with padding wider than its own container —
+   .admin-main among them, which pushed the whole page past the right edge on
+   a phone. Border-box everywhere inside the shell is both the fix and the
+   modern default. */
+.admin-shell,
+.admin-shell *,
+.admin-shell *::before,
+.admin-shell *::after,
+.login-page,
+.login-page *,
+.login-page *::before,
+.login-page *::after {
   box-sizing: border-box;
 }
 
@@ -494,9 +503,9 @@
 .admin-main {
   padding: var(--sp-8) var(--sp-8) var(--sp-16);
   flex: 1;
-  width: 100%;
   max-width: 1560px;
   margin: 0 auto;
+  min-width: 0;
 }
 
 /* ── §7  Layout primitives ─────────────────────────────────────────────── */
