@@ -503,6 +503,12 @@
 .admin-main {
   padding: var(--sp-8) var(--sp-8) var(--sp-16);
   flex: 1;
+  /* width:100% is required, not redundant: `margin: 0 auto` on a flex item
+     cancels the default stretch, so without it this shrinks to its content
+     and centres — which on a phone left a fixed 309px column with growing
+     gaps either side. It is safe now only because box-sizing is border-box;
+     that pairing was the earlier right-edge overflow. */
+  width: 100%;
   max-width: 1560px;
   margin: 0 auto;
   min-width: 0;
