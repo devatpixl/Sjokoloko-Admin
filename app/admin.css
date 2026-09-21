@@ -736,14 +736,25 @@
 
 .admin-table tr:last-child td { border-bottom: none; }
 
-/* An inset shadow rather than border-left on the <tr>: under
-   border-collapse a row border is unreliable across engines and can shift
-   content. This is identical visually and costs no layout. */
-.admin-table tbody tr:hover td,
+/* An inset shadow rather than border-left on the <tr>: under border-collapse
+   a row border is unreliable across engines and can shift content. This is
+   identical visually and costs no layout.
+
+   Gated behind a real pointer. A touch device reports :hover after a tap and
+   then keeps reporting it, so on a phone the rail stayed lit on whichever row
+   you last touched — and in the stacked card layout that reads as a stray
+   gold line down the card rather than as a hover cue. */
+@media (hover: hover) and (pointer: fine) {
+  .admin-table tbody tr:hover td { background: var(--admin-surface-hover); }
+  .admin-table tbody tr:hover td:first-child {
+    box-shadow: inset 3px 0 0 var(--admin-accent);
+  }
+}
+
+/* Keyboard focus keeps its cue on every device — that one is never sticky. */
 .admin-table tbody tr:focus-within td {
   background: var(--admin-surface-hover);
 }
-.admin-table tbody tr:hover td:first-child,
 .admin-table tbody tr:focus-within td:first-child {
   box-shadow: inset 3px 0 0 var(--admin-accent);
 }
@@ -1590,6 +1601,9 @@
     border-left-width: 0;
     border-right-width: 0;
   }
+
+  /* No row rail in card layout — there is no row for it to mark. */
+  .admin-table tbody tr:focus-within td:first-child { box-shadow: none; }
 
   /* With the page padding gone, the card's own gutter is the only inset left,
      so it can be tighter without the content touching the edge. */
