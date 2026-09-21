@@ -1602,8 +1602,13 @@
     border-right-width: 0;
   }
 
-  /* No row rail in card layout — there is no row for it to mark. */
+  /* No row rail in card layout — there is no row for it to mark, and a
+     mirrored phone can still report hover:hover, so cancel every state. */
+  .admin-table tbody tr td:first-child,
+  .admin-table tbody tr:hover td:first-child,
   .admin-table tbody tr:focus-within td:first-child { box-shadow: none; }
+  .admin-table tbody tr:hover td,
+  .admin-table tbody tr:focus-within td { background: transparent; }
 
   /* With the page padding gone, the card's own gutter is the only inset left,
      so it can be tighter without the content touching the edge. */
@@ -2713,4 +2718,46 @@
 
 @media (max-width: 900px) {
   .hide-on-phone { display: none; }
+}
+
+
+/* ── Touch ─────────────────────────────────────────────────────────────────
+   A finger has no hover: the state latches on tap and stays on whatever was
+   touched last, so every hover treatment reads as a stuck selection rather
+   than as feedback. Neutralised wholesale here rather than by rewriting each
+   rule, and placed last so it wins on order. :active still gives the press
+   its feedback, and :focus-visible still serves keyboards. */
+@media (hover: none), (pointer: coarse) {
+  .admin-table tbody tr:hover td { background: transparent; }
+  .admin-table tbody tr:hover td:first-child { box-shadow: none; }
+
+  .admin-nav-link:hover { color: var(--sb-ink-dim); padding-left: var(--sp-4); }
+  .admin-nav-link.active:hover { color: var(--sb-ink); }
+
+  .admin-btn-secondary:hover:not(:disabled) {
+    background: transparent;
+    border-color: var(--admin-border);
+  }
+  .admin-btn-ghost:hover:not(:disabled) {
+    background: transparent;
+    color: var(--admin-text-dim);
+  }
+  .admin-btn-danger:hover:not(:disabled) { background: transparent; }
+  .admin-btn-primary:hover:not(:disabled) { background: var(--admin-accent); }
+
+  .admin-bell:hover {
+    color: var(--admin-text-dim);
+    border-color: var(--admin-border);
+    background: var(--admin-surface);
+  }
+  .admin-theme-toggle:hover {
+    color: var(--admin-text-dim);
+    border-color: var(--admin-border);
+    background: var(--admin-surface);
+  }
+  .admin-bell-item:hover { background: transparent; }
+  .admin-bell-clear:hover:not(:disabled) { background: var(--admin-surface-sunken); }
+  .admin-sidebar-footer a:hover { color: var(--sb-ink-mute); background: transparent; }
+  .admin-quick-action:hover { background: var(--admin-surface); }
+  .admin-row-delete:hover { background: transparent; }
 }
