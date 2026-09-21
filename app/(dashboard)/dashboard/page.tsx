@@ -21,23 +21,22 @@ const STATUS_BADGE: Record<string, string> = {
 }
 
 export default async function DashboardPage() {
-  let stats = { orders: 0, users: 0, revenue: 0, waitlist: 0, unread_contact: 0 }
-  try {
-    stats = (await adminGetStats()) as typeof stats
-  } catch {
-    /* API utilgjengelig */
-  }
-
-  // Everything below is aggregated from this one list. The charts that used to
-  // sit here ran on hardcoded arrays behind an "Eksempeldata" pill — not
+  // Both requests go out together. Awaiting them one after the other cost a
+  // whole extra round trip to Django before the page could render — the orders
+  // page already did this correctly and the dashboard did not.
+  //
+  // Everything below is aggregated from the orders list. The charts that used
+  // to sit here ran on hardcoded arrays behind an "Eksempeldata" pill — not
   // because the numbers were unavailable, but because nobody had done the
   // aggregation. No new endpoint, no backend change.
+  let stats = { orders: 0, users: 0, revenue: 0, waitlist: 0, unread_contact: 0 }
   let orders: any[] = []
-  try {
-    orders = (await adminGetOrders({})) as any[]
-  } catch {
-    /* API utilgjengelig */
-  }
+  const [statsResult, ordersResult] = await Promise.allSettled([
+    adminGetStats(),
+    adminGetOrders({}),
+  ])
+  if (statsResult.status === 'fulfilled') stats = statsResult.value as typeof stats
+  if (ordersResult.status === 'fulfilled') orders = ordersResult.value as any[]
 
   const recentOrders = orders.slice(0, 6)
 
