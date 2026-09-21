@@ -71,8 +71,14 @@ export default async function AdminOrdersPage({
           <div className="admin-stat-value">{stats.orders}</div>
         </div>
         <div className="admin-stat-card">
-          <div className="admin-stat-label">Omsetning</div>
+          {/* This page fetches a FILTERED order list, so captured revenue cannot
+              be computed here the way the dashboard does it. The API figure is
+              Sum('total') over every order — abandoned and expired baskets
+              included — so the label says what the number actually is rather
+              than letting it pass for earnings. */}
+          <div className="admin-stat-label">Ordreverdi (alle)</div>
           <div className="admin-stat-value accent">{formatNOK(stats.revenue)}</div>
+          <div className="admin-stat-delta">Inkl. ubetalte og avbrutte</div>
         </div>
         <div className="admin-stat-card">
           <div className="admin-stat-label">Kunder</div>

@@ -66,6 +66,14 @@ export default async function DashboardPage() {
 
   const revenuePoints = labels.map(l => ({ ...l, value: buckets.get(l.key) ?? 0 }))
 
+  // The API's revenue figure is Sum('total') over every order, so it counts
+  // baskets that were abandoned in Vipps, expired or aborted. On this data it
+  // reads roughly ten times what actually arrived. Computed here from the same
+  // orders the charts use, so the card, the chart and the truth agree.
+  const capturedRevenue = orders
+    .filter(o => o.payment_status === 'CAPTURED')
+    .reduce((sum, o) => sum + Number(o.total ?? 0), 0)
+
   // ── Orders by status, in pipeline order rather than by size ──
   const STATUS_ORDER = ['Mottatt', 'Bekreftet', 'Pakkes', 'Sendt', 'Levert']
   const counts = new Map<string, number>()
@@ -91,8 +99,9 @@ export default async function DashboardPage() {
           <div className="admin-stat-value">{stats.orders}</div>
         </div>
         <div className="admin-stat-card">
-          <div className="admin-stat-label">Omsetning (total)</div>
-          <div className="admin-stat-value accent">{formatNOK(stats.revenue)}</div>
+          <div className="admin-stat-label">Omsetning (betalt)</div>
+          <div className="admin-stat-value accent">{formatNOK(capturedRevenue)}</div>
+          <div className="admin-stat-delta">Kun gjennomførte betalinger</div>
         </div>
         <div className="admin-stat-card">
           <div className="admin-stat-label">Kunder</div>
