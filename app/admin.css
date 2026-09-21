@@ -1571,7 +1571,23 @@
     text-overflow: ellipsis;
     white-space: nowrap;
   }
-  .admin-main { padding: 16px 14px 40px; }
+  .admin-main { padding: 16px 0 40px; }
+
+  /* Headings and the back link keep the inset the cards give up. */
+  .admin-page-header,
+  .admin-back,
+  .chart-grid-2 > .chart-note { margin-left: 14px; margin-right: 14px; }
+
+  .admin-card,
+  .admin-stats-grid {
+    border-radius: 0;
+    border-left-width: 0;
+    border-right-width: 0;
+  }
+
+  /* With the page padding gone, the card's own gutter is the only inset left,
+     so it can be tighter without the content touching the edge. */
+  :root { --gutter: 16px; }
 
   .admin-page-header {
     flex-direction: column;
@@ -1834,7 +1850,8 @@
 
 /* Very narrow phones */
 @media (max-width: 420px) {
-  .admin-main { padding: 14px 12px 36px; }
+  .admin-main { padding: 14px 0 36px; }
+  :root { --gutter: 14px; }
   .admin-page-title { font-size: 20px; }
   .admin-topbar-badge { max-width: 32vw; }
   .admin-stats-grid { gap: 8px; }
@@ -2672,3 +2689,8 @@
   .admin-form-actions { background: var(--admin-surface); }
 }
 .admin-form-actions .admin-hint { margin-left: auto; }
+
+
+@media (max-width: 900px) {
+  .hide-on-phone { display: none; }
+}

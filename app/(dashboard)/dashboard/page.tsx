@@ -114,7 +114,10 @@ export default async function DashboardPage() {
       </div>
 
       <div className="chart-grid-2">
+        {/* Hidden on phones: a fourteen-point curve in a 360px box is a
+            squiggle, and the stat card above already carries the figure. */}
         <RevenueArea
+          className="hide-on-phone"
           points={revenuePoints}
           title="Omsetning siste 14 dager"
           note="Kun betalte ordrer — avbrutte og ubetalte teller ikke som omsetning."

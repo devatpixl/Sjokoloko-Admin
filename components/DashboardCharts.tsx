@@ -21,10 +21,12 @@ export function RevenueArea({
   points,
   title,
   note,
+  className = '',
 }: {
   points: { key: string; label: string; value: number }[]
   title: string
   note?: string
+  className?: string
 }) {
   const W = 720
   const H = 200
@@ -60,7 +62,7 @@ export function RevenueArea({
   // a quiet fortnight, so say it in words instead of drawing nothing.
   if (total === 0) {
     return (
-      <div className="admin-card chart-card">
+      <div className={`admin-card chart-card ${className}`.trim()}>
         <div className="admin-card-header">
           <div className="admin-card-title">{title}</div>
           <div className="admin-card-figure">{formatNOK(0)}</div>
@@ -77,7 +79,7 @@ export function RevenueArea({
   }
 
   return (
-    <div className="admin-card chart-card">
+    <div className={`admin-card chart-card ${className}`.trim()}>
       <div className="admin-card-header">
         <div className="admin-card-title">{title}</div>
         <div className="admin-card-figure">{formatNOK(total)}</div>
