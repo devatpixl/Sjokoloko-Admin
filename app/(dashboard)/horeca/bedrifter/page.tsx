@@ -14,6 +14,7 @@ type Company = {
   id: string; name: string; org_number: string
   status: string; status_label: string; rejection_reason: string
   phone: string; email: string
+  contact_email: string; contact_name: string
   invoice_street: string; invoice_postal_code: string; invoice_city: string
   created_at: string; member_count: number
 }
@@ -100,8 +101,15 @@ export default async function HorecaCompaniesPage({
                   </td>
                   <td className="t-mono">{c.org_number}</td>
                   <td>
-                    {c.email || '—'}
-                    {c.phone && <div className="admin-muted" style={{ fontSize: 12 }}>{c.phone}</div>}
+                    {/* The first administrator, not company.email — that field
+                        is the invoice address and is usually blank, which made
+                        this render a dash beside a company that had a user. */}
+                    {c.contact_email || c.email || '—'}
+                    {(c.contact_name || c.phone) && (
+                      <div className="admin-muted" style={{ fontSize: 12 }}>
+                        {[c.contact_name, c.phone].filter(Boolean).join(' · ')}
+                      </div>
+                    )}
                   </td>
                   <td className="t-mono">{c.member_count}</td>
                   <td>{date(c.created_at)}</td>
