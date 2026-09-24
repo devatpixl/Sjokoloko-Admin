@@ -13,8 +13,8 @@ export type HorecaProduct = {
   wholesale_price: string
   pieces_per_tray_plain: number; pieces_per_tray_logo: number
   lead_time_days: number | null
-  allergens: string[] | string; ingredients: string
-  is_active: boolean; supports_logo: boolean
+  allergens: string[]; ingredients_text: string
+  is_active: boolean; logo_available: boolean
   sort_order: number
 }
 

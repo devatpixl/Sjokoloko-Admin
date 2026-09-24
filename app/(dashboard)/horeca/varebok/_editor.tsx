@@ -12,13 +12,13 @@ type Draft = {
   name: string; slug: string; wholesale_price: string
   pieces_per_tray_plain: string; pieces_per_tray_logo: string
   lead_time_days: string; description: string
-  supports_logo: boolean; is_active: boolean
+  logo_available: boolean; is_active: boolean
 }
 
 const blank = (d: { plain: number; logo: number }): Draft => ({
   name: '', slug: '', wholesale_price: '',
   pieces_per_tray_plain: String(d.plain), pieces_per_tray_logo: String(d.logo),
-  lead_time_days: '', description: '', supports_logo: true, is_active: true,
+  lead_time_days: '', description: '', logo_available: true, is_active: true,
 })
 
 export default function ProductEditor({
@@ -49,7 +49,7 @@ export default function ProductEditor({
       pieces_per_tray_plain: String(p.pieces_per_tray_plain),
       pieces_per_tray_logo: String(p.pieces_per_tray_logo),
       lead_time_days: p.lead_time_days == null ? '' : String(p.lead_time_days),
-      description: p.description ?? '', supports_logo: p.supports_logo,
+      description: p.description ?? '', logo_available: p.logo_available,
       is_active: p.is_active,
     })
     setEditing(p.id)
@@ -65,7 +65,7 @@ export default function ProductEditor({
       pieces_per_tray_plain: Number(draft.pieces_per_tray_plain),
       pieces_per_tray_logo: Number(draft.pieces_per_tray_logo),
       description: draft.description,
-      supports_logo: draft.supports_logo,
+      logo_available: draft.logo_available,
       is_active: draft.is_active,
     }
     // Blank means "use the portal-wide lead time", which is not the same as 0.
@@ -140,7 +140,7 @@ export default function ProductEditor({
       </div>
       <div style={{ display: 'flex', gap: 20, marginTop: 4 }}>
         <label className="admin-label" style={{ display: 'flex', gap: 8, alignItems: 'center' }}>
-          <input type="checkbox" checked={draft.supports_logo} onChange={set('supports_logo')} />
+          <input type="checkbox" checked={draft.logo_available} onChange={set('logo_available')} />
           Kan trykkes med logo
         </label>
         <label className="admin-label" style={{ display: 'flex', gap: 8, alignItems: 'center' }}>
@@ -201,7 +201,7 @@ export default function ProductEditor({
                       ? <span className="admin-muted">standard</span>
                       : `${p.lead_time_days} d`}
                   </td>
-                  <td>{p.supports_logo ? 'Ja' : '—'}</td>
+                  <td>{p.logo_available ? 'Ja' : '—'}</td>
                   <td>
                     <span className={`admin-badge ${p.is_active ? 'admin-badge-green' : 'admin-badge-gray'}`}>
                       {p.is_active ? 'Aktiv' : 'Inaktiv'}
