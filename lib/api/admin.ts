@@ -149,3 +149,51 @@ export async function adminDeleteContact(id: number) {
 export async function adminDeleteWaitlist(id: number) {
   return adminFetch(`/api/admin/waitlist/${id}/`, { method: 'DELETE' })
 }
+
+/* ── HORECA (B2B) ─────────────────────────────────────────────────────────
+   These hit /api/admin/horeca/*, the same prefix and the same IsAdminUser
+   guard as everything above, so adminFetch works unchanged. */
+
+export async function adminGetHorecaCompanies(params?: { status?: string; search?: string }) {
+  const q = new URLSearchParams()
+  if (params?.status) q.set('status', params.status)
+  if (params?.search) q.set('search', params.search)
+  const qs = q.toString() ? `?${q}` : ''
+  return adminFetch(`/api/admin/horeca/companies/${qs}`)
+}
+
+export async function adminGetHorecaCompany(id: string) {
+  return adminFetch(`/api/admin/horeca/companies/${id}/`)
+}
+
+export async function adminGetHorecaLogos(params?: { status?: string }) {
+  const qs = params?.status ? `?status=${params.status}` : ''
+  return adminFetch(`/api/admin/horeca/logos/${qs}`)
+}
+
+export async function adminGetHorecaOrders(params?: {
+  status?: string; from?: string; to?: string; search?: string
+}) {
+  const q = new URLSearchParams()
+  for (const [k, v] of Object.entries(params ?? {})) if (v) q.set(k, v)
+  const qs = q.toString() ? `?${q}` : ''
+  return adminFetch(`/api/admin/horeca/orders/${qs}`)
+}
+
+export async function adminGetHorecaOrder(orderNumber: string) {
+  return adminFetch(`/api/admin/horeca/orders/${orderNumber}/`)
+}
+
+/** K-53 — "hva skal lages denne uka?". `date` is y-m-d. */
+export async function adminGetHorecaProduction(date?: string) {
+  const qs = date ? `?date=${date}` : ''
+  return adminFetch(`/api/admin/horeca/production/${qs}`)
+}
+
+export async function adminGetHorecaProducts() {
+  return adminFetch('/api/admin/horeca/products/')
+}
+
+export async function adminGetHorecaSettings() {
+  return adminFetch('/api/admin/horeca/settings/')
+}

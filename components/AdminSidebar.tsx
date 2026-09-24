@@ -23,6 +23,18 @@ const NAV = [
     ],
   },
   {
+    label: 'HORECA',
+    items: [
+      { href: '/horeca/bedrifter', label: 'Bedrifter', shortcut: 'g b',
+        badgeKey: 'horeca_pending_companies' as const },
+      { href: '/horeca/varebok', label: 'Varebok', shortcut: 'g v', badgeKey: null },
+      { href: '/horeca/produksjon', label: 'Produksjon', shortcut: 'g x', badgeKey: null },
+      { href: '/horeca/bestillinger', label: 'Bestillinger', shortcut: 'g h', badgeKey: null },
+      { href: '/horeca/logoer', label: 'Logoer', shortcut: 'g l',
+        badgeKey: 'horeca_pending_logos' as const },
+    ],
+  },
+  {
     label: 'Innhold',
     items: [
       { href: '/loyalty', label: 'Kundeklubb', shortcut: 'g m', badgeKey: null },
@@ -34,6 +46,11 @@ const NAV = [
 ]
 
 const SHORTCUT_MAP: Record<string, string> = {
+  'g b': '/horeca/bedrifter',
+  'g v': '/horeca/varebok',
+  'g x': '/horeca/produksjon',
+  'g h': '/horeca/bestillinger',
+  'g l': '/horeca/logoer',
   'g d': '/dashboard',
   'g o': '/orders',
   'g p': '/products',
