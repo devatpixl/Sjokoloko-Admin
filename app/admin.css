@@ -1176,6 +1176,14 @@
   width: 92vw;
   box-shadow: var(--sh-lg);
   animation: confirm-pop 200ms cubic-bezier(0.22, 1, 0.36, 1);
+  /* The dialog is rendered from inside the row it acts on, i.e. inside
+     td.t-actions, which sets white-space: nowrap. position: fixed takes the
+     backdrop out of the layout but inheritance still reaches here, so the
+     message refused to wrap and ran straight out of the card. Reset it rather
+     than relying on where the component happens to be mounted. */
+  white-space: normal;
+  /* A product name or slug with no spaces must not push the card open either. */
+  overflow-wrap: break-word;
 }
 
 @keyframes confirm-pop {
