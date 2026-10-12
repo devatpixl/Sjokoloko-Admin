@@ -49,6 +49,7 @@ export default function AdminEditProductPage() {
       data.delete('image')
     }
     data.set('in_stock', data.has('in_stock') ? 'true' : 'false')
+    data.set('is_active', data.has('is_active') ? 'true' : 'false')
 
     setIsPending(true)
     setError('')
@@ -220,6 +221,17 @@ export default function AdminEditProductPage() {
               <div className="admin-checkbox-row">
                 <input name="in_stock" type="checkbox" id="in_stock" defaultChecked={product.in_stock} className="admin-checkbox" />
                 <label htmlFor="in_stock" className="admin-label" style={{ marginBottom: 0 }}>På lager</label>
+              </div>
+
+              {/* The only way to take a product off the shop for good. Deleting
+                  is refused once it appears on an order, because the order has
+                  to keep saying what was bought — unticking this is the
+                  supported alternative and hides it from every storefront page. */}
+              <div className="admin-checkbox-row">
+                <input name="is_active" type="checkbox" id="is_active" defaultChecked={product.is_active !== false} className="admin-checkbox" />
+                <label htmlFor="is_active" className="admin-label" style={{ marginBottom: 0 }}>
+                  Vises i nettbutikken
+                </label>
               </div>
 
               {error && <div className="admin-alert admin-alert-error">{error}</div>}

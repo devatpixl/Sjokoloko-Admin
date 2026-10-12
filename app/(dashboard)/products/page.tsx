@@ -112,9 +112,17 @@ export default async function AdminProductsPage({
                     <span className={`admin-badge ${product.in_stock ? 'admin-badge-green' : 'admin-badge-red'}`}>
                       {product.in_stock ? 'På lager' : 'Utsolgt'}
                     </span>
+                    {/* A hidden product is gone from the shop entirely, which
+                        "Utsolgt" does not convey — without this the list gives
+                        no sign that the product is no longer published. */}
+                    {product.is_active === false && (
+                      <span className="admin-badge admin-badge-gray" style={{ marginLeft: 6 }}>
+                        Skjult
+                      </span>
+                    )}
                   </td>
                   <td className="t-actions" data-label="">
-                    <ProductRowActions id={product.id} name={product.name} />
+                    <ProductRowActions id={product.id} name={product.name} isActive={product.is_active !== false} />
                   </td>
                 </tr>
               ))}

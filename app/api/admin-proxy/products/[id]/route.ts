@@ -39,5 +39,13 @@ export async function DELETE(_req: NextRequest, { params }: { params: Promise<{ 
     method: 'DELETE',
     headers: token ? { Authorization: `Bearer ${token}` } : {},
   })
-  return new NextResponse(null, { status: res.status })
+  // 204 carries no body. Anything else may carry the reason the delete was
+  // refused — notably the 409 raised when the product appears on an order —
+  // and swallowing it is what left the UI showing a bare "Kunne ikke slette".
+  if (res.status === 204) return new NextResponse(null, { status: 204 })
+  const body = await res.text()
+  return new NextResponse(body, {
+    status: res.status,
+    headers: { 'content-type': res.headers.get('content-type') ?? 'application/json' },
+  })
 }

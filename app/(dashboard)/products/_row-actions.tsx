@@ -6,22 +6,56 @@ import { useRouter } from 'next/navigation'
 import ConfirmDialog from '@/components/ConfirmDialog'
 import { useToast } from '@/components/Toast'
 
-export default function ProductRowActions({ id, name }: { id: number; name: string }) {
+export default function ProductRowActions({
+  id,
+  name,
+  isActive = true,
+}: { id: number; name: string; isActive?: boolean }) {
   const router = useRouter()
   const toast = useToast()
   const [open, setOpen] = useState(false)
   const [pending, setPending] = useState(false)
+  // Set when the API refuses the delete because the product is on an order.
+  // The dialog then switches from "delete" to "hide", which is the thing the
+  // operator actually wants and the only thing that is safe to do.
+  const [blocked, setBlocked] = useState('')
 
   async function handleDelete() {
     setPending(true)
     try {
       const res = await fetch(`/api/admin-proxy/products/${id}`, { method: 'DELETE' })
+      if (res.status === 409) {
+        const body = await res.json().catch(() => null)
+        setBlocked(body?.detail ?? 'Produktet er i bruk og kan ikke slettes.')
+        return
+      }
       if (!res.ok) throw new Error()
       toast.success(`Slettet "${name}"`)
       setOpen(false)
       router.refresh()
     } catch {
       toast.error('Kunne ikke slette produkt')
+    } finally {
+      setPending(false)
+    }
+  }
+
+  // Hiding is the fallback for a product that cannot be deleted: is_active
+  // false removes it from every storefront query while the order history that
+  // blocks the delete stays intact.
+  async function setActive(next: boolean) {
+    setPending(true)
+    try {
+      const fd = new FormData()
+      fd.set('is_active', next ? 'true' : 'false')
+      const res = await fetch(`/api/admin-proxy/products/${id}`, { method: 'PATCH', body: fd })
+      if (!res.ok) throw new Error()
+      toast.success(next ? `"${name}" vises igjen` : `"${name}" er skjult fra nettbutikken`)
+      setOpen(false)
+      setBlocked('')
+      router.refresh()
+    } catch {
+      toast.error(next ? 'Kunne ikke vise produkt' : 'Kunne ikke skjule produkt')
     } finally {
       setPending(false)
     }
@@ -38,7 +72,16 @@ export default function ProductRowActions({ id, name }: { id: number; name: stri
         </Link>
         <button
           type="button"
-          onClick={() => setOpen(true)}
+          onClick={() => setActive(!isActive)}
+          disabled={pending}
+          className="admin-btn admin-btn-secondary admin-btn-xs"
+          title={isActive ? 'Skjul fra nettbutikken' : 'Vis i nettbutikken'}
+        >
+          {isActive ? 'Skjul' : 'Vis'}
+        </button>
+        <button
+          type="button"
+          onClick={() => { setBlocked(''); setOpen(true) }}
           className="admin-row-delete"
           title="Slett produkt"
           aria-label="Slett produkt"
@@ -51,13 +94,16 @@ export default function ProductRowActions({ id, name }: { id: number; name: stri
 
       <ConfirmDialog
         open={open}
-        title={`Slette "${name}"?`}
-        message="Dette kan ikke angres. Produktet fjernes fra katalogen og er ikke lenger tilgjengelig på nettstedet."
-        confirmLabel="Slett produkt"
-        danger
+        title={blocked ? `Kan ikke slette "${name}"` : `Slette "${name}"?`}
+        message={
+          blocked ||
+          'Dette kan ikke angres. Produktet fjernes fra katalogen og er ikke lenger tilgjengelig på nettstedet.'
+        }
+        confirmLabel={blocked ? 'Skjul produktet' : 'Slett produkt'}
+        danger={!blocked}
         pending={pending}
-        onConfirm={handleDelete}
-        onCancel={() => setOpen(false)}
+        onConfirm={blocked ? () => setActive(false) : handleDelete}
+        onCancel={() => { setOpen(false); setBlocked('') }}
       />
     </>
   )
